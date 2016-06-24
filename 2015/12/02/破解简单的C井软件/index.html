@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      破解简单的C#软件 | Zke1ev3n&#39;s Blog 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="Zke1ev3n">
+    
+    
+
+    <meta name="description" content="在开发或者调试过程中，经常需要在多个窗口间来回切换查看信息，在操作上不仅麻烦，而且经常打开错误的窗口。所以我们希望能够在有限的屏幕里平铺多个窗口，这就需要能够分割屏幕的软件，而这类软件非常少，并且体验很不好。在尝试多款分屏软件后，我发现了一款叫MaxTo的软件能很好的解决我的问题，不过这款软件只能免费使用30天，而且价格还很贵。
+
+
+不过后来我发现这款软件是用C#写的，看来是款好捏的软柿子，所以我">
+<meta property="og:type" content="article">
+<meta property="og:title" content="破解简单的C#软件 | Zke1ev3n's Blog">
+<meta property="og:url" content="http://yoursite.com/2015/12/02/破解简单的C井软件/index.html">
+<meta property="og:site_name" content="Zke1ev3n's Blog">
+<meta property="og:description" content="在开发或者调试过程中，经常需要在多个窗口间来回切换查看信息，在操作上不仅麻烦，而且经常打开错误的窗口。所以我们希望能够在有限的屏幕里平铺多个窗口，这就需要能够分割屏幕的软件，而这类软件非常少，并且体验很不好。在尝试多款分屏软件后，我发现了一款叫MaxTo的软件能很好的解决我的问题，不过这款软件只能免费使用30天，而且价格还很贵。
+
+
+不过后来我发现这款软件是用C#写的，看来是款好捏的软柿子，所以我">
+<meta property="og:image" content="http://yoursite.com/1.png">
+<meta property="og:image" content="http://yoursite.com/2.png">
+<meta property="og:image" content="http://yoursite.com/3.png">
+<meta property="og:image" content="http://yoursite.com/4.png">
+<meta property="og:image" content="http://yoursite.com/5.png">
+<meta property="og:image" content="http://yoursite.com/6.png">
+<meta property="og:image" content="http://yoursite.com/7.png">
+<meta property="og:image" content="http://yoursite.com/8.png">
+<meta property="og:image" content="http://yoursite.com/9.png">
+<meta property="og:image" content="http://yoursite.com/10.png">
+<meta property="og:image" content="http://yoursite.com/11.png">
+<meta property="og:image" content="http://yoursite.com/12.png">
+<meta property="og:image" content="http://yoursite.com/13.png">
+<meta property="og:image" content="http://yoursite.com/14.png">
+<meta property="og:image" content="http://yoursite.com/15.png">
+<meta property="og:image" content="http://yoursite.com/16.png">
+<meta property="og:image" content="http://yoursite.com/18.png">
+<meta property="og:updated_time" content="2015-12-28T17:23:30.908Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="破解简单的C#软件 | Zke1ev3n's Blog">
+<meta name="twitter:description" content="在开发或者调试过程中，经常需要在多个窗口间来回切换查看信息，在操作上不仅麻烦，而且经常打开错误的窗口。所以我们希望能够在有限的屏幕里平铺多个窗口，这就需要能够分割屏幕的软件，而这类软件非常少，并且体验很不好。在尝试多款分屏软件后，我发现了一款叫MaxTo的软件能很好的解决我的问题，不过这款软件只能免费使用30天，而且价格还很贵。
+
+
+不过后来我发现这款软件是用C#写的，看来是款好捏的软柿子，所以我">
+<meta name="twitter:image" content="http://yoursite.com/1.png">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">Zke1ev3n&#39;s Blog</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">破解简单的C#软件</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2015-12-02" class="post-meta__date date">2015-12-02</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>在开发或者调试过程中，经常需要在多个窗口间来回切换查看信息，在操作上不仅麻烦，而且经常打开错误的窗口。所以我们希望能够在有限的屏幕里平铺多个窗口，这就需要能够分割屏幕的软件，而这类软件非常少，并且体验很不好。在尝试多款分屏软件后，我发现了一款叫MaxTo的软件能很好的解决我的问题，不过这款软件只能免费使用30天，而且价格还很贵。</p>
+<hr>
+<p><img src="1.png" alt=""><br><img src="2.png" alt=""></p>
+<p>不过后来我发现这款软件是用C#写的，看来是款好捏的软柿子，所以我试着来破解它。</p>
+<p>打开注册窗口，我们会发现不管怎么输入邮箱和序列号，注册按钮都无法点击，看来软件会检测邮箱和序列号的逻辑关系。<br><a id="more"></a><br><img src="3.png" alt=""></p>
+<p>用Reflector打开软件，找到注册窗口的代码。</p>
+<p><img src="4.png" alt=""></p>
+<p>要能够触发ButtonValidateClick()函数，我们必须突破灰色按钮，检测邮箱和序列号关系的代码在TextBoxSerialTextChanged()函数里，可以看到这里调用了一个check函数来验证邮箱和序列号，跟进去可以看到验证算法。<br><img src="5.png" alt=""></p>
+<p>不过这里我不想去分析算法，可以看到函数前面会验证邮箱和序列号是否为空，所以在这里我们可以直接返回true。</p>
+<p>用Reflexil修改IL代码，关于IL指令可以在这里查找。<br><a href="http://www.cnblogs.com/flyingbirds123/archive/2011/01/29/1947626.html" target="_blank" rel="external">http://www.cnblogs.com/flyingbirds123/archive/2011/01/29/1947626.html</a></p>
+<p>将下面的idc.i4.0改为idc.i4.1，然后保存即可。</p>
+<p><img src="6.png" alt=""></p>
+<p>再次打开我们就可以看到灰色按钮可以点击了，但是提示无法连接服务器，猜测还有一个网络验证的过程。<br><img src="7.png" alt=""><br><img src="8.png" alt=""></p>
+<p>打开ButtonValidateClick()函数可以看到，软件会将序列号和邮箱发送给this._licenseValidator.Validate()函数，然后验证returncode来判断注册信息。当返回200时即注册成功，当发生异常时则会提示无法连接服务器。</p>
+<p>那么关键的地方就是让程序的流程执行到case 200处，开始我尝试在异常捕获处直接修改程序流程，但是这样会引起堆栈不平衡，所以我们可以跟进Validate()函数，尝试修改网络返回的数据。</p>
+<p><img src="9.png" alt=""></p>
+<p><img src="10.png" alt=""></p>
+<p>可以看到程序会将注册信息以GET的方式提交到一个URI，然后将返回的数据保存在一个LicenseResult的对象中，那么这个URI到底是什么呢，这里不知道是不是Reflector的BUG，只能看到这个URI的定义，但是我用另一个反编译软件ILSpy看时，就能看到URI。</p>
+<p><img src="11.png" alt=""><br><img src="12.png" alt=""></p>
+<p>不过这里是https加密的，所以看到直接修改返回的数据是不行的，我们可以暴力一点修改Validate()函数的返回值。要修改返回数据，要先弄清LicenseResult这个对象。</p>
+<p><img src="13.png" alt=""></p>
+<p>前面我们已经知道只要将returncode的值修改为200就可以注册成功，所以我们要把其他的语句去掉，注意要保持堆栈平衡。修改完成后是这样的。<br><img src="14.png" alt=""><br><img src="15.png" alt=""></p>
+<p>保存运行一下，输入任意信息，可以看到已经破解成功。<br><img src="16.png" alt=""><br><img src="18.png" alt=""></p>
+
+  </section>
+
+  
+
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'zke1ev3nme'; 
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+  
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">Copyright &copy; 2014-2015 Zke1ev3n. All Rights Reserved</span>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-71084152-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>

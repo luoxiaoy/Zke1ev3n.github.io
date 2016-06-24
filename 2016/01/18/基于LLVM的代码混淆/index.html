@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      基于LLVM的代码混淆 | Zke1ev3n&#39;s Blog 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="Zke1ev3n">
+    
+    
+
+    <meta name="description" content="LLVMLLVM(low level virtual machine)是一个先进的编译器框架，它提供了一种代码编写良好的中间表示(IR)，可以作为多种语言的后端，还可以提供与变成语言无关的优化和针对多种cpu的代码生成功能。LLVM的主要架构如下：
+
+前端：前端用来获取源代码然后将它转变为某种中间表示，我们可以选择不同的编译器来作为LLVM的前端，如gcc，clang。
+Pass(通常翻译为“流程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于LLVM的代码混淆 | Zke1ev3n's Blog">
+<meta property="og:url" content="http://yoursite.com/2016/01/18/基于LLVM的代码混淆/index.html">
+<meta property="og:site_name" content="Zke1ev3n's Blog">
+<meta property="og:description" content="LLVMLLVM(low level virtual machine)是一个先进的编译器框架，它提供了一种代码编写良好的中间表示(IR)，可以作为多种语言的后端，还可以提供与变成语言无关的优化和针对多种cpu的代码生成功能。LLVM的主要架构如下：
+
+前端：前端用来获取源代码然后将它转变为某种中间表示，我们可以选择不同的编译器来作为LLVM的前端，如gcc，clang。
+Pass(通常翻译为“流程">
+<meta property="og:image" content="http://yoursite.com/1.png">
+<meta property="og:image" content="http://yoursite.com/2.png">
+<meta property="og:image" content="http://yoursite.com/3.PNG">
+<meta property="og:image" content="http://yoursite.com/4.PNG">
+<meta property="og:image" content="http://yoursite.com/5.PNG">
+<meta property="og:image" content="http://yoursite.com/6.PNG">
+<meta property="og:image" content="http://yoursite.com/7.PNG">
+<meta property="og:updated_time" content="2016-03-11T14:41:16.188Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于LLVM的代码混淆 | Zke1ev3n's Blog">
+<meta name="twitter:description" content="LLVMLLVM(low level virtual machine)是一个先进的编译器框架，它提供了一种代码编写良好的中间表示(IR)，可以作为多种语言的后端，还可以提供与变成语言无关的优化和针对多种cpu的代码生成功能。LLVM的主要架构如下：
+
+前端：前端用来获取源代码然后将它转变为某种中间表示，我们可以选择不同的编译器来作为LLVM的前端，如gcc，clang。
+Pass(通常翻译为“流程">
+<meta name="twitter:image" content="http://yoursite.com/1.png">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">Zke1ev3n&#39;s Blog</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">基于LLVM的代码混淆</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2016-01-18" class="post-meta__date date">2016-01-18</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <h3 id="LLVM"><a href="#LLVM" class="headerlink" title="LLVM"></a>LLVM</h3><p>LLVM(low level virtual machine)是一个先进的编译器框架，它提供了一种代码编写良好的中间表示(IR)，可以作为多种语言的后端，还可以提供与变成语言无关的优化和针对多种cpu的代码生成功能。<br>LLVM的主要架构如下：</p>
+<ul>
+<li>前端：前端用来获取源代码然后将它转变为某种中间表示，我们可以选择不同的编译器来作为LLVM的前端，如gcc，clang。</li>
+<li>Pass(通常翻译为“流程”)：Pass用来将程序的中间表示之间相互变换。一般情况下，Pass可以用来优化代码，这部分通常是我们关注的部分。</li>
+<li>后端：后端用来生成实际的机器码，一般情况下不会关注这一部分。</li>
+</ul>
+<a id="more"></a>
+<p>虽然如今大多数编译器都采用的是这种架构，但是LLVM不同的就是对于不同的语言它都提供了同一种中间表示，可以用下面的图片来说明。传统编译器的架构如下：</p>
+<p><img src="1.png" alt=""></p>
+<p>LLVM的架构如下图：</p>
+<p><img src="2.png" alt=""></p>
+<h4 id="llc和lli"><a href="#llc和lli" class="headerlink" title="llc和lli"></a>llc和lli</h4><p>llc和lli是LLVM中最重要的两个工具，llc用于将IR转换为特定平台的汇编代码，而使用lli我们可以直接执行LLVM IR。lli可以通过解释器或高级选项中的即时(JIT)编译器执行此工作。</p>
+<h4 id="安装和使用"><a href="#安装和使用" class="headerlink" title="安装和使用"></a>安装和使用</h4><p>在本文中我们主要使用clang来做为前端。首先迁出LLVM:<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> <span class="built_in">where</span>-you-want-llvm-to-live</span><br><span class="line">$ svn co http://llvm.org/svn/llvm-project/llvm/trunk llvm</span><br></pre></td></tr></table></figure></p>
+<p>然后迁出clang:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cd where-you-want-llvm-to-live</span><br><span class="line">$ cd llvm/tools</span><br><span class="line">$ svn co http://llvm.org/svn/llvm-project/cfe/trunk clang</span><br></pre></td></tr></table></figure></p>
+<p>迁出编译运行库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cd where-you-want-llvm-to-live</span><br><span class="line">$ cd llvm/projects</span><br><span class="line">$ svn co http://llvm.org/svn/llvm-project/compiler-rt/trunk compiler-rt</span><br></pre></td></tr></table></figure></p>
+<p>最后编译源码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir build</span><br><span class="line">$ cd build</span><br><span class="line">$ cmake -DCMAKE_BUILD_TYPE:String=Release ../llvm/</span><br><span class="line">$ make</span><br></pre></td></tr></table></figure></p>
+<p>make的时间可能有点长，多核的电脑可以使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$make -j2</span><br></pre></td></tr></table></figure></p>
+<p>编译，我单线程make花了大概2个小时。make完成后可以选择使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$sudo make install</span><br></pre></td></tr></table></figure></p>
+<p>来安装llvm。安装完成后就可以使用了，创建一个简单的源文件hello.c。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">int main()&#123;</span><br><span class="line">    printf(&quot;hello world\n&quot;);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>编译可执行文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$clang hello.c -o hello</span><br></pre></td></tr></table></figure></p>
+<p>生成LLVM字节码文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$clang -O3 -emit-llvm hello.c -c -o hello.bc</span><br></pre></td></tr></table></figure></p>
+<p>运行可执行文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$./hello</span><br><span class="line">$lli hello.bc</span><br></pre></td></tr></table></figure></p>
+<p>生成LLVM可视化字节码文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$clang -O3 -emit-llvm hello.c -S -o hello.ll</span><br></pre></td></tr></table></figure></p>
+<p>可以查看下hello.ll中的内容<br><img src="3.PNG" alt=""></p>
+<p>反编译字节码文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$llvm-dis &lt; hello.bc | less</span><br></pre></td></tr></table></figure></p>
+<p>编译字节码文件为汇编文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$llc test.bc -o test.s</span><br></pre></td></tr></table></figure></p>
+<p><img src="4.PNG" alt=""></p>
+<blockquote>
+<blockquote>
+<p>更详细的内容可以参考LLVM官方文档 <a href="http://llvm.org/docs/GettingStarted.html" target="_blank" rel="external">http://llvm.org/docs/GettingStarted.html</a></p>
+</blockquote>
+</blockquote>
+<h3 id="IR"><a href="#IR" class="headerlink" title="IR"></a>IR</h3><p>LLVM IR是LLVM的中间语言，LLVM与GCC相比更先进的一点就是它的中间语言非常的友好，具有很好的可读性。我们写一个简单的C程序来认识一下LLVM IR的基本语法。<br>test.cpp:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> c;</span><br><span class="line">	c = func(<span class="number">6</span>,<span class="number">9</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d\n"</span>,c);</span><br><span class="line">	<span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后使用下面的命令将源文件编译成可读的IR(.ll)文件。</p>
+<blockquote>
+<blockquote>
+<p>LLVM IR有三种形式，可读的文本形式(.ll)，硬盘上存储的二进制形式(.bc)，内存中的编译器检测和修改的形式。</p>
+</blockquote>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clang -emit-llvm test.cpp -S -o test.ll</span><br></pre></td></tr></table></figure>
+<p>最后生成的test.ll文件内容如下：<br><img src="5.PNG" alt=""><br>简单解释一下，LLVM IR的标识符有两种，以@开头的表示是全局标识符，以%开头的表示是局部标识符。i32表示32位的整型，也就是4个字节。alloca表示在栈上分配内存。align 4则是按4字节对齐。load和store看字面意思即可知道是装载和写入的意思。比如:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">store i32 1, i32* %a, align 4</span><br></pre></td></tr></table></figure></p>
+<p>表示将1写入到%a指向的地址中去。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%4 = add nsw i32 %2, %3</span><br></pre></td></tr></table></figure></p>
+<p>这条指令的意思表示将2号和3号寄存器中的两个32位整数相加，然后放到4号寄存器中。(LLVM类型很严格，而且每个参数前面都要先声明类型，所以看上去很啰嗦)<br>更多LLVM IR的语法可以参考官方文档。<a href="http://llvm.org/docs/LangRef.html" target="_blank" rel="external">http://llvm.org/docs/LangRef.html</a>。<br>另外LLVM提供了大量的api接口来生成IR，通过这些api，我们可以很方便的设计一门新的语言。感兴趣的可以查询一些编译器相关的内容，比如<a href="http://gnuu.org/2009/09/18/writing-your-own-toy-compiler" target="_blank" rel="external">http://gnuu.org/2009/09/18/writing-your-own-toy-compiler</a>。</p>
+<h3 id="Pass"><a href="#Pass" class="headerlink" title="Pass"></a>Pass</h3><p>Pass是LLVM中一个很重要的部分，每个Pass都是做优化或者转换的工作，LLVM的优化和转换工作就是由很多个Pass一起完成的。我们通过继承指定的类以及实现相关的虚函数来实现具体的Pass，具体的类型主要有以下几种：</p>
+<ul>
+<li><a href="http://llvm.org/docs/WritingAnLLVMPass.html#the-immutablepass-class" target="_blank" rel="external">ImmutablePass</a></li>
+<li><a href="http://llvm.org/docs/WritingAnLLVMPass.html#the-modulepass-class" target="_blank" rel="external">MoudlePass</a></li>
+<li><a href="http://llvm.org/docs/WritingAnLLVMPass.html#the-callgraphsccpass-class" target="_blank" rel="external">CallGraphSCCPass</a></li>
+<li><a href="http://llvm.org/docs/WritingAnLLVMPass.html#the-functionpass-class" target="_blank" rel="external">FuncationPass</a></li>
+<li><a href="http://llvm.org/docs/WritingAnLLVMPass.html#the-looppass-class" target="_blank" rel="external">LoopPass</a></li>
+<li><a href="http://llvm.org/docs/WritingAnLLVMPass.html#the-regionpass-class" target="_blank" rel="external">RegionPass</a></li>
+<li><a href="http://llvm.org/docs/WritingAnLLVMPass.html#the-basicblockpass-class" target="_blank" rel="external">BasicBlockPass</a></li>
+<li><a href="http://llvm.org/docs/WritingAnLLVMPass.html#the-machinefunctionpass-class" target="_blank" rel="external">MachineFunctionPass</a></li>
+</ul>
+<p>下面我们通过一个简单的示例来介绍一下Pass的编写。因为Pass的编写需要引用LLVM中的其他文件，所以Pass一般分为源码环境内和源码环境外。在源码环境内我们需要在llvm src/lib/Transforms/目录下编写我们的Pass，事实上在这个目录里已经有一个叫Hello的Pass，我们可以直接参考它的写法。不过这里我们主要研究下源码环境外的Pass编写，首先确保你的机器上在编译LLVM后已经使用make install安装LLVM。我们可以从<a href="https://github.com/sampsyo/llvm-pass-skeleton" target="_blank" rel="external">llvm-pass-skeleton</a>下载一个Pass模板，然后按照README.md中的提示编译运行。这是一个非常简单的Pass，它只做了一件事，就是在编译程序的时候打印函数名，主要逻辑都在skeleton.cpp中。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">runOnFunction</span><span class="params">(Function &amp;F)</span> </span>&#123;</span><br><span class="line">     errs() &lt;&lt; <span class="string">"I saw a function called "</span> &lt;&lt; F.getName() &lt;&lt; <span class="string">"!\n"</span>;</span><br><span class="line">     <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后我们使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$clang -Xclang -load -Xclang build/skeleton/libSkeletonPass.* something.c</span><br></pre></td></tr></table></figure></p>
+<p>来运行这个Pass。这里有一点不同的是使用Pass的方式，官方文档中我们运行一个Pass是使用这样的命令:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$opt -load ../../Debug+Asserts/lib/Hello.so -hello &lt; hello.bc &gt; /dev/null</span><br></pre></td></tr></table></figure></p>
+<p>这里的-hello是我们在编写Pass时注册的选项，比如LLVM自带的Hello Pass里是这样写的：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> RegisterPass&lt;Hello&gt; X(<span class="string">"hello"</span>, <span class="string">"Hello World Pass"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>但是在skeleton这个项目中，我们看到代码有一点不一样。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">registerSkeletonPass</span><span class="params">(<span class="keyword">const</span> PassManagerBuilder &amp;,</span><br><span class="line">                         legacy::PassManagerBase &amp;PM)</span> </span>&#123;</span><br><span class="line">  PM.add(<span class="keyword">new</span> SkeletonPass());</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> RegisterStandardPasses</span><br><span class="line">  <span class="title">RegisterMyPass</span><span class="params">(PassManagerBuilder::EP_EarlyAsPossible,</span><br><span class="line">                 registerSkeletonPass)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>事实上代码中的注释也写清楚了，这样的写法是自动运行这个Pass，详细的说明可以参考<a href="http://adriansampson.net/blog/clangpass.html" target="_blank" rel="external">http://adriansampson.net/blog/clangpass.html</a>。这里只是简单的介绍了Pass的写法，关于Pass更多的内容，可以参考下面的源码：</p>
+<ul>
+<li><a href="http://llvm.org/docs/doxygen/html/PAss_8h_source.html" target="_blank" rel="external">Pass.h</a></li>
+<li><a href="http://llvm.org/docs/doxygen/html/Pass_8cpp_source.html" target="_blank" rel="external">Pass.cpp</a></li>
+<li><a href="http://llvm.org/docs/doxygen/html/PassSupport_8h_source.html" target="_blank" rel="external">PassSupport.h</a></li>
+<li><a href="http://llvm.org/docs/doxygen/html/PassSupport_8h_source.html" target="_blank" rel="external">PassAnalysisSupport.h</a></li>
+</ul>
+<h3 id="与NDK整合"><a href="#与NDK整合" class="headerlink" title="与NDK整合"></a>与NDK整合</h3><p>最近在研究<a href="https://github.com/obfuscator-llvm" target="_blank" rel="external">obfuscator-llvm</a>这个项目，我发现它将自己写的将pass整合进了llvm，所以我研究了下ollvm这个项目的代码，找到了它的实现方式。</p>
+<p>首先新建一个头文件。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$cd</span> llvm/include/llvm/Transforms</span><br><span class="line"><span class="variable">$mkdir</span> Obfusaction</span><br><span class="line"><span class="variable">$cd</span> Obfuscation</span><br><span class="line"><span class="variable">$vim</span> SimplePass.h</span><br></pre></td></tr></table></figure>
+<p>SimplePass.h的内容如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="string">"llvm/IR/Function.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="string">"llvm/Pass.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="string">"llvm/Support/raw_ostream.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="string">"llvm/IR/Intrinsics.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="string">"llvm/IR/Instructions.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="string">"llvm/IR/LegacyPassManager.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="string">"llvm/Transforms/IPO/PassManagerBuilder.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Namespace</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> llvm &#123;</span><br><span class="line">	<span class="function">Pass *<span class="title">createSimplePass</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后在llvm/lib/Transforms这个目录新建一个文件夹，将我们的Pass放到这里。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$cd llvm/lib/Transforms</span><br><span class="line">$mkdir Obfuscation</span><br><span class="line">$cd Obfuscation</span><br><span class="line">$vim SimplePass.cpp</span><br><span class="line">$vim CMakeLists.txt</span><br><span class="line">$vim LLVMBuild.txt</span><br><span class="line">$vim Makefile</span><br></pre></td></tr></table></figure></p>
+<p>SimplePass.cpp的内容如下，这个Pass只做了一个简单的变换，就是将原程序中的add指令替换成了两个sub。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="string">"llvm/Transforms/Obfuscation/SimplePass.h"</span></span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> llvm;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> &#123;</span><br><span class="line">    <span class="keyword">struct</span> SimplePass : <span class="keyword">public</span> FunctionPass &#123;</span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">char</span> ID; <span class="comment">// Pass identification, replacement for typeid</span></span><br><span class="line">         </span><br><span class="line">        SimplePass() : FunctionPass(ID) &#123;&#125;</span><br><span class="line">	 </span><br><span class="line">        <span class="function"><span class="keyword">bool</span> <span class="title">runOnFunction</span><span class="params">(Function &amp;F)</span> override </span>&#123;</span><br><span class="line">            Function *tmp = &amp;F;</span><br><span class="line">            <span class="comment">// 遍历函数中的所有基本块</span></span><br><span class="line">            <span class="keyword">for</span> (Function::iterator bb = tmp-&gt;begin(); bb != tmp-&gt;end(); ++bb) &#123;</span><br><span class="line">                <span class="comment">// 遍历基本块中的每条指令</span></span><br><span class="line">                <span class="keyword">for</span> (BasicBlock::iterator inst = bb-&gt;begin(); inst != bb-&gt;end(); ++inst) &#123;</span><br><span class="line">                    <span class="comment">// 是否是add指令</span></span><br><span class="line">                    <span class="keyword">if</span> (inst-&gt;isBinaryOp()) &#123;</span><br><span class="line">                        <span class="keyword">if</span> (inst-&gt;getOpcode() == Instruction::Add) &#123;</span><br><span class="line">                            ob_add(cast&lt;BinaryOperator&gt;(inst));</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">             </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">         </span><br><span class="line">        <span class="comment">// a+b === a-(-b)</span></span><br><span class="line">        <span class="function"><span class="keyword">bool</span> <span class="title">ob_add</span><span class="params">(BinaryOperator *bo)</span> </span>&#123;</span><br><span class="line">            BinaryOperator *op = <span class="literal">NULL</span>;</span><br><span class="line">             </span><br><span class="line">            <span class="keyword">if</span> (bo-&gt;getOpcode() == Instruction::Add) &#123;</span><br><span class="line">                <span class="comment">// 生成 (－b)</span></span><br><span class="line">                op = BinaryOperator::CreateNeg(bo-&gt;getOperand(<span class="number">1</span>), <span class="string">""</span>, bo);</span><br><span class="line">                <span class="comment">// 生成 a-(-b)</span></span><br><span class="line">                op = BinaryOperator::Create(Instruction::Sub, bo-&gt;getOperand(<span class="number">0</span>), op, <span class="string">""</span>, bo);</span><br><span class="line">                 </span><br><span class="line">                op-&gt;setHasNoSignedWrap(bo-&gt;hasNoSignedWrap());</span><br><span class="line">                op-&gt;setHasNoUnsignedWrap(bo-&gt;hasNoUnsignedWrap());</span><br><span class="line">            &#125;</span><br><span class="line">             </span><br><span class="line">            <span class="comment">// 替换所有出现该指令的地方</span></span><br><span class="line">            bo-&gt;replaceAllUsesWith(op);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> SimplePass::ID = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">static</span> RegisterPass&lt;SimplePass&gt; X(<span class="string">"test"</span>, <span class="string">"simple pass"</span>);</span><br><span class="line">Pass *llvm::createSimplePass() &#123; <span class="keyword">return</span> <span class="keyword">new</span> SimplePass(); &#125;</span><br></pre></td></tr></table></figure></p>
+<p>Makefile中的内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">LEVEL = ../../..</span><br><span class="line">LIBRARYNAME = LLVMObfuscation</span><br><span class="line">#LOADABLE_MODULE = 1</span><br><span class="line">BUILD_ARCHIVE = 1</span><br><span class="line"></span><br><span class="line">include $(LEVEL)/Makefile.common</span><br></pre></td></tr></table></figure></p>
+<p>CMakeLists.txt中的内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">add_llvm_library(LLVMObfuscation</span><br><span class="line">  SimplePass.cpp</span><br><span class="line">  )</span><br><span class="line"></span><br><span class="line">add_dependencies(LLVMObfuscation intrinsics_gen)</span><br></pre></td></tr></table></figure></p>
+<p>LLVMBuild.txt中的内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[component_0]</span><br><span class="line">type = Library</span><br><span class="line">name = Obfuscation</span><br><span class="line">parent = Transforms</span><br><span class="line">library_name = Obfuscation</span><br></pre></td></tr></table></figure></p>
+<p>然后我们需要在llvm/lib/Transforms/IPO/PassManagerBuilder.cpp中添加以下代码，首先包含头文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;llvm/Transforms/Obfuscation/SimplePass.h&quot;</span><br></pre></td></tr></table></figure></p>
+<p>然后添加如下语句：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">static cl::opt&lt;bool&gt; SimplePass(&quot;simplepass&quot;, cl::init(false),</span><br><span class="line">                           cl::desc(&quot;Enable simple pass&quot;));</span><br></pre></td></tr></table></figure></p>
+<p>这段话就是显示在clang -mllvm -help中的选项。<br>然后在populateModulePassManager这个函数中添加以下代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MPM.add(createSimplePass());</span><br></pre></td></tr></table></figure></p>
+<p>最后在IPO这个目录的LLVMBuild.txt中添加库的支持，否则在编译的时候会提示链接错误。具体内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">required_libraries = Analysis Core InstCombine IRReader Linker Object ProfileData Scalar Support TransformUtils Vectorize Obfuscation</span><br></pre></td></tr></table></figure></p>
+<p>在Transforms目录下的CMakeLists.txt中添加如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add_subdirectory(Obfuscation)</span><br></pre></td></tr></table></figure></p>
+<p>以及LLVMBuild.txt中的subdirectories选项中也添加我们的Pass，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subdirectories = IPO InstCombine Instrumentation Scalar Utils Vectorize ObjCARC Obfuscation</span><br></pre></td></tr></table></figure></p>
+<p>添加完这些代码后我们就可以编译LLVM了。这样我们编译好的LLVM工具链中就已经包含了我们的Pass。下面我们要将这个工具链和NDK整合到一起方便我们混淆Android原生代码。具体步骤如下，首先到官网上下载最新的ndk开发工具，我这里最新版是android-ndk-r10e。首先进入到toolchains目录新建文件夹。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$cd android-ndk-r10e/toolchains/</span><br><span class="line">$mkdir obfuscator-llvm-3.9</span><br><span class="line">$cd obfuscator-llvm-3.9</span><br><span class="line">$mkdir prebuilt</span><br><span class="line">$cd prebuilt</span><br><span class="line">$mkdir linux-x86_64</span><br></pre></td></tr></table></figure></p>
+<p>将编译好的llvm工具链下的bin目录和lib目录复制到linux-x86_64目录下。然后将toolchains/llvm-3.6下的config.mk，setup.mk，setup-common.mk复制到obfuscator-llvm-3.9目录下。然后再在toolchains目录新建一个arm-linux-androideabi-clang3.9-obfuscator目录，将arm-linux-androideabi-clang3.6目录下的config.mk和setup.mk复制到arm-linux-androideabi-clang3.9-obfuscator目录下。然后编辑setup.mk中的内容，修改这两行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LLVM_VERSION := 3.9</span><br><span class="line">LLVM_NAME := obfuscator-llvm-$(LLVM_VERSION)</span><br></pre></td></tr></table></figure></p>
+<p>编译好后我们就测试下是否配置成功。首先在任意目录新建一个jni文件夹。然后将前面test.cpp拷贝到这里，新建一个Android.mk内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_PATH := $(call my-dir)</span><br><span class="line"></span><br><span class="line">include $(CLEAR_VARS)</span><br><span class="line"></span><br><span class="line">LOCAL_MODULE    := test</span><br><span class="line">LOCAL_SRC_FILES := test.cpp</span><br><span class="line">LOCAL_CFLAGS := -O0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">include $(BUILD_EXECUTABLE)</span><br></pre></td></tr></table></figure></p>
+<p>这里LOCAL_CFLAGS中的-O0是为了防止llvm的代码优化。再新建一个Application.mk，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">APP_MODULES := libtest</span><br><span class="line">APP_ABI := armeabi</span><br><span class="line">NDK_TOOLCHAIN_VERSION := clang3.9-obfuscator</span><br></pre></td></tr></table></figure></p>
+<p>这里的NDK_TOOLCHAIN_VERSION指定编译的工具链为我们刚刚配置的工具链。编写好这些文件或我们在jni文件夹中打开命令窗口，然后输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ndk-build</span><br></pre></td></tr></table></figure></p>
+<p>编译。(请确保已经将NDK路径配置进了环境变量)，我们找到libs目录下生成好的bin文件，用IDA打开，可以看到汇编指令如下：<br><img src="6.PNG" alt=""><br>现在我们再使用SimplePass来编译一次，修改Android.mk，添加如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_CFLAGS := -O0 -mllvm -simplepass</span><br></pre></td></tr></table></figure></p>
+<p>再看编译后的程序，可以看到指令已经被替换成功了。<br><img src="7.PNG" alt=""></p>
+<p>这里我们只是演示作用，所以这个pass的作用很简单，并没有起到真正的混淆作用，当然代码混淆是一种很复杂的技术，需要更深的研究才能实现，感兴趣的读者可以推荐阅读OLLVM这个项目的源代码，网上也有相关的论文，比如：<a href="http://www.cs.columbia.edu/~aho/cs4115_Spring-2013/lectures/13-05-16_Team11_Confuse_Paper.pdf" target="_blank" rel="external">LLVM-based Code Obfuscation</a>。</p>
+<p>参考文章：<br><a href="http://www.nagain.com/activity/article/14/" target="_blank" rel="external">http://www.nagain.com/activity/article/14/</a><br><a href="http://fuzion24.github.io/android/obfuscation/ndk/llvm/o-llvm/2014/07/27/android-obfuscation-o-llvm-ndk/" target="_blank" rel="external">http://fuzion24.github.io/android/obfuscation/ndk/llvm/o-llvm/2014/07/27/android-obfuscation-o-llvm-ndk/</a><br><a href="http://blog.quarkslab.com/turning-regular-code-into-atrocities-with-llvm.html" target="_blank" rel="external">http://blog.quarkslab.com/turning-regular-code-into-atrocities-with-llvm.html</a><br><a href="http://adriansampson.net/blog/llvm.html" target="_blank" rel="external">http://adriansampson.net/blog/llvm.html</a></p>
+
+  </section>
+
+  
+
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'zke1ev3nme'; 
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+  
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">Copyright &copy; 2014-2015 Zke1ev3n. All Rights Reserved</span>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-71084152-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>

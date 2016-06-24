@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      Android So简单加固 | Zke1ev3n&#39;s Blog 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="Zke1ev3n">
+    
+    
+
+    <meta name="description" content="Android下的dex加固技术从最初爱加密实现的dex整体内存加载，到目前各大厂商都在研究的代码虚拟化技术，整体技术已经很成熟了。但是因为Android系统开源的特性，这种加固方法的安全性并不高，只要修改源码中dex加载的部分，就可以dump出隐藏的dex，根据这一原理目前也已经有多个Android通用脱壳机。既然dex保不住，那么就可以将安全要求较高的代码写到native层，现在加固厂商已基本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android So简单加固 | Zke1ev3n's Blog">
+<meta property="og:url" content="http://yoursite.com/2015/12/27/Android-So简单加固/index.html">
+<meta property="og:site_name" content="Zke1ev3n's Blog">
+<meta property="og:description" content="Android下的dex加固技术从最初爱加密实现的dex整体内存加载，到目前各大厂商都在研究的代码虚拟化技术，整体技术已经很成熟了。但是因为Android系统开源的特性，这种加固方法的安全性并不高，只要修改源码中dex加载的部分，就可以dump出隐藏的dex，根据这一原理目前也已经有多个Android通用脱壳机。既然dex保不住，那么就可以将安全要求较高的代码写到native层，现在加固厂商已基本">
+<meta property="og:image" content="http://yoursite.com/1.PNG">
+<meta property="og:image" content="http://yoursite.com/2.PNG">
+<meta property="og:image" content="http://yoursite.com/3.PNG">
+<meta property="og:image" content="http://yoursite.com/4.PNG">
+<meta property="og:image" content="http://yoursite.com/5.PNG">
+<meta property="og:image" content="http://yoursite.com/6.PNG">
+<meta property="og:image" content="http://yoursite.com/7.PNG">
+<meta property="og:image" content="http://yoursite.com/10.PNG">
+<meta property="og:image" content="http://yoursite.com/8.PNG">
+<meta property="og:image" content="http://yoursite.com/9.PNG">
+<meta property="og:image" content="http://yoursite.com/11.PNG">
+<meta property="og:image" content="http://yoursite.com/12.PNG">
+<meta property="og:image" content="http://yoursite.com/13.PNG">
+<meta property="og:image" content="http://yoursite.com/14.PNG">
+<meta property="og:image" content="http://yoursite.com/15.PNG">
+<meta property="og:image" content="http://yoursite.com/16.PNG">
+<meta property="og:image" content="http://yoursite.com/17.PNG">
+<meta property="og:image" content="http://yoursite.com/18.PNG">
+<meta property="og:updated_time" content="2016-01-22T18:38:20.474Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android So简单加固 | Zke1ev3n's Blog">
+<meta name="twitter:description" content="Android下的dex加固技术从最初爱加密实现的dex整体内存加载，到目前各大厂商都在研究的代码虚拟化技术，整体技术已经很成熟了。但是因为Android系统开源的特性，这种加固方法的安全性并不高，只要修改源码中dex加载的部分，就可以dump出隐藏的dex，根据这一原理目前也已经有多个Android通用脱壳机。既然dex保不住，那么就可以将安全要求较高的代码写到native层，现在加固厂商已基本">
+<meta name="twitter:image" content="http://yoursite.com/1.PNG">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">Zke1ev3n&#39;s Blog</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">Android So简单加固</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2015-12-27" class="post-meta__date date">2015-12-27</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>Android下的dex加固技术从最初爱加密实现的dex整体内存加载，到目前各大厂商都在研究的代码虚拟化技术，整体技术已经很成熟了。但是因为Android系统开源的特性，这种加固方法的安全性并不高，只要修改源码中dex加载的部分，就可以dump出隐藏的dex，根据这一原理目前也已经有多个Android通用脱壳机。既然dex保不住，那么就可以将安全要求较高的代码写到native层，现在加固厂商已基本都提供了对so的加固。针对so的加固有很多种方案，通常也都是混合使用。比较高级的做法是针对Android下的so加载器linker做的加固，从编译器层做混淆，甚至VMP等。本文主要一些简单的加固方法，比如针对段和函数的加密等。使用的方法来源于<a href="http://bbs.pediy.com/showthread.php?t=191649" target="_blank" rel="external">http://bbs.pediy.com/showthread.php?t=191649</a>。</p>
+<a id="more"></a>
+<h3 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h3><p>在前面分析ELF时我们已经知道ELF文件有两种视图，在ELF被加载进内存中后，系统会通过program header table解析ELF。Android下的so加载器linker在加载so时使用的是so的执行视图，所以与section相关的成员在加载的时候并没有用处，而对于一些反编译器如IDA在解析ELF时却需要这些信息，这意味着我们可以通过修改section中的成员来对IDA等反编译器做Anti，事实上这种做法已经很常见了，各大厂商的so加固后直接拖到IDA中基本都会报一堆错的。像下面这样：<br><img src="1.PNG" alt=""><br>这个提示表示节区头部表的大小错误。其实实现这样的anti很简单，我们用《使用AS中进行ndk开发》中的so，然后再次用到文件格式分析神器010editor，打开libdemo.so，并运行ELF模板，定位到e_shunm字段。可以看到现在是22个，我们将它修改成25。然后保存，然后用IDA打开，就可以看到上图中的错误了。这样修改后对so的运行是没有影响的。<br><img src="2.PNG" alt=""><br>下图表示了ELF在内存中的映射。<br><img src="3.PNG" alt=""></p>
+<h3 id="基于Section的有源码加密"><a href="#基于Section的有源码加密" class="headerlink" title="基于Section的有源码加密"></a>基于Section的有源码加密</h3><p>我们知道在ELF中我们可以在函数或变量声明前加上<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__attribute__((section(<span class="string">"xxxx"</span>)))    \\这里的xxxx替换成自定义section的名字</span><br></pre></td></tr></table></figure></p>
+<p>来将一个函数或者变量存放到指定的section中。然后我们可以再将自定义的section加密。具体流程如下：</p>
+<ul>
+<li>读取elf文件头，根据e_shoff定位到节区头部表 </li>
+<li>根据elf文件头中的e_shnum得到节区数量</li>
+<li>根据e_shoff和e_shnum读取节区头部表中的所有项</li>
+<li>通过elf文件头中的e_shstrndx项得到节表字符串表在节表中的索引，然后找到节表字符串表的偏移</li>
+<li>读取节表字符串表中的字符串将每一个节的名字保存起来</li>
+<li>比较每一个节的名字和自定义节的名字，如果匹配则通过shdr-&gt;sh_offest和shdr-&gt;sh_zie得到自定义节的内容，并保存到content中</li>
+<li>加密content</li>
+<li>将content写会到原so中</li>
+</ul>
+<p>看起来好像很复杂，事实上前5步在《ELF文件格式分析》最后的python脚本中已经完成了，我们只需要关注怎么加密以及怎么解密。为了简单，这里我们的加密算法使用异或算法，将加密section中的字节异或11。解密的话当然也可以按照原流程做，不过我们知道关于Section的字段是可以修改的，所以我们可以简化流程，将要加密的section的addr和length写入到这些字段中。这里我们将待加密的section的地址写入到ehdr-&gt;e_entry字段，将section的长度写入到e-&gt;sh_offset中。这样做还可使静态修复后的ELF无法运行。下面是加密的python代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">encryptContent</span><span class="params">(content)</span>:</span></span><br><span class="line">    encontent  = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> content:</span><br><span class="line">        encontent.append(chr(ord(i) ^ <span class="number">11</span>))</span><br><span class="line">    <span class="keyword">return</span> encontent</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">encryptSh</span><span class="params">(fd,e_hdr,sh_hdrs,sname)</span>:</span></span><br><span class="line">    sh_hdr = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> s <span class="keyword">in</span> sh_hdrs:</span><br><span class="line">        <span class="keyword">if</span> s[<span class="string">'sh_name'</span>] == sname:</span><br><span class="line">            sh_hdr = s</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    offset = sh_hdr[<span class="string">'sh_offset'</span>]</span><br><span class="line">    size = sh_hdr[<span class="string">'sh_size'</span>]</span><br><span class="line">    fd.seek(<span class="number">24</span>)</span><br><span class="line">    fd.write(struct.pack(<span class="string">"I"</span>,size))</span><br><span class="line">    fd.seek(<span class="number">32</span>)</span><br><span class="line">    fd.write(struct.pack(<span class="string">"I"</span>,offset))</span><br><span class="line">    fd.seek(offset)</span><br><span class="line">    content = fd.read(size)</span><br><span class="line">    encontent = encryptContent(content)</span><br><span class="line">    fd.seek(offset)</span><br><span class="line">    fd.write(<span class="string">""</span>.join(encontent))</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"encrypt complete!"</span></span><br></pre></td></tr></table></figure></p>
+<p>这里的加密算法很简单，仅仅是使用异或，当然在实际加固中需要使用强度更高的算法。加密之后，我们还需要在原so中增加解密代码，在运行时解密才能正常运行。首先声明一个解密函数，使用”<strong>attribute</strong>((constructor))”来将这个函数放到”.init_array”段。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void init_getString() __attribute__((constructor));</span><br></pre></td></tr></table></figure></p>
+<p>下面是完整代码：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init_getString</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">char</span> name[<span class="number">15</span>];</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> nblock;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> psize;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">long</span> base;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">long</span> text_addr;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> i;</span><br><span class="line">        Elf32_Ehdr *ehdr;</span><br><span class="line">        Elf32_Shdr *shdr;</span><br><span class="line"></span><br><span class="line">        base = getLibAddr();    <span class="comment">//得到"libdemo.so"在进程中的地址</span></span><br><span class="line"></span><br><span class="line">        ehdr = (Elf32_Ehdr *)base;</span><br><span class="line">        text_addr = ehdr-&gt;e_shoff + base;     <span class="comment">//得到待解密节的内存地址</span></span><br><span class="line"></span><br><span class="line">        __android_log_print(ANDROID_LOG_INFO, <span class="string">"JNITag"</span>, <span class="string">"base =  0x%lx"</span>, text_addr);</span><br><span class="line"></span><br><span class="line">        nblock = ehdr-&gt;e_entry;</span><br><span class="line">        psize  = ehdr-&gt;e_shoff / <span class="number">4096</span> + (ehdr-&gt;e_shoff % <span class="number">4096</span> == <span class="number">0</span> ? <span class="number">0</span> : <span class="number">1</span>);    <span class="comment">//得到待解密节占用的页的大小</span></span><br><span class="line"></span><br><span class="line">        __android_log_print(ANDROID_LOG_INFO, <span class="string">"JNITag"</span>, <span class="string">"psize =  0x%x"</span>, psize);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(mprotect((<span class="keyword">void</span> *)(text_addr / PAGE_SIZE * PAGE_SIZE), <span class="number">4096</span> * psize, PROT_READ | PROT_EXEC | PROT_WRITE) != <span class="number">0</span>)&#123;   <span class="comment">//mprotect修改权限是以页为单位的，所以这里必须将起始地址设置为PAGE_SIZE的整数倍</span></span><br><span class="line">                __android_log_print(ANDROID_LOG_INFO, <span class="string">"JNITag"</span>, <span class="string">"mem privilege change failed"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt; nblock; i++)&#123;</span><br><span class="line">                <span class="keyword">char</span> *addr = (<span class="keyword">char</span>*)(text_addr + i);</span><br><span class="line">                *addr = (*addr) ^ <span class="number">11</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(mprotect((<span class="keyword">void</span> *)(text_addr / PAGE_SIZE * PAGE_SIZE), <span class="number">4096</span> * psize, PROT_READ | PROT_EXEC) != <span class="number">0</span>)&#123;</span><br><span class="line">                __android_log_print(ANDROID_LOG_INFO, <span class="string">"JNITag"</span>, <span class="string">"mem privilege change failed"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        __android_log_print(ANDROID_LOG_INFO, <span class="string">"JNITag"</span>, <span class="string">"Decrypt success"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="title">getLibAddr</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">long</span> ret = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">char</span> name[] = <span class="string">"libdemo.so"</span>;</span><br><span class="line">        <span class="keyword">char</span> buf[<span class="number">4096</span>], *temp;</span><br><span class="line">        <span class="keyword">int</span> pid;</span><br><span class="line">        FILE *fp;</span><br><span class="line">        pid = getpid();</span><br><span class="line">        <span class="built_in">sprintf</span>(buf, <span class="string">"/proc/%d/maps"</span>, pid);</span><br><span class="line">        fp = fopen(buf, <span class="string">"r"</span>);</span><br><span class="line">        <span class="keyword">if</span>(fp == <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">                <span class="built_in">puts</span>(<span class="string">"open failed"</span>);</span><br><span class="line">                <span class="keyword">goto</span> _error;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(fgets(buf, <span class="keyword">sizeof</span>(buf), fp))&#123;</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">strstr</span>(buf, name))&#123;</span><br><span class="line">                        temp = strtok(buf, <span class="string">"-"</span>);</span><br><span class="line">                        ret = strtoul(temp, <span class="literal">NULL</span>, <span class="number">16</span>);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        _error:</span><br><span class="line">        fclose(fp);</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>编译后用python脚本加密，然后生成apk，可以看到运行效果。<br><img src="4.PNG" alt=""></p>
+<p>说明可以运行，下面我们来看下用IDA打开的效果。首先看未加密的so。<br><img src="5.PNG" alt=""></p>
+<p>加密后用IDA打开，可以看到IDA不能正确的解析节信息，并且代码已经被加密了。<br><img src="6.PNG" alt=""><br><img src="7.PNG" alt=""></p>
+<blockquote>
+<p>注意并不是所有节都可以被加密的。比如直接对.text加密，会把与crt有关的代码也加密。所以只能选择性的加密。</p>
+</blockquote>
+<h3 id="基于函数的有源码加密"><a href="#基于函数的有源码加密" class="headerlink" title="基于函数的有源码加密"></a>基于函数的有源码加密</h3><p>上一节中我们实现了对ELF中自定义节的加密。但是自定义节很容易被发现，更好的做法是对函数进行加密。既然是对函数加密，我们就需要找到函数的地址和大小。在上一节我们可以通过”.shstrtab”来找到每一个section的”sh_name”，而ELF文件头中就有”.shstrtab”在节表中的索引，所以我们很容易就可以找到它。但是我们不能这样去查找指定的函数名。<br>在ELF中，每个函数的结构描述放在.dynsym中，函数的名称放在.dynstr中，我们怎么去查找它们的对应关系呢？这需要另一个段叫”.hash”的节。这个节中有一个hash表，它的结构如下图：<br><img src="10.PNG" alt=""><br>bucket数组包含nbucket个项目，chain数组包含nchain个项目，下标都是从0开始。bucket和chain中都保存了符号表的索引。chain表项和符号表存在对应。符号表项的数目应该和nchain相等，所以符号表的索引也可以用来选取chain表项。哈希函数能够接受符号名并返回一个可以用来计算bucket的索引。如果哈希函数针对某个名字返回了数值x，则bucket[x%nbucket]给出了一个索引y，该索引可用于符号表，也可用于chain表。如果该符号表项不是所需要的，那么chain[y]则给出了具有相同哈希值的下一个符号表项。我们可以沿着chain链一直搜索，直到所选中的符号表项包含了所需要的符号，或者chain项中包含值STN_UNDEF。</p>
+<blockquote>
+<p>从名字可以看出.dynsym和.dynstr是和动态链接相关的符号表和字符串表。这个我们在《ELF文件格式分析》中的符号表和字符串表有什么不一样呢？.dynsym和.dynstr是用于动态链接的，它们的结构和..symtab和.strtab一样，但是内容是.symtab和.strtab中的一部分，就是和动态链接有关的一部分。而.symtab和.strtab在strip后会被去掉，ndk生成的so是经过strip的，未strip的so可以在/local/obj中找到。一般release版的elf文件都是经过strip的，因为不strip的elf中保存了很多debug信息是文件很容易被分析。</p>
+</blockquote>
+<p>我们来看符号表的结构：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Symbol table entry.  */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">  Elf32_Word	st_name;		<span class="comment">/* Symbol name (string tbl index) */</span></span><br><span class="line">  Elf32_Addr	st_value;		<span class="comment">/* Symbol value */</span></span><br><span class="line">  Elf32_Word	st_size;		<span class="comment">/* Symbol size */</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">char</span>	st_info;		<span class="comment">/* Symbol type and binding */</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">char</span>	st_other;		<span class="comment">/* Symbol visibility */</span></span><br><span class="line">  Elf32_Section	st_shndx;		<span class="comment">/* Section index */</span></span><br><span class="line">&#125; Elf32_Sym;</span><br></pre></td></tr></table></figure></p>
+<p>通过st_name就能找到我们需要的函数。<br>这里使用执行视图来实现加密和解密。需要注意的是如果用static声明加密函数，那么函数不会出现在”.dynsym”中，也无法在执行视图中通过函数名找到进行解密。当然也可以把函数的地址和大小写入到elf头部。这里我们要加密的是Java_com_example_zke1e_enfunc_MainActivity_getString这个函数，可以看到它是一个导出函数，所以肯定能在符号表中找到它。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">JNIEXPORT jstring JNICALL Java_com_example_zke1e_enfunc_MainActivity_getString</span><br><span class="line">        (JNIEnv *env, jobject)&#123;</span><br><span class="line">    return (*env).NewStringUTF(&quot;Hello JNI!&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们已经知道执行视图中的segment包含多个section，和section header table一样，segment也有一个头部表叫program header。它的定义如下(32位)：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Program segment header.  */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">  Elf32_Word	p_type;			<span class="comment">/* Segment type */</span></span><br><span class="line">  Elf32_Off	p_offset;		<span class="comment">/* Segment file offset */</span></span><br><span class="line">  Elf32_Addr	p_vaddr;		<span class="comment">/* Segment virtual address */</span></span><br><span class="line">  Elf32_Addr	p_paddr;		<span class="comment">/* Segment physical address */</span></span><br><span class="line">  Elf32_Word	p_filesz;		<span class="comment">/* Segment size in file */</span></span><br><span class="line">  Elf32_Word	p_memsz;		<span class="comment">/* Segment size in memory */</span></span><br><span class="line">  Elf32_Word	p_flags;		<span class="comment">/* Segment flags */</span></span><br><span class="line">  Elf32_Word	p_align;		<span class="comment">/* Segment alignment */</span></span><br><span class="line">&#125; Elf32_Phdr;</span><br></pre></td></tr></table></figure></p>
+<p>program header仅在可执行文件和共享目标文件中存在。在程序头部中e_phentsize和e_phnum成员描述了程序头部的大小和项数。program header的各个成员说明如下：</p>
+<ul>
+<li>p_type 此数组元素描述的段的类型，或者如何解释此数组元素的信息。</li>
+<li>p_offset 此成员给出从文件头到该段第一个字节的偏移。</li>
+<li>p_vaddr 此成员给出段的第一个字节将被放到内存中的虚拟地址。</li>
+<li>p_paddr 此成员仅用于与物理地址相关的系统中。因为 System V 忽略所有应用程序的物理地址信息，此字段对与可执行文件和共享目标文件而言具体内容是未指定的。</li>
+<li>p_filesz 此成员给出段在文件映像中所占的字节数。可以为0。</li>
+<li>p_memsz 此成员给出段在内存映像中占用的字节数。可以为0。</li>
+<li>p_flags 此成员给出与段相关的标志。</li>
+<li>p_align 可加载的进程段的 p_vaddr 和 p_offset 取值必须合适，相对于对页面大小的取模而言。此成员给出段在文件中和内存中如何对齐。数值 0 和 1 表示不需要对齐。否则 p_align 应该是个正整数，并且是 2 的幂次数，p_vaddr 和 p_offset 对 p_align 取模后应该相等。</li>
+</ul>
+<p>其中p_type的可选项如下表所示：<br><img src="8.PNG" alt=""></p>
+<p>当p_type为PT_LOAD时，就表示这是一个可以加载的段。不过这里我们要关注的是PT_DYNAMIC这个类型对应的段，从名字我们就可以看到这个段是和动态链接有关的，它表示了动态链接器(即INTERP段中指定的解释器)所需要的基本信息，包括依赖的共享对象，符号的位置和重定位信息等。这个段包含了.dynamic这个section，这个节的数据结构如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Dynamic section entry.  */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">  Elf32_Sword	d_tag;			<span class="comment">/* Dynamic entry type */</span></span><br><span class="line">  <span class="keyword">union</span></span><br><span class="line">    &#123;</span><br><span class="line">      Elf32_Word d_val;			<span class="comment">/* Integer value */</span></span><br><span class="line">      Elf32_Addr d_ptr;			<span class="comment">/* Address value */</span></span><br><span class="line">    &#125; d_un;</span><br><span class="line">&#125; Elf32_Dyn;</span><br></pre></td></tr></table></figure></p>
+<p>对于每个这种类型的结构，d_tag控制了d_un的解释含义：</p>
+<ul>
+<li>d_val 此 Elf32_Word 对象表示一个整数值，可以有多种解释。</li>
+<li>d_ptr 此 Elf32_Addr 对象代表程序的虚拟地址。如前所述，文件的虚拟地址可能与执行过程中的内存虚地址不匹配。在解释包含于动态结构中的地址时，动态链接程序基于原来文件值和内存基地址计算实际地址。为了保持一致性，文件中不包含用来“纠正”动态结构中重定位项地址的重定位项目。</li>
+</ul>
+<p>下面的表格总结了可执行文件和共享目标文件对标志的要求。如果标志被标记为“必需”，那么符合ABI规范的文件的动态链接数组必须包含一个该类型表项。“可选”意味着该标志可以出现，但不是必需的。<br><img src="9.PNG" alt=""></p>
+<ul>
+<li>没有出现在此表中的标记值是保留的。</li>
+<li>除了数组末尾的 DT_NULL 元素以及 DT_NEEDED 元素的相对顺序约束以外，其他项目可以以任意顺序出现。</li>
+</ul>
+<p>这个表格很长，通过上面的内容我们知道这里需要关注DT_SYMTAB，DT_HASH，DT_STRTAB，DT_STRSZ这几种类型的节。我们查看表，可以看到对于DT_SYMTAB，DT_HASH，DT_STRTAB这三种类型，d_ptr给出了它们对应的表的地址，对于DT_STRSZ，d_ptr给出了字符串表的大小。找到这几个表后，就可以找到我们想找到的函数了。再来梳理下具体的流程：</p>
+<ul>
+<li>读取文件头，获取e_phoff、e_phentsize 和e_phnum 信息</li>
+<li>通过Elf32_Phdr 中的p_type 字段，找到DYNAMIC(也就是.dynamic段)。从p_offset 和p_filesz 字段得到文件中的起始位置和长度</li>
+<li>遍历.dynamic，找到.dynsym、.dynstr、.hash section 文件中的偏移和.dynstr的大小。</li>
+<li><p>根据函数名称，计算hash 值。可以从bonic/linker.c中找到hash值得计算方法。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="title">elf_hash</span> <span class="params">(<span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *name)</span> </span>&#123;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> h = <span class="number">0</span>, g; <span class="keyword">while</span> (*name)</span><br><span class="line">&#123;</span><br><span class="line">	h=(h&lt;&lt;<span class="number">4</span>)+*name++; <span class="keyword">if</span> (g = h &amp; <span class="number">0xf0000000</span>)</span><br><span class="line">	h^=g&gt;&gt;<span class="number">24</span>; h&amp;=-g;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> h; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>根据hash 值，找到下标hash % nbuckets 的bucket；根据bucket 中的值，读取.dynsym 中的对应索引的Elf32_Sym 符号；从符号的st_name 所以找到在.dynstr 中对应的字符串与函数名进行比较。若不等，则根据chain[hash % nbuckets]找下一个Elf32_Sym 符号，直到找到或者chain 终止为止。</p>
+</li>
+<li>找到函数对应的Elf32_Sym 符号后，即可根据st_value 和st_size 字段找到函数的位置和大小。</li>
+<li>后面就是加密函数的内容了，和上节相同。<br>下面是具体实现的代码：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">dynamic_hdr = &#123;&#125;</span><br><span class="line">dyn_hash = &#123;&#125;</span><br><span class="line">dyn_strtab = &#123;&#125;</span><br><span class="line">dyn_symtab = &#123;&#125;</span><br><span class="line">dyn_strsz = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span> ph_hdr <span class="keyword">in</span> ph_hdrs:</span><br><span class="line">    <span class="keyword">if</span> ph_hdr[<span class="string">'p_type'</span>] == <span class="number">2</span>:</span><br><span class="line">        dynamic_hdr = ph_hdr</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">dynamic_offset = dynamic_hdr[<span class="string">'p_offset'</span>]</span><br><span class="line">dynamic_size = dynamic_hdr[<span class="string">'p_filesz'</span>]</span><br><span class="line">dynamic_entsize = <span class="number">8</span></span><br><span class="line">fd.seek(dynamic_offset)</span><br><span class="line">dynamic_num = dynamic_size / dynamic_entsize</span><br><span class="line">fields_dyn = [<span class="string">'d_tag'</span>,<span class="string">'value'</span>]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(dynamic_num):</span><br><span class="line">    data = fd.read(dynamic_entsize)</span><br><span class="line">    <span class="keyword">if</span> len(data) != dynamic_entsize:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"Read .dynamic information failed"</span></span><br><span class="line">        exit(<span class="number">0</span>)</span><br><span class="line">    dyn_hdr = dict(zip(fields_dyn,struct.unpack(<span class="string">'II'</span>,data)))</span><br><span class="line">    <span class="keyword">if</span> dyn_hdr[<span class="string">'d_tag'</span>] == <span class="number">4</span>:</span><br><span class="line">        dyn_hash = dyn_hdr</span><br><span class="line">    <span class="keyword">elif</span> dyn_hdr[<span class="string">'d_tag'</span>] == <span class="number">5</span>:</span><br><span class="line">        dyn_strtab = dyn_hdr</span><br><span class="line">    <span class="keyword">elif</span> dyn_hdr[<span class="string">'d_tag'</span>] == <span class="number">6</span>:</span><br><span class="line">        dyn_symtab = dyn_hdr</span><br><span class="line">    <span class="keyword">elif</span> dyn_hdr[<span class="string">'d_tag'</span>] == <span class="number">10</span>:</span><br><span class="line">        dyn_strsz = dyn_hdr</span><br><span class="line">fd.seek(dyn_strtab[<span class="string">'value'</span>])</span><br><span class="line">strtab = fd.read(dyn_strsz[<span class="string">'value'</span>])</span><br><span class="line">fhash = elfhash(fname)</span><br><span class="line">fd.seek(dyn_hash[<span class="string">'value'</span>])</span><br><span class="line">nbucket = struct.unpack(<span class="string">'I'</span>,fd.read(<span class="number">4</span>))[<span class="number">0</span>]</span><br><span class="line">nchain = struct.unpack(<span class="string">'I'</span>,fd.read(<span class="number">4</span>))[<span class="number">0</span>]</span><br><span class="line">fhash = fhash % nbucket</span><br><span class="line">fd.seek(fhash * <span class="number">4</span>,<span class="number">1</span>)</span><br><span class="line">findex = struct.unpack(<span class="string">'I'</span>,fd.read(<span class="number">4</span>))[<span class="number">0</span>]</span><br><span class="line">symtab_entsize = <span class="number">16</span></span><br><span class="line">fd.seek(dyn_symtab[<span class="string">'value'</span>] + findex * symtab_entsize)</span><br><span class="line">fields_sym = [<span class="string">'st_name'</span>,<span class="string">'st_value'</span>,<span class="string">'st_size'</span>,<span class="string">'st_info'</span>,<span class="string">'st_other'</span>,<span class="string">'st_shndx'</span>]</span><br><span class="line">data = fd.read(symtab_entsize)</span><br><span class="line">fsym = dict(zip(fields_sym,struct.unpack(<span class="string">'IIIcch'</span>,data)))</span><br><span class="line"><span class="keyword">if</span> strtab[fsym[<span class="string">'st_name'</span>]:].split(<span class="string">'\0'</span>)[<span class="number">0</span>] != fname:</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        fd.seek(dyn_hash[<span class="string">'value'</span>] + <span class="number">4</span> * (<span class="number">2</span> + nbucket + findex))</span><br><span class="line">        findex = struct.unpack(<span class="string">'I'</span>,fd.read(<span class="number">4</span>))[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> findex == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"Cannot find function"</span></span><br><span class="line">            exit(<span class="number">0</span>)</span><br><span class="line">        fd.seek(dyn_symtab[<span class="string">'value'</span>] + findex * symtab_entsize)</span><br><span class="line">        data = fd.read(symtab_entsize)</span><br><span class="line">        fsym = dict(zip(fields_sym,struct.unpack(<span class="string">'IIIcch'</span>,data)))</span><br><span class="line">        <span class="keyword">if</span> strtab[fsym[<span class="string">'st_name'</span>]:].split(<span class="string">'\0'</span>)[<span class="number">0</span>] == fname:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"><span class="keyword">print</span> fsym[<span class="string">'st_value'</span>]</span><br><span class="line"><span class="keyword">print</span> fsym[<span class="string">'st_size'</span>]</span><br><span class="line">fd.seek(fsym[<span class="string">'st_value'</span>] - <span class="number">1</span>)</span><br><span class="line">content = fd.read(fsym[<span class="string">'st_size'</span>] - <span class="number">1</span>)</span><br><span class="line">encontent = encryptContent(content)</span><br><span class="line">fd.seek(fsym[<span class="string">'st_value'</span>] - <span class="number">1</span>)</span><br><span class="line">fd.write(<span class="string">""</span>.join(encontent))</span><br><span class="line"><span class="keyword">print</span> <span class="string">"complete!"</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>我们先来看看未加密的so，用IDA打开查看Java_com_example_zke1e_enfunc_MainActivity_getString函数：<br><img src="11.PNG" alt=""><br>然后使用py脚本加密，然后再打开，可以看到加密成功。<br><img src="12.PNG" alt=""><br>当然我们还需要在so中加入解密的代码才能运行。解密的流程和加密大致相同。这里就不展开叙述了。具体实现可以看代码。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">char</span> <span class="title">getTargetFuncInfo</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">long</span> base, <span class="keyword">const</span> <span class="keyword">char</span> *funcName, funcInfo *info)</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> flag = <span class="number">-1</span>, *dynstr;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    Elf32_Ehdr *ehdr;</span><br><span class="line">    Elf32_Phdr *phdr;</span><br><span class="line">    Elf32_Off dyn_vaddr;</span><br><span class="line">    Elf32_Word dyn_size, dyn_strsz;</span><br><span class="line">    Elf32_Dyn *dyn;</span><br><span class="line">    Elf32_Addr dyn_symtab, dyn_strtab, dyn_hash;</span><br><span class="line">    Elf32_Sym *funSym;</span><br><span class="line">    <span class="keyword">unsigned</span> funHash, nbucket;</span><br><span class="line">    <span class="keyword">unsigned</span> *bucket, *chain;</span><br><span class="line"></span><br><span class="line">    ehdr = (Elf32_Ehdr *)base;</span><br><span class="line">    phdr = (Elf32_Phdr *)(base + ehdr-&gt;e_phoff);</span><br><span class="line"><span class="comment">//    __android_log_print(ANDROID_LOG_INFO, "JNITag", "phdr =  0x%p, size = 0x%x\n", phdr, ehdr-&gt;e_phnum);</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; ehdr-&gt;e_phnum; ++i) &#123;</span><br><span class="line"><span class="comment">//		__android_log_print(ANDROID_LOG_INFO, "JNITag", "phdr =  0x%p\n", phdr);</span></span><br><span class="line">        <span class="keyword">if</span>(phdr-&gt;p_type ==  PT_DYNAMIC)&#123;</span><br><span class="line">            flag = <span class="number">0</span>;</span><br><span class="line">            print_debug(<span class="string">"Find .dynamic segment"</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        phdr ++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(flag)</span><br><span class="line">        <span class="keyword">goto</span> _error;</span><br><span class="line">    dyn_vaddr = phdr-&gt;p_vaddr + base;</span><br><span class="line">    dyn_size = phdr-&gt;p_filesz;</span><br><span class="line">    __android_log_print(ANDROID_LOG_INFO, <span class="string">"JNITag"</span>, <span class="string">"dyn_vadd =  0x%x, dyn_size =  0x%x"</span>, dyn_vaddr, dyn_size);</span><br><span class="line">    flag = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; dyn_size / <span class="keyword">sizeof</span>(Elf32_Dyn); ++i) &#123;</span><br><span class="line">        dyn = (Elf32_Dyn *)(dyn_vaddr + i * <span class="keyword">sizeof</span>(Elf32_Dyn));</span><br><span class="line">        <span class="keyword">if</span>(dyn-&gt;d_tag == DT_SYMTAB)&#123;</span><br><span class="line">            dyn_symtab = (dyn-&gt;d_un).d_ptr;</span><br><span class="line">            flag += <span class="number">1</span>;</span><br><span class="line">            __android_log_print(ANDROID_LOG_INFO, <span class="string">"JNITag"</span>, <span class="string">"Find .dynsym section, addr = 0x%x\n"</span>, dyn_symtab);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(dyn-&gt;d_tag == DT_HASH)&#123;</span><br><span class="line">            dyn_hash = (dyn-&gt;d_un).d_ptr;</span><br><span class="line">            flag += <span class="number">2</span>;</span><br><span class="line">            __android_log_print(ANDROID_LOG_INFO, <span class="string">"JNITag"</span>, <span class="string">"Find .hash section, addr = 0x%x\n"</span>, dyn_hash);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(dyn-&gt;d_tag == DT_STRTAB)&#123;</span><br><span class="line">            dyn_strtab = (dyn-&gt;d_un).d_ptr;</span><br><span class="line">            flag += <span class="number">4</span>;</span><br><span class="line">            __android_log_print(ANDROID_LOG_INFO, <span class="string">"JNITag"</span>, <span class="string">"Find .dynstr section, addr = 0x%x\n"</span>, dyn_strtab);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(dyn-&gt;d_tag == DT_STRSZ)&#123;</span><br><span class="line">            dyn_strsz = (dyn-&gt;d_un).d_val;</span><br><span class="line">            flag += <span class="number">8</span>;</span><br><span class="line">            __android_log_print(ANDROID_LOG_INFO, <span class="string">"JNITag"</span>, <span class="string">"Find strsz size = 0x%x\n"</span>, dyn_strsz);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>((flag &amp; <span class="number">0x0f</span>) != <span class="number">0x0f</span>)&#123;</span><br><span class="line">        print_debug(<span class="string">"Find needed .section failed\n"</span>);</span><br><span class="line">        <span class="keyword">goto</span> _error;</span><br><span class="line">    &#125;</span><br><span class="line">    dyn_symtab += base;</span><br><span class="line">    dyn_hash += base;</span><br><span class="line">    dyn_strtab += base;</span><br><span class="line">    dyn_strsz += base;</span><br><span class="line"></span><br><span class="line">    funHash = elfhash(funcName);</span><br><span class="line">    funSym = (Elf32_Sym *) dyn_symtab;</span><br><span class="line">    dynstr = (<span class="keyword">char</span>*) dyn_strtab;</span><br><span class="line">    nbucket = *((<span class="keyword">int</span> *) dyn_hash);</span><br><span class="line">    bucket = (<span class="keyword">unsigned</span> <span class="keyword">int</span> *)(dyn_hash + <span class="number">8</span>);</span><br><span class="line">    chain = (<span class="keyword">unsigned</span> <span class="keyword">int</span> *)(dyn_hash + <span class="number">4</span> * (<span class="number">2</span> + nbucket));</span><br><span class="line"></span><br><span class="line">    flag = <span class="number">-1</span>;</span><br><span class="line">    __android_log_print(ANDROID_LOG_INFO, <span class="string">"JNITag"</span>, <span class="string">"hash = 0x%x, nbucket = 0x%x\n"</span>, funHash, nbucket);</span><br><span class="line">    <span class="keyword">for</span>(i = bucket[funHash % nbucket]; i != <span class="number">0</span>; i = chain[i])&#123;</span><br><span class="line">        __android_log_print(ANDROID_LOG_INFO, <span class="string">"JNITag"</span>, <span class="string">"Find index = %d\n"</span>, i);</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">strcmp</span>(dynstr + (funSym + i)-&gt;st_name, funcName) == <span class="number">0</span>)&#123;</span><br><span class="line">            flag = <span class="number">0</span>;</span><br><span class="line">            __android_log_print(ANDROID_LOG_INFO, <span class="string">"JNITag"</span>, <span class="string">"Find %s\n"</span>, funcName);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(flag) <span class="keyword">goto</span> _error;</span><br><span class="line">    info-&gt;st_value = (funSym + i)-&gt;st_value;</span><br><span class="line">    info-&gt;st_size = (funSym + i)-&gt;st_size;</span><br><span class="line">    __android_log_print(ANDROID_LOG_INFO, <span class="string">"JNITag"</span>, <span class="string">"st_value = %d, st_size = %d"</span>, info-&gt;st_value, info-&gt;st_size);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    _error:</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行效果如下：<br><img src="13.PNG" alt=""></p>
+<h3 id="UPX加壳"><a href="#UPX加壳" class="headerlink" title="UPX加壳"></a>UPX加壳</h3><p>最后讲讲使用UPX给so加壳，爱加密就是通过UPX给so加壳，然后将so中的”UPX”字符串修改成AJM。首先需要下载编译UPX的源码。<br>upx3.92的源代码地址：<a href="https://www.pysol.org:4443/hg/upx.hg/tags" target="_blank" rel="external">https://www.pysol.org:4443/hg/upx.hg/tags</a><br>upx3.92版修复了upx加固android下的so运行的问题。但是upx官方的版本是3.91，加固so会有问题。所以需要自己下载源码编译。详情可以看下面这篇帖子：<br><a href="http://sourceforge.net/p/upx/bugs/223/?page=0" target="_blank" rel="external">http://sourceforge.net/p/upx/bugs/223/?page=0</a></p>
+<p>下载好源码后还需要下载一些依赖库，具体如下：<br>LZMA4.43：<a href="http://nchc.dl.sourceforge.net/project/sevenzip/LZMA%20SDK/4.43/lzma443.tar.bz2" target="_blank" rel="external">http://nchc.dl.sourceforge.net/project/sevenzip/LZMA%20SDK/4.43/lzma443.tar.bz2</a><br>UCL1.03：<a href="http://www.oberhumer.com/opensource/ucl/download/ucl-1.03.tar.gz" target="_blank" rel="external">http://www.oberhumer.com/opensource/ucl/download/ucl-1.03.tar.gz)</a><br>ZLIB1.2.3：<a href="http://pkgs.fedoraproject.org/repo/pkgs/zlib/zlib-1.2.3.tar.gz/debc62758716a169df9f62e6ab2bc634/zlib-1.2.3.tar.gz" target="_blank" rel="external">http://pkgs.fedoraproject.org/repo/pkgs/zlib/zlib-1.2.3.tar.gz/debc62758716a169df9f62e6ab2bc634/zlib-1.2.3.tar.gz
+</a></p>
+<p>将这几个包都放到在一起后解压。然后编译zlib，将生成的lib放到/usr/lib64目录下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd zlib-1.2.3</span><br><span class="line">make</span><br><span class="line">cp libz.a /usr/lib</span><br></pre></td></tr></table></figure></p>
+<p>进入upx目录编译。编译过程中可能会出现下面这样的错误。<br><img src="14.PNG" alt=""></p>
+<blockquote>
+<p>可能还会遇到和ucl相关的错误，我的做法是进ucl目录编译一次 然后将生成的libucl.a也放到/usr/lib64目录下</p>
+</blockquote>
+<p>进入upx-hg-d9e7cb4b5485/src/目录，编辑Makefile，注释掉一这句话就可以了。</p>
+<p><img src="15.PNG" alt=""><br>然后下面的命令编译。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CXX=g++ UPX_UCLDIR=~/UPX/ucl-1.03 UPX_LZMADIR=~/UPX/lzma443 UPX_LZMA_VERSION=0x443  make all</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>这里”~/UPX/“替换成自己的目录</p>
+</blockquote>
+<p>如果没有出错，就会在src目录生成一个upx.out文件。将这个文件拷贝出来，然后对我们的so加固。但是需要注意的是，upx对压缩的文件的大小有限制，好像小于10kb就不能压缩，会提示”NotCompressibleException”，另外还需要加壳的文件中有INIT段，否则会提示”UnknownExecutableFormatException”。添加init段的代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">void _init(void)&#123;&#125; \\c++</span><br><span class="line">extern &quot;C&quot; &#123;void _init(void)&#123;&#125;&#125;    \\c</span><br></pre></td></tr></table></figure></p>
+<p>准备就绪后就可以使用upx.out压缩了，命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./upx.out -o libdemo_upx.so libdemo.so</span><br></pre></td></tr></table></figure></p>
+<p><img src="16.PNG" alt=""><br>我们使用IDA打开加壳后的so，可以发现已经隐藏了原来的代码了。<br><img src="17.PNG" alt=""></p>
+<p>将加壳后的so放到libs目录替换原so，然后生成apk就可以了。不过这里我加壳后的so无法运行会报这样的错：<br><img src="18.PNG" alt=""><br>但是给可执行文件加壳是可以运行的，如果有知道的朋友还请告知原因。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>针对段和函数的加密，虽说能有效的防止静态分析，但是如果动态分析就基本没有用了，上面说了这几种方法，一条dd命令就可以还原出解密后的so了。当然更有效的做法是对调用关键函数前解密，调用后再次加密。但是也可以将断点设置在调用函数的过程中dump内存来获取解密的so，所以又要涉及到anti-debug的手段了。当然了，没有绝对安全的系统，再大强度的加固也只是为了提高破解的成本，而加固和破解技术也在不断的攻于防中进化。</p>
+
+  </section>
+
+  
+
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'zke1ev3nme'; 
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+  
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">Copyright &copy; 2014-2015 Zke1ev3n. All Rights Reserved</span>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-71084152-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>

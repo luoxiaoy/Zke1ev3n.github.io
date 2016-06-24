@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      page 2 | Zke1ev3n&#39;s Blog 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="Zke1ev3n">
+    
+    
+      <meta name="description" content="Talk is cheep,show me the code.">
+    
+
+    <meta name="description" content="Talk is cheep,show me the code.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="page 2 | Zke1ev3n's Blog">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
+<meta property="og:site_name" content="Zke1ev3n's Blog">
+<meta property="og:description" content="Talk is cheep,show me the code.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="page 2 | Zke1ev3n's Blog">
+<meta name="twitter:description" content="Talk is cheep,show me the code.">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+ 
+<header class="panel-cover">
+
+
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">Zke1ev3n&#39;s Blog</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+
+   <!-- do nothing -->
+
+
+<div class="main-post-list">
+    <ol class="post-list">
+    
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
+        <a href="/2016/04/06/WiFi万能钥匙接口协议破解/" title="link to WiFi万能钥匙接口协议破解">WiFi万能钥匙接口协议破解</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2016-04-06" class="post-list__meta--date date">2016-04-06</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>在上篇文章中我已经使用CodeInspect对WiFi万能钥匙进行了演示分析，在大概分析了下它的代码后，我发现这款APP并没有做什么加固措施，导致接口很容易就可以被分析出来。事实上在去年网上就有针对WiFi万能钥匙接口协议的分析，在经过多次版本迭代后，新版的Wifi万能钥匙在安全性上似乎并没有太大的提升，虽然接口有一些变化，但是核心的加密算法却没有改变并且很容易被逆向。凭借CodeInspect，我很快的就分析出了它的代码逻辑，并且写了一个查询脚本，在文章后面会提到。</p>
+<h3 id="功能分析"><a href="#功能分析" class="headerlink" title="功能分析"></a>功能分析</h3><p>我们首先来看一下Wifi万能钥匙的主界面，可以看到主界面有一个一键查询万能钥匙的按钮，这个按钮的功能是扫描附近的Wifi，根据Wifi信息找出服务器上存在密码的Wifi。如果服务器上有这个Wifi的密码在这个Wifi一栏的后面显示一个蓝色的小钥匙，如下图中的”360免费WiFi-10”，这个Wifi是我故意上传密码来测试接口的。<br>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
+        <a href="/2016/03/30/使用CodeInspect逆向分析APK/" title="link to 使用CodeInspect逆向分析APK">使用CodeInspect逆向分析APK</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2016-03-30" class="post-list__meta--date date">2016-03-30</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>CodeInspect是由德国Paderborn University和TU Darmstadt的软件安全团队研发的一款基于<a href="https://en.wikipedia.org/wiki/Soot">Jimple</a>的Android应用分析工具。CodeInspect的软件是Eclipse框架开发的，所以我们可以像使用IDE一样对Android应用进行分析和调试，也可以直接插入或者修改Java代码。<br>我最先接触到这款软件是在15年10月份左右，当时CodeInspect处于内测阶段，通过和CodeInspect的开发团队邮件沟通并且签署了一个协议后我获得了CodeInspect的内测版本，并提供了一个有效期3个月的key，最近我发现key过期了，于是再联系他们时得知现在CodeInspect现在已经是公测阶段，任何用户只要签署一份使用协议就可以获得使用资格，你可以在这里<a href="https://codeinspect.sit.fraunhofer.de/">https://codeinspect.sit.fraunhofer.de/</a>申请测试使用。</p>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
+        <a href="/2016/03/12/从头编写NES模拟器/" title="link to 从头编写NES模拟器">从头编写NES模拟器</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2016-03-12" class="post-list__meta--date date">2016-03-12</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>最近没什么事，在微博上看到国外某大牛开发出了一款3D版的NES模拟器，试玩了一下很有意思，正好FC的结构比较简单，所以也想自己动手实现一个简单的nes模拟器。关于NES模拟器相关的文章比较少，但是NES相关的核心原理都已经公布出来了，你可以从这里<a href="http://nesdev.com/">http://nesdev.com/</a>找到。</p>
+<h2 id="系统架构"><a href="#系统架构" class="headerlink" title="系统架构"></a>系统架构</h2><p>要完全模拟一个机器，我们需要对目标的架构非常熟悉，NES作为上世纪个人电脑诞生之初的产物，结构是非常简单的，并且NES在机能不足的情况下使用了很多独特的技术是其能展现出对当时来说领先的画面，实现这些技术也非常的有趣。<br>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
+        <a href="/2016/01/18/基于LLVM的代码混淆/" title="link to 基于LLVM的代码混淆">基于LLVM的代码混淆</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2016-01-18" class="post-list__meta--date date">2016-01-18</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <h3 id="LLVM"><a href="#LLVM" class="headerlink" title="LLVM"></a>LLVM</h3><p>LLVM(low level virtual machine)是一个先进的编译器框架，它提供了一种代码编写良好的中间表示(IR)，可以作为多种语言的后端，还可以提供与变成语言无关的优化和针对多种cpu的代码生成功能。<br>LLVM的主要架构如下：</p>
+<ul>
+<li>前端：前端用来获取源代码然后将它转变为某种中间表示，我们可以选择不同的编译器来作为LLVM的前端，如gcc，clang。</li>
+<li>Pass(通常翻译为“流程”)：Pass用来将程序的中间表示之间相互变换。一般情况下，Pass可以用来优化代码，这部分通常是我们关注的部分。</li>
+<li>后端：后端用来生成实际的机器码，一般情况下不会关注这一部分。</li>
+</ul>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
+        <a href="/2015/12/27/Android-So简单加固/" title="link to Android So简单加固">Android So简单加固</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2015-12-27" class="post-list__meta--date date">2015-12-27</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>Android下的dex加固技术从最初爱加密实现的dex整体内存加载，到目前各大厂商都在研究的代码虚拟化技术，整体技术已经很成熟了。但是因为Android系统开源的特性，这种加固方法的安全性并不高，只要修改源码中dex加载的部分，就可以dump出隐藏的dex，根据这一原理目前也已经有多个Android通用脱壳机。既然dex保不住，那么就可以将安全要求较高的代码写到native层，现在加固厂商已基本都提供了对so的加固。针对so的加固有很多种方案，通常也都是混合使用。比较高级的做法是针对Android下的so加载器linker做的加固，从编译器层做混淆，甚至VMP等。本文主要一些简单的加固方法，比如针对段和函数的加密等。使用的方法来源于<a href="http://bbs.pediy.com/showthread.php?t=191649">http://bbs.pediy.com/showthread.php?t=191649</a>。</p>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+  </ol>
+
+  <hr class="post-list__divider " />
+
+<nav class="pagination" role="navigation">
+    
+    	
+          <a class="newer-posts pagination__newer btn btn-small btn-tertiary" href="/#blog">&larr; Prev </a>
+        
+    
+
+    <span class="pagination__page-number"> 2 / 5</span>
+    
+    
+        <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/page/3/">Next &rarr;</a>
+    
+</nav>
+
+
+</div>
+            <footer class="footer">
+
+    <span class="footer__copyright">Copyright &copy; 2014-2015 Zke1ev3n. All Rights Reserved</span>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-71084152-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      ELF文件格式解析 | Zke1ev3n&#39;s Blog 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="Zke1ev3n">
+    
+    
+
+    <meta name="description" content="—本文基本的内容都是来源于《程序员的自我修养》，之所以摘录下来是为了方便查阅，还有一部分表格是来源于滕启明写的《ELF文件格式分析》。顺便安利一下这本书，是本程序员必读的好书，看了好几遍，每次看都有新收获。
+可执行和可链接格式(Executable and Linkable Format，缩写为ELF)，常被称为ELF格式，在计算机科学中，是一种用于执行档、目的档、共享库和核心转储的标准文件格式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ELF文件格式解析 | Zke1ev3n's Blog">
+<meta property="og:url" content="http://yoursite.com/2015/12/15/ELF文件格式解析/index.html">
+<meta property="og:site_name" content="Zke1ev3n's Blog">
+<meta property="og:description" content="—本文基本的内容都是来源于《程序员的自我修养》，之所以摘录下来是为了方便查阅，还有一部分表格是来源于滕启明写的《ELF文件格式分析》。顺便安利一下这本书，是本程序员必读的好书，看了好几遍，每次看都有新收获。
+可执行和可链接格式(Executable and Linkable Format，缩写为ELF)，常被称为ELF格式，在计算机科学中，是一种用于执行档、目的档、共享库和核心转储的标准文件格式。">
+<meta property="og:image" content="http://yoursite.com/1.PNG">
+<meta property="og:image" content="http://yoursite.com/2.PNG">
+<meta property="og:image" content="http://yoursite.com/3.PNG">
+<meta property="og:image" content="http://yoursite.com/4.PNG">
+<meta property="og:image" content="http://yoursite.com/5.PNG">
+<meta property="og:image" content="http://yoursite.com/6.PNG">
+<meta property="og:image" content="http://yoursite.com/8.PNG">
+<meta property="og:image" content="http://yoursite.com/9.PNG">
+<meta property="og:image" content="http://yoursite.com/10.PNG">
+<meta property="og:image" content="http://yoursite.com/11.PNG">
+<meta property="og:image" content="http://yoursite.com/12.PNG">
+<meta property="og:image" content="http://yoursite.com/13.PNG">
+<meta property="og:image" content="http://yoursite.com/14.PNG">
+<meta property="og:image" content="http://yoursite.com/15.PNG">
+<meta property="og:image" content="http://yoursite.com/16.PNG">
+<meta property="og:image" content="http://yoursite.com/17.PNG">
+<meta property="og:image" content="http://yoursite.com/18.PNG">
+<meta property="og:image" content="http://yoursite.com/19.PNG">
+<meta property="og:image" content="http://yoursite.com/20.PNG">
+<meta property="og:image" content="http://yoursite.com/21.PNG">
+<meta property="og:image" content="http://yoursite.com/22.PNG">
+<meta property="og:image" content="http://yoursite.com/24.PNG">
+<meta property="og:updated_time" content="2015-12-28T18:25:33.230Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ELF文件格式解析 | Zke1ev3n's Blog">
+<meta name="twitter:description" content="—本文基本的内容都是来源于《程序员的自我修养》，之所以摘录下来是为了方便查阅，还有一部分表格是来源于滕启明写的《ELF文件格式分析》。顺便安利一下这本书，是本程序员必读的好书，看了好几遍，每次看都有新收获。
+可执行和可链接格式(Executable and Linkable Format，缩写为ELF)，常被称为ELF格式，在计算机科学中，是一种用于执行档、目的档、共享库和核心转储的标准文件格式。">
+<meta name="twitter:image" content="http://yoursite.com/1.PNG">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">Zke1ev3n&#39;s Blog</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">ELF文件格式解析</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2015-12-15" class="post-meta__date date">2015-12-15</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>—本文基本的内容都是来源于《程序员的自我修养》，之所以摘录下来是为了方便查阅，还有一部分表格是来源于滕启明写的《ELF文件格式分析》。顺便安利一下这本书，是本程序员必读的好书，看了好几遍，每次看都有新收获。</p>
+<p>可执行和可链接格式(Executable and Linkable Format，缩写为ELF)，常被称为ELF格式，在计算机科学中，是一种用于执行档、目的档、共享库和核心转储的标准文件格式。<br>ELF由UNIX实验室作为应用程序二进制接口(Application Binary Interface，ABI)而开发和发布的，1999年，被86open项目选为x86架构上的类Unix操作系统的二进制文件标准格式，用来取代COFF。<br>ELF文件主要有四种类型：</p>
+<ul>
+<li>可重定位文件（Relocatable File） 包含适合于与其他目标文件链接来创建可执行文件或者共享目标文件的代码和数据。</li>
+<li>可执行文件（Executable File） 包含适合于执行的一个程序，此文件规定了 exec() 如何创建一个程序的进程映像。<a id="more"></a></li>
+<li>共享目标文件（Shared Object File） 包含可在两种上下文中链接的代码和数据。首先链接编辑器可以将它和其它可重定位文件和共享目标文件一起处理，生成另外一个目标文件。其次，动态链接器（Dynamic Linker）可能将它与某个可执行文件以及其它共享目标一起组合，创建进程映像。</li>
+<li>核心转储文件（core dump） 当进程意外终止时，系统可以将该进程的的地址空间的内容及终止时的一些其他信息转储到核心转储文件。</li>
+</ul>
+<h3 id="数据表示"><a href="#数据表示" class="headerlink" title="数据表示"></a>数据表示</h3><p>ELF文件有32位和64位两种版本。为了适应各种平台，ELF有一套自己的变量体系，在”/usr/include/elf.h”中可以看到这些变量的定义。<br><img src="1.PNG" alt=""></p>
+<blockquote>
+<p>本文主要研究ELF的32位版本，64位的版本除了数据成员大小不相同外其他部分基本类似</p>
+</blockquote>
+<h3 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h3><p>与windows下的PE文件不同，ELF文件在磁盘中和被加载到内存中并不是完全一样的，ELF文件提供了两种视图来反映这两种情况:链接视图和执行视图。顾名思义，链接视图就是在链接时用到的视图，而执行视图则是在执行时用到的视图。<br><img src="2.PNG" alt=""></p>
+<p>程序头部表(Program Header Table)，如果存在的话，告诉系统如何创建进程映像。<br>节区头部表(Section Header Table)包含了描述文件节区的信息，比如大小，偏移等。</p>
+<p>当ELF文件被加载到内存中后，系统会将多个具有相同权限Section(节)合并成一个Segment(段)，通常为代码段(可读可执行)，可读可写的数据段，和只读数据段。例如下图的libc在进程中的段的分布。对于可执行文件，程序头部表告诉系统如何映射Segment，而目标文件是没有这个表的(关于可执行文件的装载原书有详细分析)。<br><img src="3.PNG" alt=""></p>
+<blockquote>
+<p>这里我们主要讨论链接视图</p>
+</blockquote>
+<h3 id="文件头"><a href="#文件头" class="headerlink" title="文件头"></a>文件头</h3><p>ELF目标文件格式的最前部是ELF文件头，它描述了整个文件的基本属性，比如ELF文件版本，目标机器型号，程序入口地址等。可以在”/usr/include/elf.h”中找到它的定义。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">char</span>	e_ident[EI_NIDENT];	<span class="comment">/* Magic number and other info */</span></span><br><span class="line">  Elf32_Half	e_type;			<span class="comment">/* Object file type */</span></span><br><span class="line">  Elf32_Half	e_machine;		<span class="comment">/* Architecture */</span></span><br><span class="line">  Elf32_Word	e_version;		<span class="comment">/* Object file version */</span></span><br><span class="line">  Elf32_Addr	e_entry;		<span class="comment">/* Entry point virtual address */</span></span><br><span class="line">  Elf32_Off	e_phoff;		<span class="comment">/* Program header table file offset */</span></span><br><span class="line">  Elf32_Off	e_shoff;		<span class="comment">/* Section header table file offset */</span></span><br><span class="line">  Elf32_Word	e_flags;		<span class="comment">/* Processor-specific flags */</span></span><br><span class="line">  Elf32_Half	e_ehsize;		<span class="comment">/* ELF header size in bytes */</span></span><br><span class="line">  Elf32_Half	e_phentsize;		<span class="comment">/* Program header table entry size */</span></span><br><span class="line">  Elf32_Half	e_phnum;		<span class="comment">/* Program header table entry count */</span></span><br><span class="line">  Elf32_Half	e_shentsize;		<span class="comment">/* Section header table entry size */</span></span><br><span class="line">  Elf32_Half	e_shnum;		<span class="comment">/* Section header table entry count */</span></span><br><span class="line">  Elf32_Half	e_shstrndx;		<span class="comment">/* Section header string table index */</span></span><br><span class="line">&#125; Elf32_Ehdr;</span><br></pre></td></tr></table></figure></p>
+<p>e_ident这个数据给出了ELF文件的一些标识信息。在elf.h中定义了它的每一个索引。如下：<br><img src="4.PNG" alt=""></p>
+<p>这些索引取值如下：<br><img src="5.PNG" alt=""></p>
+<p>下面是ELF各个字段的说明：<br><img src="6.PNG" alt=""></p>
+<p>下面我们通过一个实际的ELF文件来和上面的表格信息做一个对比，首先我们编译一个简单的目标文件。源码来自《程序员的自我修养》，稍微做了下修改。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int global_init_var = 84;</span><br><span class="line">int global_uninit_var;</span><br><span class="line"></span><br><span class="line">void func1(int i)</span><br><span class="line">&#123;</span><br><span class="line">	printf(&quot;%d\n&quot;,i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">	char *str = &quot;hello&quot;;</span><br><span class="line">	static int static_var = 85;</span><br><span class="line">	static int static_var2;</span><br><span class="line">	int a = 1;</span><br><span class="line">	int b;</span><br><span class="line">	func1(static_var + static_var2 + a + b);</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -c SimpleSection.c</span><br></pre></td></tr></table></figure></p>
+<p>编译，然后使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">readelf -h SimpleSection.o</span><br></pre></td></tr></table></figure></p>
+<p>查看SimpleSection的文件头的信息。<br><img src="8.PNG" alt=""></p>
+<h3 id="节区"><a href="#节区" class="headerlink" title="节区"></a>节区</h3><p>前面我们已经知道elf文件主要是由各种节组成的，对于每一个节在节区头部表中都有一项与之对应，我们可以通过<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">readelf -S SimpleSection.o</span><br></pre></td></tr></table></figure></p>
+<p>来查看SimpleSection.o的节的信息。如下：<br><img src="9.PNG" alt=""></p>
+<p>readelf输出的信息就是elf节区头部表中的内容，在elf文件头中e_shoff 成员给出从文件头到节区头部表格的偏移字节数；e_shnum给出表格中条目数目；e_shentsize 给出每个项目的字节数。从这些信息中可以确切地定位节区的具体位置、长度。<br>节区头部表是一个以”Elf32_Shdr”结构体为元素的数组，每个”Elf32_Shdr”对应了一个节。需要注意的是，节区头部表数组下表为0的元素是一个无效的节描述符，它的类型为NULL。除了第一个元素，这个数组还有一些特殊的下标。<br><img src="10.PNG" alt=""></p>
+<p>下面我们来看一下”Elf32_Shdr”的定义：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Section header.  */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">  Elf32_Word	sh_name;		<span class="comment">/* Section name (string tbl index) */</span></span><br><span class="line">  Elf32_Word	sh_type;		<span class="comment">/* Section type */</span></span><br><span class="line">  Elf32_Word	sh_flags;		<span class="comment">/* Section flags */</span></span><br><span class="line">  Elf32_Addr	sh_addr;		<span class="comment">/* Section virtual addr at execution */</span></span><br><span class="line">  Elf32_Off	sh_offset;		<span class="comment">/* Section file offset */</span></span><br><span class="line">  Elf32_Word	sh_size;		<span class="comment">/* Section size in bytes */</span></span><br><span class="line">  Elf32_Word	sh_link;		<span class="comment">/* Link to another section */</span></span><br><span class="line">  Elf32_Word	sh_info;		<span class="comment">/* Additional section information */</span></span><br><span class="line">  Elf32_Word	sh_addralign;		<span class="comment">/* Section alignment */</span></span><br><span class="line">  Elf32_Word	sh_entsize;		<span class="comment">/* Entry size if section holds table */</span></span><br><span class="line">&#125; Elf32_Shdr;</span><br></pre></td></tr></table></figure></p>
+<p>下面是每一项的描述。<br><img src="11.PNG" alt=""></p>
+<blockquote>
+<p>上表来自《程序员的自我修养》，书中的对”section”的翻译和我这里不一样，书中的”段”可表示本文中的节。<br>我们对比”readelf -S”和”readelf -h”的输出，可以看到在SimpleSection.o中一共有13section，每一个section的大小为40字节。所以整个节区头部表的大小为520个字节。</p>
+</blockquote>
+<h4 id="节区类型-sh-type"><a href="#节区类型-sh-type" class="headerlink" title="节区类型-sh_type"></a>节区类型-sh_type</h4><p>上表中说过，节的名字只在链接和编译过程中有意义，但是它不能真正表示段的类型。对于编译器和链接器，主要决定段的属性的是段的类型(sh_type)和段的标志位(sh<em>flags)。段的类型相关常量以SHT</em>开头，列举如下表。<br><img src="12.PNG" alt=""></p>
+<h4 id="节的标志位"><a href="#节的标志位" class="headerlink" title="节的标志位"></a>节的标志位</h4><p>节的标志位表示该节在进程虚拟地址空间中的属性，比如是否可写，是否可执行等。相关常量以SHF_开头，如下表：<br><img src="13.PNG" alt=""></p>
+<p>对于系统保留段，下表列举了他们的属性。<br><img src="14.PNG" alt=""></p>
+<p><em>以”.”开头的节区名称是系统保留的。我们在为节区命名时应该使用没有”.”前缀的以免与系统节区冲突。</em></p>
+<h4 id="节的链接信息-sh-link、sh-info-如果节的类型是和链接相关的，比如重定位表、符号表等，那么sh-link和sh-info两个成员包含的意义如下。对于其他段，这两个成员没有意义。"><a href="#节的链接信息-sh-link、sh-info-如果节的类型是和链接相关的，比如重定位表、符号表等，那么sh-link和sh-info两个成员包含的意义如下。对于其他段，这两个成员没有意义。" class="headerlink" title="节的链接信息(sh_link、sh_info) 如果节的类型是和链接相关的，比如重定位表、符号表等，那么sh_link和sh_info两个成员包含的意义如下。对于其他段，这两个成员没有意义。"></a>节的链接信息(sh_link、sh_info) 如果节的类型是和链接相关的，比如重定位表、符号表等，那么sh_link和sh_info两个成员包含的意义如下。对于其他段，这两个成员没有意义。</h4><p><img src="15.PNG" alt=""></p>
+<h3 id="字符串表"><a href="#字符串表" class="headerlink" title="字符串表"></a>字符串表</h3><p>在ELF文件中，会用到很多字符串，比如节名，变量名等。所以ELF将所有的字符串集中放到一个表里，每一个字符串以’\0’分隔，然后使用字符串在表中的偏移来引用字符串。<br>比如下面这样：<br><img src="16.PNG" alt=""><br>那么偏移与他们对用的字符串如下表:<br><img src="17.PNG" alt=""></p>
+<p>这样在ELF中引用字符串只需要给出一个数组下标即可。字符串表在ELF也以节的形式保存，常见的节名为”.strtab”或”.shstrtab”。这两个字符串表分别为字符串表(String Table)和节表字符串表(Header String Table)，字符串表保存的是普通的字符串，而节表字符串表用来保存节表中用到的字符串，比如节名。<br>再来看ELF文件头中的”e_shstrndx”的含义，前面说到它表示节表字符串在节表中的下表，在SimpleSection.o文件头中我们看到”e_shstrndx”的值为13，然后我们再看节表第13个刚好是”.shstrtab”。之所以要在ELF文件头中存放这样一个字段，就是为了只用分析ELF文件头就可以得到节表和节字符串表，从而解析整个ELF文件。</p>
+<h3 id="符号表"><a href="#符号表" class="headerlink" title="符号表"></a>符号表</h3><p>在链接的过程中需要把多个不同的目标文件合并在一起，不同的目标文件相互之间会引用变量和函数。在链接过程中，我们将函数和变量统称为符号，函数名和变量名就是符号名。<br>每一个目标文件中都有一个相应的符号表(System Table)，这个表里纪录了目标文件所用到的所有符号。每个定义的符号都有一个相应的值，叫做符号值(Symbol Value)，对于变量和函数，符号值就是它们的地址。对于符号表中的符号，大概有以下几种：</p>
+<ul>
+<li>定义在本目标文件中的全局符号，可以被其他目标文件引用。比如SimleSection.o中的”func1”，”main”和global_init_var。</li>
+<li>在本目标文件中定义的全局符号，但是没有在定义在本目标文件，这一般叫外部符号(External Symbol)，也就是符号引用。比如SimleSection中的”printf”。</li>
+<li>段名，这种符号往往由编译器产生，它的值就是该段的起始地址，比如SimpleSection.o里面的”.text”，”.data”等。</li>
+<li>局部符号，这种符号只在编译单元内部可见。比如SimpleSection中的”static_var”。调试器可以使用这些符号来分析程序或崩溃时的核心转储文件。这些局部符号对于链接过程没有作用， 链接器也常常忽略他们。</li>
+<li>行号信息。即目标文件指令与源代码文件总代码行的对应关系，它也是可选的。</li>
+</ul>
+<p>我们只关注前两种符号。可以使用”nm”来查看ELF的符号表。比如：<br><img src="18.PNG" alt=""></p>
+<p>ELF文件中的符号表往往是文件中的一个段，段名一般叫”.symtab”。符号表的结构很简单，它是一个Elf32_Sym(32位)的数组，每个Elf32_Sym对应一个符号。这个数组的第一个元素，也就是下标为0的元素为无效的”未定义”符号。Elf32_Sym的结构定义如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Symbol table entry.  */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">  Elf32_Word	st_name;		<span class="comment">/* Symbol name (string tbl index) */</span></span><br><span class="line">  Elf32_Addr	st_value;		<span class="comment">/* Symbol value */</span></span><br><span class="line">  Elf32_Word	st_size;		<span class="comment">/* Symbol size */</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">char</span>	st_info;		<span class="comment">/* Symbol type and binding */</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">char</span>	st_other;		<span class="comment">/* Symbol visibility */</span></span><br><span class="line">  Elf32_Section	st_shndx;		<span class="comment">/* Section index */</span></span><br><span class="line">&#125; Elf32_Sym;</span><br></pre></td></tr></table></figure></p>
+<p>他们的定义如下：<br><img src="19.PNG" alt=""></p>
+<h4 id="符号类型和绑定信息-st-info"><a href="#符号类型和绑定信息-st-info" class="headerlink" title="符号类型和绑定信息(st_info)"></a>符号类型和绑定信息(st_info)</h4><p>改成员的低4位标识符号的类型(Symbol Type)，高28位标识符号绑定信息(Symbol Binding)，如下表所示。<br><img src="20.PNG" alt=""></p>
+<p><img src="21.PNG" alt=""></p>
+<h4 id="符号所在段-st-shndx"><a href="#符号所在段-st-shndx" class="headerlink" title="符号所在段(st_shndx)"></a>符号所在段(st_shndx)</h4><p>如果符号定义在本目标文件中，那么这个成员表示符号所在段在段表中的下表，但是如果符号不是定义在本目标文件中，或者对于有些特殊符号，sh_shndx的值有些特殊。如下：</p>
+<p><img src="22.PNG" alt=""></p>
+<h4 id="符号值-st-value"><a href="#符号值-st-value" class="headerlink" title="符号值(st_value)"></a>符号值(st_value)</h4><p>每个符号都有一个对应的值。主要分下面几种情况：</p>
+<ul>
+<li>如果符号不是”COMMON”类型的(即st_shndx不为SHN_COMMON)，则st_value表示该符号在段中的偏移，即符号所对应的函数或变量位于由st_shndx指定的段，偏移st_value的位置。比如SimpleSection中的”func1”，”main”和”global_init_var”。</li>
+<li>在目标文件中，如果符号是”COMMON”类型(即st_shndx为SHN_COMMON)，则st_value表示该符号的对齐属性。比如SimleSection中的”global_uninit_var”。</li>
+<li>在可执行文件中，st_value表示符号的虚拟地址。</li>
+</ul>
+<p>使用<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">readelf <span class="_">-s</span> SimpleSection.o</span><br></pre></td></tr></table></figure></p>
+<p>来查看SimpleSection.o中的符号表。</p>
+<p>这里我们可以看到readelf的输出与Elf32_Sym的各个成员几乎一致。对于func1和main函数，因为他们定义在SimpleSection.c中，所有他们的所在的位置为代码段，下标(Ndx)为1。又因为他们是函数，所以类型为STT_FUNC(Type)，它们是全局可见的，所以绑定信息(Bind)是STB_GLOBAL，Size表示函数指令所占的字节数，Value表示函数相对于代码段起始位置的偏移量。<br>对于printf函数，该符号在SimpleSection.c中被引用，但是没有被定义，所以它的Ndx是SHN_UNDEF。<br>global_init_var是已初始化的全局变量，它被定义在.bss段中。global_uninit_var是未初始化的全局变量，它是一个SHN_COMMON类型的符号，它本身并没有存在于BSS段。static_var.1553和static_var2.1534是两个静态变量，他们的绑定属性是STB_LOCAL，即只在编译单元内部可见。至于为什么他们的变量名从”static_var”和”static_var2”，变成了这两个”static_var.1533”和”static_var2.1534”，可以参见原书。<br>对于那些STT_SECTION类型的符号，它们表示下标为Ndx的段的段名。它们的符号名没有显示，其实它们的符号名就是段名。</p>
+<h3 id="重定位表"><a href="#重定位表" class="headerlink" title="重定位表"></a>重定位表</h3><p>SimpleSection.o中有一个叫”.rel.text”的段，它的类型(sh_type)为”SHT_REL”，也就是说它是一个重定位表。链接器在处理目标文件时，需要对目标文件中的某些部位进行重定位，即代码段和数据中中那些绝对地址引用的位置。对于每个需要重定位的代码段或数据段，都会有一个相应的重定位表。比如”.rel.text”就是针对”.text”的重定位表，”.rel.data”就是针对”.data”的重定位表。<br>重定位表的数据结构如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Relocation table entry without addend (in section of type SHT_REL).  */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">  Elf32_Addr	r_offset;		<span class="comment">/* Address */</span></span><br><span class="line">  Elf32_Word	r_info;			<span class="comment">/* Relocation type and symbol index */</span></span><br><span class="line">&#125; Elf32_Rel;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Relocation table entry with addend (in section of type SHT_RELA).  */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">  Elf32_Addr	r_offset;		<span class="comment">/* Address */</span></span><br><span class="line">  Elf32_Word	r_info;			<span class="comment">/* Relocation type and symbol index */</span></span><br><span class="line">  Elf32_Sword	r_addend;		<span class="comment">/* Addend */</span></span><br><span class="line">&#125; Elf32_Rela;</span><br></pre></td></tr></table></figure></p>
+<p>字段说明如下：<br><img src="24.PNG" alt=""></p>
+<p>关于重定位的内容，也不再本文讨论范围之内，感兴趣的读者可以阅读原书。</p>
+<p>下面是一个python版的elf解析器，目前只解析了elf header和section header table。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#-*-coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"><span class="string">"""</span><br><span class="line">Name       Size Alignment Purpose</span><br><span class="line">Elf32_Addr    4    4      Unsigned program address</span><br><span class="line">Elf32_Half    2    2      Unsigned medium integer</span><br><span class="line">Elf32_Off     4    4      Unsigned file offset</span><br><span class="line">Elf32_Sword   4    4      Signed large integer</span><br><span class="line">Elf32_Word    4    4      Unsigned large integer</span><br><span class="line">unsigned char 1    1      Unsigned small integer</span><br><span class="line">Elf64_Addr    8    8      Unsigned program address</span><br><span class="line">Elf64_Off     8    8      Unsigned file offset</span><br><span class="line">Elf64_Half    2    2      Unsigned medium integer</span><br><span class="line">Elf64_Word    4    4      Unsigned integer</span><br><span class="line">Elf64_Sword   4    4      Signed integer</span><br><span class="line">Elf64_Xword   8    8      Unsigned long integer</span><br><span class="line">Elf64_Sxword  8    8      Signed long integer</span><br><span class="line">unsigned char 1    1      Unsigned small integer</span><br><span class="line">#define EI_NIDENT 16</span><br><span class="line">typedef struct &#123;</span><br><span class="line">  unsigned char e_ident[EI_NIDENT];     16  16B</span><br><span class="line">  Elf32_Half e_type;                    18    H</span><br><span class="line">  Elf32_Half e_machine;                 20    H</span><br><span class="line">  Elf32_Word e_version;                 24    I</span><br><span class="line">  Elf32_Addr e_entry;                   28    I</span><br><span class="line">  Elf32_Off e_phoff;                    32    I</span><br><span class="line">  Elf32_Off e_shoff;                    36    I</span><br><span class="line">  Elf32_Word e_flags;                   40    I</span><br><span class="line">  Elf32_Half e_ehsize;                  42    H</span><br><span class="line">  Elf32_Half e_phentsize;               44    H</span><br><span class="line">  Elf32_Half e_phnum;                   46    H</span><br><span class="line">  Elf32_Half e_shentsize;               48    H</span><br><span class="line">  Elf32_Half e_shnum;                   50    H</span><br><span class="line">  Elf32_Half e_shstrndx;                52    H</span><br><span class="line">&#125; Elf32_Ehdr;</span><br><span class="line">typedef struct &#123;</span><br><span class="line">  unsigned char   e_ident[EI_NIDENT];</span><br><span class="line">  Elf64_Half      e_type;        2  H</span><br><span class="line">  Elf64_Half      e_machine;     2  H</span><br><span class="line">  Elf64_Word      e_version;     4  I</span><br><span class="line">  Elf64_Addr      e_entry;       8  Q</span><br><span class="line">  Elf64_Off       e_phoff;       8  Q</span><br><span class="line">  Elf64_Off       e_shoff;       8  Q</span><br><span class="line">  Elf64_Word      e_flags;       4  I</span><br><span class="line">  Elf64_Half      e_ehsize;      2  H</span><br><span class="line">  Elf64_Half      e_phentsize;   2  H</span><br><span class="line">  Elf64_Half      e_phnum;       2  H</span><br><span class="line">  Elf64_Half      e_shentsize;   2  H</span><br><span class="line">  Elf64_Half      e_shnum;       2  H</span><br><span class="line">  Elf64_Half      e_shtrndx;     2  H</span><br><span class="line">&#125; Elf64_Ehdr;</span><br><span class="line">"""</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">readElfHeader</span><span class="params">(f)</span>:</span></span><br><span class="line">  <span class="keyword">global</span> elf_class</span><br><span class="line">  <span class="keyword">global</span> end_char</span><br><span class="line">  fmt_ident = <span class="string">'16s'</span></span><br><span class="line">  fmt32 = <span class="string">'HHIIIIIHHHHHH'</span></span><br><span class="line">  fmt64 = <span class="string">'HHIQQQIHHHHHH'</span></span><br><span class="line">  fields = [<span class="string">'e_ident'</span>, <span class="string">'e_type'</span>, <span class="string">'e_machine'</span>, <span class="string">'e_version'</span>, <span class="string">'e_entry'</span>,</span><br><span class="line">    <span class="string">'e_phoff'</span>, <span class="string">'e_shoff'</span>, <span class="string">'e_flags'</span>, <span class="string">'e_ehsize'</span>, <span class="string">'e_phentsize'</span>,</span><br><span class="line">    <span class="string">'e_phnum'</span>, <span class="string">'e_shentsize'</span>, <span class="string">'e_shnum'</span>, <span class="string">'e_shstrndx'</span>]</span><br><span class="line">  f.seek(<span class="number">0</span>)</span><br><span class="line">  ident_data = f.read(struct.calcsize(fmt_ident))</span><br><span class="line">  fmt = <span class="keyword">None</span></span><br><span class="line">  <span class="keyword">if</span> ord(ident_data[<span class="number">4</span>]) == <span class="number">1</span>:</span><br><span class="line">    elf_class = <span class="number">32</span></span><br><span class="line">    fmt = fmt32</span><br><span class="line">    data = f.read(struct.calcsize(fmt32))</span><br><span class="line">  <span class="keyword">elif</span> ord(ident_data[<span class="number">4</span>]) == <span class="number">2</span>:</span><br><span class="line">    elf_class = <span class="number">64</span></span><br><span class="line">    fmt = fmt64</span><br><span class="line">    data = f.read(struct.calcsize(fmt64))</span><br><span class="line">  <span class="keyword">if</span> ord(ident_data[<span class="number">5</span>]) == <span class="number">1</span>: <span class="comment">#little-endian</span></span><br><span class="line">    fmt = <span class="string">'&lt;'</span> + fmt_ident + fmt</span><br><span class="line">    end_char = <span class="string">'&lt;'</span></span><br><span class="line">  <span class="keyword">elif</span> ord(ident_data[<span class="number">5</span>]) == <span class="number">2</span>: <span class="comment">#big-endian</span></span><br><span class="line">    fmt = <span class="string">'&gt;'</span> + fmt_ident + fmt</span><br><span class="line">    end_char = <span class="string">'&gt;'</span></span><br><span class="line">  <span class="keyword">return</span> dict(zip(fields,struct.unpack(fmt,ident_data+data)))</span><br><span class="line"></span><br><span class="line"><span class="string">"""</span><br><span class="line">typedef struct &#123;</span><br><span class="line">  Elf32_Word      sh_name;        I</span><br><span class="line">  Elf32_Word      sh_type;        I</span><br><span class="line">  Elf32_Word      sh_flags;       I</span><br><span class="line">  Elf32_Addr      sh_addr;        I</span><br><span class="line">  Elf32_Off       sh_offset;      I</span><br><span class="line">  Elf32_Word      sh_size;        I</span><br><span class="line">  Elf32_Word      sh_link;        I</span><br><span class="line">  Elf32_Word      sh_info;        I</span><br><span class="line">  Elf32_Word      sh_addralign;   I</span><br><span class="line">  Elf32_Word      sh_entsize;     I</span><br><span class="line">&#125; Elf32_Shdr;</span><br><span class="line">"""</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">readShHeaders</span><span class="params">(f,elf_hdr)</span>:</span></span><br><span class="line">  fmt = <span class="string">'@IIIIIIIIII'</span></span><br><span class="line">  fmt32 = <span class="string">'IIIIIIIIII'</span></span><br><span class="line">  fmt64 = <span class="string">'IIQQQQIIQQ'</span></span><br><span class="line">  fields = [<span class="string">'sh_name_idx'</span>, <span class="string">'sh_type'</span>, <span class="string">'sh_flags'</span>, <span class="string">'sh_addr'</span>, <span class="string">'sh_offset'</span>, </span><br><span class="line">    <span class="string">'sh_size'</span>, <span class="string">'sh_link'</span>, <span class="string">'sh_info'</span>, <span class="string">'sh_addralign'</span>, <span class="string">'sh_entsize'</span> ]</span><br><span class="line">  sh_hdrs = []</span><br><span class="line">  f.seek(elf_hdr[<span class="string">'e_shoff'</span>])</span><br><span class="line">  <span class="keyword">for</span> shentid <span class="keyword">in</span> range(elf_hdr[<span class="string">'e_shnum'</span>]):</span><br><span class="line">    data = f.read(elf_hdr[<span class="string">'e_shentsize'</span>])</span><br><span class="line">    sh_hdrs.append(dict(zip(fields,struct.unpack(fmt,data))))</span><br><span class="line">  shstrndx_hdr = sh_hdrs[elf_hdr[<span class="string">'e_shstrndx'</span>]]</span><br><span class="line">  f.seek(shstrndx_hdr[<span class="string">'sh_offset'</span>])</span><br><span class="line">  shstr = f.read(shstrndx_hdr[<span class="string">'sh_size'</span>])</span><br><span class="line">  idx = <span class="number">0</span></span><br><span class="line">  <span class="keyword">for</span> hdr <span class="keyword">in</span> sh_hdrs:</span><br><span class="line">    offset = hdr[<span class="string">'sh_name_idx'</span>]</span><br><span class="line">    hdr[<span class="string">'sh_name'</span>] = shstr[offset:offset+shstr[offset:].index(chr(<span class="number">0x0</span>))]</span><br><span class="line">    <span class="keyword">global</span> shidx_strtab</span><br><span class="line">    <span class="keyword">if</span> <span class="string">'.strtab'</span> == hdr[<span class="string">'sh_name'</span>]:</span><br><span class="line">      shidx_strtab = idx</span><br><span class="line">    idx += <span class="number">1</span></span><br><span class="line">  <span class="keyword">return</span> sh_hdrs</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printElfHeader</span><span class="params">(hdr)</span>:</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">"ELF Header:"</span></span><br><span class="line">    <span class="keyword">for</span> s <span class="keyword">in</span> hdr:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"%s:%s"</span> %(s, hdr[s])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printShHeaders</span><span class="params">(shdr)</span>:</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">"Section Header Table"</span></span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> shdr:</span><br><span class="line">        <span class="keyword">for</span> s <span class="keyword">in</span> h:</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"%s:%s"</span> %(s, h[s]),</span><br><span class="line">        <span class="keyword">print</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">if</span> len(sys.argv) != <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"usage: python readELF.py ELFname"</span></span><br><span class="line">        sys.exit()</span><br><span class="line">    <span class="keyword">elif</span> len(sys.argv) == <span class="number">2</span>:</span><br><span class="line">        fname = sys.argv[<span class="number">1</span>]</span><br><span class="line">    </span><br><span class="line">    fd = open(fname,<span class="string">'rb'</span>)</span><br><span class="line">    </span><br><span class="line">    hdr = readElfHeader(fd)</span><br><span class="line">    </span><br><span class="line">    printElfHeader(hdr)</span><br><span class="line"></span><br><span class="line">    shdr = readShHeaders(fd,hdr) </span><br><span class="line"></span><br><span class="line">    printShHeaders(shdr)</span><br></pre></td></tr></table></figure></p>
+
+  </section>
+
+  
+
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'zke1ev3nme'; 
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+  
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">Copyright &copy; 2014-2015 Zke1ev3n. All Rights Reserved</span>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-71084152-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>

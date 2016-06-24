@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      Gradle笔记 | Zke1ev3n&#39;s Blog 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="Zke1ev3n">
+    
+    
+
+    <meta name="description" content="Android Studio已经发布到1.5的版本了，整体已经趋于成熟。之前一直在Eclipse和Android Studio之间交替使用，一方面对Android Studio新的特性好奇，一方面又对自己配置已久的eclipse念念不舍。最近打算把以前的项目都迁移到Android Studio来，所以整理了一下笔记。
+事实上，在Android Studio下开发Android程序和eclipse下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gradle笔记 | Zke1ev3n's Blog">
+<meta property="og:url" content="http://yoursite.com/2015/12/09/Gradle笔记/index.html">
+<meta property="og:site_name" content="Zke1ev3n's Blog">
+<meta property="og:description" content="Android Studio已经发布到1.5的版本了，整体已经趋于成熟。之前一直在Eclipse和Android Studio之间交替使用，一方面对Android Studio新的特性好奇，一方面又对自己配置已久的eclipse念念不舍。最近打算把以前的项目都迁移到Android Studio来，所以整理了一下笔记。
+事实上，在Android Studio下开发Android程序和eclipse下">
+<meta property="og:image" content="http://yoursite.com/3.jpg">
+<meta property="og:image" content="http://yoursite.com/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2.PNG">
+<meta property="og:image" content="http://yoursite.com/4.PNG">
+<meta property="og:image" content="http://yoursite.com/5.PNG">
+<meta property="og:image" content="http://yoursite.com/6.png">
+<meta property="og:image" content="http://yoursite.com/7.png">
+<meta property="og:updated_time" content="2015-12-15T12:08:55.946Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gradle笔记 | Zke1ev3n's Blog">
+<meta name="twitter:description" content="Android Studio已经发布到1.5的版本了，整体已经趋于成熟。之前一直在Eclipse和Android Studio之间交替使用，一方面对Android Studio新的特性好奇，一方面又对自己配置已久的eclipse念念不舍。最近打算把以前的项目都迁移到Android Studio来，所以整理了一下笔记。
+事实上，在Android Studio下开发Android程序和eclipse下">
+<meta name="twitter:image" content="http://yoursite.com/3.jpg">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">Zke1ev3n&#39;s Blog</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">Gradle笔记</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2015-12-09" class="post-meta__date date">2015-12-09</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>Android Studio已经发布到1.5的版本了，整体已经趋于成熟。之前一直在Eclipse和Android Studio之间交替使用，一方面对Android Studio新的特性好奇，一方面又对自己配置已久的eclipse念念不舍。最近打算把以前的项目都迁移到Android Studio来，所以整理了一下笔记。</p>
+<p>事实上，在Android Studio下开发Android程序和eclipse下并没有太大的区别，最大的不同可能就是AS采用了新的构建工具Gradle。但是在eclipse下我们通常不会去在意构建工具，ide已经帮我们完成了项目的构建，这也是大多数人转到AS下后最不适应的地方。造成这一问题的原因就是很多人在学习Android开发时并没有学习一个项目是怎么构建的，离开了ide就无法开发一个完整的项目，没有深入了解ide背后所做的工作，所以换了一个平台后就很难上手。所以这里我们简单了解下java常用的构建工具。</p>
+<a id="more"></a>
+<p>java下最常用的构建工具是Ant，Ant和开发C/C++时使用的make很相似。Ant使用xml来描述一个项目的各个任务的生成顺序以及依赖关系。但是Ant关注了构建项目本身，但是却没有依赖管理的功能。以前我们开发一个java项目，当项目依赖其他jar包时，通常的做法是从网上把jar包下载下来，放到libs目录。但是当项目成长到一定规模，下载一堆jar包是很麻烦的事情，而且还要升级，管理这些jar包。maven使用仓库来管理依赖，当项目依赖其他jar包时，只需要在pom.xml声明依赖库的名称和版本，maven在构建时就能自动从本地或中央仓库中下载对应的依赖。当然了对于一些小型的项目，也没有必要使用maven来构建，eclipse默认就是使用ant构建的。</p>
+<p>maven的优点很多，但是xml配置起来实在太繁琐了，而且不利于理解，所以更加方便的Gradle出现了。Gradle继承了maven的许多优点，目录结构也和maven一样，不同的是，Gradle使用了Groovy脚本来构建项目，与xml相比，Groovy更加灵活，易于理解，也更加强大。既然Gradle是使用Groovy语言来管理项目，那我们需要先简单的学习下Groovy语言。</p>
+<p>Groovy是一中基于JVM的动态语言。它的语法和java很相似，同时又有Python,Ruby的轻便，你可以简单的把Groovy理解成一种简化版的java，它诞生之初就是为了解决java繁琐的语法，使开发更加简单快捷。</p>
+<h3 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h3><p>通常我们学习一门新的语言都是从打印hello world开始的。先来回顾下java编写的hello world的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;	</span><br><span class="line">	System.out.println(<span class="string">"Hello World!"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>很熟悉吧，上面的代码省略了导入包的代码。通常我们编写java代码的流程和这个例子也很相似，导入包，声明类，定义函数，然后实现函数。我们再来看用Groovy编写的hello world。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">println <span class="string">"hello world"</span></span><br></pre></td></tr></table></figure></p>
+<p>Groovy默认导入了一些公用的包，语句最后的分号是可选的，当一行中有多条语句就需要用分号来隔离。</p>
+<h3 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h3><p>Groovy是没有类型的java。在java中，我们声明一个字符串通常是这样的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="string">"hello world"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>在Groovy中，用def代替类型标识符，像下面这样：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def str = <span class="string">"hello world"</span></span><br></pre></td></tr></table></figure></p>
+<p>Groovy可以在运行时自动判断对象的类型。</p>
+<h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><p>Groovy中的字符串允许使用单引号和双引号。当使用双引号时，可以在字符串内嵌入一些表达式，类似bahs中的${expression}。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">"world"</span></span><br><span class="line">println <span class="string">"Hello $&#123;name&#125;"</span></span><br></pre></td></tr></table></figure></p>
+<p>Groovy支持”uXXXX”来表示特殊字符，例如”u0040”就是字符”@”。<br>如果有一大块文本不想编码，可以使用Here-docs方便的格式化字符串。类似下面这样：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">name = "world"</span><br><span class="line">txt = """</span><br><span class="line">hello</span><br><span class="line">$&#123;name&#125; Are you OK?</span><br><span class="line">"""</span><br><span class="line">println(txt)</span><br></pre></td></tr></table></figure></p>
+<p>下面列举了一些常用的字符串操作函数：</p>
+<ul>
+<li>contains 字符串中是否包含了子串</li>
+<li>count 返回字符串中子字符串出现的次数</li>
+<li>tokenize 根据分隔符将字符串分割成子串 例如”hello^world”.tokenize(‘^’) 将返回[‘hello’,’world’]</li>
+<li>Groovy支持运算符重载 例如’Groovy’-‘oo’得到的字符串是’Grvy’，’oo’*3得到’oooooo’</li>
+</ul>
+<h3 id="控制结构"><a href="#控制结构" class="headerlink" title="控制结构"></a>控制结构</h3><p>Groovy支持一般的选择和循环结构，用法和java一样。这里只说一点比较特殊的for循环。Groovy的for循环能和各种类型的数组，集合，map,范围等一起使用。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//iterate over a range</span></span><br><span class="line">x = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span>(i in <span class="number">0</span>..<span class="number">9</span>)</span><br><span class="line">&#123;</span><br><span class="line">    x += i</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//iterate over a list</span></span><br><span class="line"><span class="keyword">for</span>(i in [<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>])</span><br><span class="line">&#123;</span><br><span class="line">    x += i</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//iterate over an array</span></span><br><span class="line">array = (<span class="number">0</span>..<span class="number">5</span>).toArray()</span><br><span class="line"><span class="keyword">for</span>(i in array)</span><br><span class="line">&#123;</span><br><span class="line">    x += i</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//iterate over a map</span></span><br><span class="line">map = [<span class="string">'abc'</span>:<span class="number">1</span>,<span class="string">'def'</span>:<span class="number">2</span>,<span class="string">'xyz'</span>:<span class="number">3</span>]</span><br><span class="line"><span class="keyword">for</span>(e in map)</span><br><span class="line">&#123;</span><br><span class="line">    x += e.value</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//iterate over values in a map</span></span><br><span class="line"><span class="keyword">for</span>( v in map.values())</span><br><span class="line">&#123;</span><br><span class="line">    x +=v</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//iterate over the characters in a string</span></span><br><span class="line">text = <span class="string">'abc'</span></span><br><span class="line">list = []</span><br><span class="line"><span class="keyword">for</span>( c in text)</span><br><span class="line">&#123;</span><br><span class="line">    list.add(c)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>Groovy使用def定义函数，返回值和参数都是可选的。Groovy还是可为函数指定默认参数值。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">def <span class="title">repeat</span><span class="params">(val,repeat=<span class="number">3</span>)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> ( i in <span class="number">0</span>..reapeat)</span><br><span class="line">    &#123;</span><br><span class="line">        println <span class="string">"This is $&#123;i&#125;:&#123;val&#125;"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Groovy支持可变参数。像这样：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span>... var)</span> </span><br><span class="line"></span>&#123;</span><br><span class="line">    def total = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> (i in var)</span><br><span class="line">        total += i</span><br><span class="line">    <span class="keyword">return</span> total</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后我们调用sum函数时可以指定任意个参数：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">println <span class="title">sum</span><span class="params">(<span class="number">1</span>)</span></span><br><span class="line">println <span class="title">sum</span><span class="params">(<span class="number">1</span>,<span class="number">2</span>)</span></span><br><span class="line">println <span class="title">sum</span><span class="params">(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)</span></span></span><br></pre></td></tr></table></figure></p>
+<h3 id="类"><a href="#类" class="headerlink" title="类"></a>类</h3><p>Groovy类和java类一样，甚至可以直接使用标准的java语法定义类，但是使用Groovy，定义一个类会变得非常简单。总结起来，Groovy有以下不同：</p>
+<ul>
+<li>不需要public修饰符，因为Groovy默认就是public修饰符</li>
+<li>不需要类型说明，这个前面已经讲过了</li>
+<li>不需要get/set方法，Groovy也已经为了完成了</li>
+<li>不需要构造函数，Groovy提供了一个构造函数，这个函数接受一个名称-值对的映射，这些名称-值对和类的属性相对应。</li>
+</ul>
+<p>举一个简单的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">person</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    def name</span><br><span class="line">    def age</span><br><span class="line">    def sex</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">def prn = <span class="keyword">new</span> person(name:<span class="string">'YL'</span>,age:<span class="number">20</span>,sex:<span class="string">'female'</span>)</span><br><span class="line"><span class="comment">//也可以像这样</span></span><br><span class="line">def prn2 = <span class="keyword">new</span> person()</span><br><span class="line">prn2.name = <span class="string">'YL'</span></span><br><span class="line">prn2.age = <span class="number">20</span></span><br><span class="line">prn2.sex = <span class="string">'famale'</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><p>闭包的概念常见于一些动态语言和函数式语言中，下面是维基百科对闭包的解释。</p>
+<blockquote>
+<p>在计算机科学中，闭包（英语：Closure），又称词法闭包（Lexical Closure）或函数闭包（function closures），是引用了自由变量的函数。这个被引用的自由变量将和这个函数一同存在，即使已经离开了创造它的环境也不例外。所以，有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体。闭包在运行时可以有多个实例，不同的引用环境和相同的函数组合可以产生不同的实例。</p>
+</blockquote>
+<p>只看字面意思好像很难理解。举一个简单的例子，我们先用普通的做法循环打印一个集合中内容。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def acoll = [<span class="string">"Groovy"</span>, <span class="string">"Java"</span>, <span class="string">"Ruby"</span>]</span><br><span class="line">        </span><br><span class="line"><span class="keyword">for</span>(Iterator iter = acoll.iterator(); iter.hasNext();)&#123;</span><br><span class="line"> println iter.next()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>用闭包是怎样的呢？<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def acoll = [<span class="string">"Groovy"</span>, <span class="string">"Java"</span>, <span class="string">"Ruby"</span>]</span><br><span class="line">        </span><br><span class="line">acoll.each&#123;</span><br><span class="line"> println it</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在闭包中it是一个关键字，用来指向被调用的外部集合中的每一个值，它是一个默认的值，也可以用传递给闭包的参数覆盖它。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def acoll = [<span class="string">"Groovy"</span>, <span class="string">"Java"</span>, <span class="string">"Ruby"</span>]</span><br><span class="line">        </span><br><span class="line">acoll.each&#123; value -&gt;</span><br><span class="line"> println value</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>闭包允许使用多个参数，像下面这样可以打印集合的key和value。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def hash = [name:<span class="string">"Andy"</span>, <span class="string">"VPN-#"</span>:<span class="number">45</span>]</span><br><span class="line">hash.each&#123; key, value -&gt;</span><br><span class="line"> println <span class="string">"$&#123;key&#125; : $&#123;value&#125;"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>each是一个函数，上面的代码中，闭包作为参数传递给each函数。在Groovy中一个特殊的用法就是当闭包作为函数的最后一个参数时，调用函数可以省略圆括号。这个特点非常重要，因为在Gradle中经常会出现下面这样的代码：<br><img src="3.jpg" alt=""></p>
+<p>在Groovy中，一切都是对象，闭包也是，它是一种特殊的代码块(可以把闭包理解成一个C/C++中的函数指针)，它可以被直接调用，也可以被命名。像这样：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def excite = &#123;</span><br><span class="line">word-&gt; <span class="keyword">return</span> <span class="string">"this is $&#123;word&#125; "</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>调用闭包有两种方式：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">excite(<span class="string">"Groovy"</span>);</span><br><span class="line">excite.call(<span class="string">"Groovy"</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="invokeMethod"><a href="#invokeMethod" class="headerlink" title="invokeMethod"></a>invokeMethod</h3><p>我们知道java中所有的类都默认继承了Object对象，Object对象实现了很多方法，所以我们定义的类就可以直接调用这些方法。在Groovy中，所有的类都默认实现了GroovyObject接口，这个接口中定义了一个很重要的方法：invokeMethod。这个方法对于Groovy的动态性编程很有用，而且可以实现一些很先进的概念，比如下面的DSL。我们来看下invokeMethod方法在一个类中的作用。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class invoketestor&#123;</span><br><span class="line">    deftest()</span><br><span class="line">    &#123;</span><br><span class="line">        println " hello,function name is test'</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    def invokeMethod(String name,Object args)</span><br><span class="line">    &#123;</span><br><span class="line">        println "the other function,name is $&#123;name&#125;"</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们来测试下上面的类：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def testor = <span class="keyword">new</span> invoketestor()</span><br><span class="line">testor.test()</span><br><span class="line">testor.hello()</span><br><span class="line">testor.doSomething()</span><br></pre></td></tr></table></figure></p>
+<p>运行结果如下:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hello,function name is test</span><br><span class="line">the other funcation,name is hello</span><br><span class="line">the other funcation,name is doSomething</span><br></pre></td></tr></table></figure></p>
+<p>可以看出testor.test()方法调用了invoketest类的test()方法，而testor.hello()和testor.doSomething()方法都调用了invoketest类的invokeMethod方法。这说明对于一个实现了invokeMethod方法的Groovy的对象，可以执行任意方法，如果该方法没有在类中定义，则执行invokeMethod方法。这里invokeMethod方法的name参数就是方法名，args参数就是被调用方法的参数。</p>
+<h3 id="DSL"><a href="#DSL" class="headerlink" title="DSL"></a>DSL</h3><p>使用Groovy可以很容易的实现DSL(领域专用语言)，什么是领域专用语言呢？就是只侧重特定领域的表达有限的计算机语言，比如像sql语言，就是一种很典型的DSL，你没有办法使用sql去编写一个操作系统，但是它却能很好的处理关系数据库，而类似java/c++这类就是通用语言。由于Groovy自身语法的特性，Groovy对DSL提供了良好的支持，比如：</p>
+<ul>
+<li>Groovy脚本，不用定义 class</li>
+<li>Groovy的 invokeMethod方法</li>
+<li>方法可不书写（）</li>
+<li>语句末尾省略；分号</li>
+<li>不书写 return</li>
+</ul>
+<p>下面我们通过Groovy来编写一种用于构建xml字符串的DSL。这种DSL的用法如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">xml.html&#123;</span><br><span class="line">    head&#123;</span><br><span class="line">        title <span class="string">"Hello World"</span></span><br><span class="line">    &#125;</span><br><span class="line">    body&#123;</span><br><span class="line">        p<span class="string">"Welcome"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>首先分析下上面的代码，按照Groovy的语法，我们可以理解是xml对象调用了html方法，该方法中传递了一个闭包作为参数，而传给html方法的闭包中一次调用了两个方法，两个方法调用分别也是以闭包作为参数，闭包中又调用了一次函数，这些函数都理解为是xml对象的函数。下面我们来写该DSL的解析类。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">XmlBuilder</span></span>&#123;</span><br><span class="line">    <span class="function">def out</span><br><span class="line">    def <span class="title">invokeMethod</span><span class="params">(String name,Object args)</span></span>&#123;</span><br><span class="line">        out.append(<span class="string">"&lt;$name&gt;\n"</span>);</span><br><span class="line">        <span class="keyword">if</span>(args[<span class="number">0</span>] <span class="keyword">instanceof</span> Closure)&#123;</span><br><span class="line">            args[<span class="number">0</span>].delegate == <span class="keyword">this</span>;</span><br><span class="line">            args[<span class="number">0</span>].call();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            out.append(args[<span class="number">0</span>].toString()+<span class="string">"\n"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        out.append(<span class="string">"&lt;/$name&gt;\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这段代码利用了Groovy的invokeMethod方法。根据参数类型，如果是闭包就进一步执行闭包，如果是字符串则直接输出。需要特别注意的是在执行闭包之前的这段代码args[0].delegate = this;这条语句主动的修改了每个闭包的委派对象，保证了闭包中调用的方法都是在XmlBuilder中需要，需要不到，调用XmlBuilder的invokeMethod方法，前面提到过，闭包跟定义它本身的代码环境有密切关系，这个关系就是由delegate决定，默认情况下delegate是定义闭包的外层对象，在这里，最里层的闭包的delegate对象默认就是外层的闭包对象，而外层闭包对象并没有定义title和p方法，就会出现找不到方法的异常，所以需要有这一句代码，在每次执行闭包的时候都将闭包的delegate指向XmlBuilder类的当前对象实例，保证了找不到方法就调用XmlBuilder的invokeMethod方法。<br>下面我们来调用这段代码对xml解析。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def out = <span class="keyword">new</span> StringBuilder()</span><br><span class="line">def xml = <span class="keyword">new</span> XmlBuilder(out:out)</span><br><span class="line">xml.html&#123;</span><br><span class="line">    head&#123;</span><br><span class="line">        title <span class="string">"Hello World"</span></span><br><span class="line">    &#125;</span><br><span class="line">    body&#123;</span><br><span class="line">        p <span class="string">"Welcome!"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span> </span><br><span class="line">Hello World </span><br><span class="line"><span class="tag">&lt;/<span class="name">title</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span> Welcome! <span class="tag">&lt;/<span class="name">p</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>上面就是Groovy的一些基本知识，Groovy的知识要多得多，感兴趣的读者可以从Groovy的官网中学习。</p>
+<blockquote>
+<p><a href="http://www.groovy-lang.org/" target="_blank" rel="external">http://www.groovy-lang.org/</a></p>
+</blockquote>
+<h2 id="Gradle构建"><a href="#Gradle构建" class="headerlink" title="Gradle构建"></a>Gradle构建</h2><p>Gradle是以Groovy语言为基础，面向java应用为主，基于DSL语法的自动化构建工具。</p>
+<p>首先我们需要了解Gradle中两个基本概念：项目和任务。</p>
+<ul>
+<li>项目是指我们的目的，比如产生一个jar或者网页应用，但是不一定非要代表要构建出某个东西，它也有可能代表要做的某一件事，比如完成某个单元的测试或者部署你的应用。</li>
+<li>任务是不可分的最小工作单元，执行构建工作(比如编译项目或者执行测试)。</li>
+</ul>
+<p>每一次构建都包含一个或多个项目。下面这张图片展示了它们的关系：<br><img src="1.jpg" alt=""></p>
+<p>下面我们在AS中新建一个example项目，来展示一个Gradle项目的基本构成，这个是example项目的目录。<br><img src="2.PNG" alt=""><br>在一个项目中，主要使用以下配置文件对Gradle的构建进行配置：</p>
+<ul>
+<li>Gradle构建脚本（build.gradle）指定了一个项目和它的任务。</li>
+<li>Gradle属性文件（gradle.properties）用来配置构建属性。</li>
+<li>Gradle设置文件（gradle.settings）对于只有一个项目的构建而言是可选的，如果我们的构建中包含多于一个项目，那么它就是必须的，因为它描述了哪一个项目参与构建。每一个多项目的构建都必须在项目结构的根目录中加入一个设置文件。</li>
+</ul>
+<p>在example这个例子中，只有一个项目，就是app。在AS中，用module表示一个项目，而project则是整个工程。<br><img src="4.PNG" alt=""></p>
+<h3 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h3><p>1 初始化阶段，会去读取根工程中setting.gradle中的include信息，决定有哪几个工程加入构建，创建project实例，比如下面有三个工程： include ‘:app’, ‘:lib1’, ‘:lib2’<br>2 配置阶段，会去执行所有工程的build.gradle脚本，配置project对象，一个对象由多个任务组成，此阶段也会去创建、配置task及相关信息。<br>3 运行阶段，根据gradle命令传递过来的task名称，执行相关依赖任务。</p>
+<h3 id="Task"><a href="#Task" class="headerlink" title="Task"></a>Task</h3><p>通常我们会看到这样创建一个任务：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">task hello &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println <span class="string">"hello"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>或者用&lt;&lt;替换doLast，为什么要增加doLast呢？如果是这样写：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">task hello&#123;</span><br><span class="line">    println <span class="string">"hello"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>那么打印会在gradle的配置阶段执行，而doLast会在gradle运行阶段执行。task中有一个action list，task运行时会按顺序执行action list中的action，doLast或者doFirst后面跟的闭包就是一个action，doLast是把action插入到list的最后面，而doFirst是把action插入到list的最前面。</p>
+<p>在Gradle中，各个task并不是孤立的，它们是相互依赖的。要让一个task依赖另一个task需要在task定义时加入”dependsOn:”，被依赖的task会优先于依赖task执行。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">task hello &lt;&lt; &#123;</span><br><span class="line">    println <span class="string">'Hello '</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function">task <span class="title">world</span><span class="params">(dependsOn: hello)</span> &lt;&lt; </span>&#123;</span><br><span class="line">    println <span class="string">"World!"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="增量构建"><a href="#增量构建" class="headerlink" title="增量构建"></a>增量构建</h3><p>我们在build一个apk后，打开Gradle Console会看到类似下面的信息。<br><img src="5.PNG" alt=""><br>在Gradle中，每一个task都有inputs和outpus，如果在执行一个task时，它的输入输出与前一次没有发生变化，那么Gradle会认为该task是最新的，因此Gradle将不会执行这个task。一个task的inputs和outputs可以是一个或多个文件，或者文件夹，甚至是某个闭包所定义的条件。<br>“:app:preBuild”是任务名，后面的UP-TO-DATA表示这个task是最新的。</p>
+<h2 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h2><p>Groovy的设计理念是，所有的特性都是由Gradle插件完成的，这一点和maven很像。一个Gradle插件能够：</p>
+<ul>
+<li>在项目中添加新任务</li>
+<li>为新加入的任务提供默认配置，这个默认配置会在项目中注入新的约定（如源文件位置）。</li>
+<li>加入新的属性，可以覆盖插件的默认配置属性。</li>
+<li>为项目加入新的依赖。</li>
+</ul>
+<p>其实插件就是为了简化我们的工作，帮我们定义好了默认的配置和任务。我们可以通过在项目中的build.gradle中使用名称或类型来指定Gradle插件。比如声明一个java插件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: &apos;java&apos;</span><br></pre></td></tr></table></figure></p>
+<p>这段代码声明使用’java’类型的插件来构建这个项目，表示这个一个java程序。当我们声明使用了java插件后，Gradle在构建的时候就会从默认的目录读取源文件，比如”/src/main/java”中应该存放源代码。Gradle和maven一样采用”约定优于配置”的原则，在可能的情况下提供合理的默认值。如果你想修改这些配置，可以使用”sourceSets”来重新定义源文件的位置。例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sourceSets&#123;</span><br><span class="line">    main&#123;</span><br><span class="line">        java&#123;</span><br><span class="line">            srcDir <span class="string">'src/java'</span></span><br><span class="line">        &#125;</span><br><span class="line">        resources&#123;</span><br><span class="line">            srcDir <span class="string">'src/resources'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Android-Plugin-DSL"><a href="#Android-Plugin-DSL" class="headerlink" title="Android Plugin DSL"></a>Android Plugin DSL</h2><h2 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h2><p>最后来介绍下Android Gradle插件的DSL语言。AS支持的android plugin dsl的语法非常的简洁，下面列举一些常用的配置。<br>在项目主目录下的build.gradle用于配置构建过程中依赖的库和一些全局配置。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    <span class="comment">//构建过程依赖的仓库</span></span><br><span class="line">    repositories &#123;</span><br><span class="line">    jcenter()</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//构建过程需要依赖的库</span></span><br><span class="line">dependencies &#123;</span><br><span class="line">     <span class="comment">//下面声明的是gradle插件的版本</span></span><br><span class="line">     classpath <span class="string">'com.android.tools.build:gradle:1.1.0'</span></span><br><span class="line">     <span class="comment">// <span class="doctag">NOTE:</span> Do not place your application dependencies here; they belong</span></span><br><span class="line">     <span class="comment">// in the individual module build.gradle files</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//这里面配置整个项目依赖的仓库,这样每个module就不用配置仓库了</span></span><br><span class="line">allprojects &#123;</span><br><span class="line">     repositories &#123;</span><br><span class="line">          jcenter()</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在moudle下的build.gradle用于配置当前模块。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//声明插件，这是一个android程序，如果是android库，应该是com.android.library</span></span><br><span class="line">apply plugin: <span class="string">'com.android.application'</span></span><br><span class="line">android &#123;</span><br><span class="line">     <span class="comment">//安卓构建过程需要配置的参数</span></span><br><span class="line">     compileSdkVersion <span class="number">21</span><span class="comment">//编译版本</span></span><br><span class="line">     buildToolsVersion <span class="string">"21.1.2"</span><span class="comment">//buildtool版本</span></span><br><span class="line">     defaultConfig &#123;<span class="comment">//默认配置，会同时应用到debug和release版本上</span></span><br><span class="line">     applicationId <span class="string">"com.taobao.startupanim"</span><span class="comment">//包名</span></span><br><span class="line">     minSdkVersion <span class="number">15</span></span><br><span class="line">     targetSdkVersion <span class="number">21</span></span><br><span class="line">     versionCode <span class="number">1</span></span><br><span class="line">     versionName <span class="string">"1.0"</span></span><br><span class="line">&#125;</span><br><span class="line"> buildTypes &#123;</span><br><span class="line">     <span class="comment">//这里面可以配置debug和release版本的一些参数，比如混淆、签名配置等</span></span><br><span class="line">     release &#123;</span><br><span class="line">         <span class="comment">//release版本</span></span><br><span class="line">         minifyEnabled <span class="keyword">false</span><span class="comment">//是否开启混淆</span></span><br><span class="line">         <span class="function">proguardFiles <span class="title">getDefaultProguardFile</span><span class="params">(<span class="string">'proguard-android.txt'</span>)</span>, 'proguard-rules.pro'<span class="comment">//混淆文件位置</span></span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">dependencies </span>&#123;</span><br><span class="line">     <span class="comment">//模块依赖</span></span><br><span class="line">     <span class="function">compile <span class="title">fileTree</span><span class="params">(dir: <span class="string">'libs'</span>, include: [<span class="string">'*.jar'</span>])</span><span class="comment">//依赖libs目录下所有jar包</span></span><br><span class="line">     compile 'com.android.support:appcompat-v7:21.0.3'<span class="comment">//依赖appcompat库</span></span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>defaultConfig中是一些基本配置，它会同时应用到debug/release版本上，下面列举了所有可配项及对应的值：<br><img src="6.png" alt=""></p>
+<p>buildTypes节点用于配置构建的版本，默认有release/debug两个版本。下面列举了所有可配项：<br><img src="7.png" alt=""></p>
+<h3 id="仓库"><a href="#仓库" class="headerlink" title="仓库"></a>仓库</h3><p>gradle有三种仓库，maven仓库，ivy仓库以及flat本地仓库。声明方式如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">maven&#123;</span><br><span class="line">      url <span class="string">"..."</span></span><br><span class="line">&#125;</span><br><span class="line">ivy&#123;</span><br><span class="line">      url <span class="string">"..."</span></span><br><span class="line">&#125;</span><br><span class="line">flatDir&#123;</span><br><span class="line">      dirs <span class="string">'xxx'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>有一些仓库提供了别名，可直接使用：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">repositories&#123;</span><br><span class="line">     mavenCentral()</span><br><span class="line">     jcenter()</span><br><span class="line">     mavenLocal()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="签名配置"><a href="#签名配置" class="headerlink" title="签名配置"></a>签名配置</h3><p>默认情况下已经有一个debug的签名配置，它使用了debug.keystore。该 keystore 有一个已知的密码和默认的带有已知密码的 key。 debug keystore 位于$HOME/.android/debug.keystore，如果没有会被创建。<br>debug buildType被设置为自动使用debug签名配置。你可以创建其他签名配置或者自定义，通过signingConfigs DSL容器。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    signingConfigs &#123;</span><br><span class="line">        debug &#123;</span><br><span class="line">            <span class="function">storeFile <span class="title">file</span><span class="params">(<span class="string">"debug.keystore"</span>)</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        myConfig </span>&#123;<span class="function">ss</span><br><span class="line">            storeFile <span class="title">file</span><span class="params">(<span class="string">"other.keystore"</span>)</span></span><br><span class="line">            storePassword "android"</span><br><span class="line">            keyAlias "androiddebugkey"</span><br><span class="line">            keyPassword "android"</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    buildTypes </span>&#123;</span><br><span class="line">        foo &#123;</span><br><span class="line">            debuggable <span class="keyword">true</span></span><br><span class="line">            jniDebuggable <span class="keyword">true</span></span><br><span class="line">            signingConfig signingConfigs.myConfig</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>以上片段会把 debug keystore 的路径改为工程的根目录。这会自动的影响任何用到它的 Build Types ，在这里影响到的是 debug Build Type 。</p>
+<h3 id="代码混淆"><a href="#代码混淆" class="headerlink" title="代码混淆"></a>代码混淆</h3><p>自从 Gradle plugin for ProGuard 4.10 版本以后，Gradle 开始支持混淆。如果通过 Build Type 的 minifyEnabled 属性配置了使用混淆后，The ProGuard plugin 会自动被应用，并且自动创建一些任务。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            <span class="function">minifyEnabled <span class="keyword">true</span></span><br><span class="line">            proguardFile <span class="title">getDefaultProguardFile</span><span class="params">(<span class="string">'proguard-android.txt'</span>)</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    productFlavors </span>&#123;</span><br><span class="line">        flavor1 &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        flavor2 &#123;</span><br><span class="line">            proguardFile <span class="string">'some-other-rules.txt'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用 buildTypes 以及 productFlavors 定义的规则文件可以轻松的生成多种版本。<br>有两个默认的规则文件</p>
+<ul>
+<li>proguard-android.txt</li>
+<li>proguard-android-optimize.txt<br>他们位于SDK中，使用 getDefaultProguardFile() 方法可以返回文件的全路经。除了是否启用优化之外，这两个文件的其他功能都是相同的。</li>
+</ul>
+<h3 id="依赖配置"><a href="#依赖配置" class="headerlink" title="依赖配置"></a>依赖配置</h3><p>要配置一个外部库jar包，你可以在compile配置里添加一个依赖。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    <span class="function">compile <span class="title">files</span><span class="params">(<span class="string">'libs/foo.jar'</span>)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">android </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注： dependencies DSL 元素是标准 Gradle API 的一部分，并不属于 android 的元素。</p>
+<p>compile 配置用来编译 main application，它里面的一切都会被添加到编译的 classpath 中，并且也会被打包到最终的 APK 中。</p>
+<p>这里还有添加依赖时其他的配置：</p>
+<ul>
+<li>compile： main application</li>
+<li>androidTestCompile： test application</li>
+<li>debugCompile： debug Build Type</li>
+<li>releaseCompile： release Build Type<br>因为要构建生成一个 APK，必然会有相关联的 Build Type ，APK默认配置了两个(或者更多)编译配置：compile和\Compile。 创建一个新的 Build Type 的时候会自动创建一个基于它名字的编译配置。</li>
+</ul>
+<p>更多的Android Plugin DSL配置可以从google官方手册中获得。</p>
+<blockquote>
+<p><a href="http://google.github.io/android-gradle-dsl/current/index.html" target="_blank" rel="external">Android Plugin DSL Reference</a></p>
+</blockquote>
+
+  </section>
+
+  
+
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'zke1ev3nme'; 
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+  
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">Copyright &copy; 2014-2015 Zke1ev3n. All Rights Reserved</span>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-71084152-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>

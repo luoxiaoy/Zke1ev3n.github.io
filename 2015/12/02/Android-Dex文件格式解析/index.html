@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      Android Dex文件格式解析 | Zke1ev3n&#39;s Blog 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="Zke1ev3n">
+    
+    
+
+    <meta name="description" content="Dex文件是Android虚拟机下的可执行文件，包含了应用程序所用到所有操作指令和运行时数据。在程序编译过程中，java源文件先被编译成class文件，然后通过dx工具将多个class文件整合为一个dex文件。这样的文件结构使得各个类能够共享数据，充分减少了存储空间，提升了运行效率。
+ Java源文件生成Dex文件的映射关系。
+
+dex文件的结构如下图：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Dex文件格式解析 | Zke1ev3n's Blog">
+<meta property="og:url" content="http://yoursite.com/2015/12/02/Android-Dex文件格式解析/index.html">
+<meta property="og:site_name" content="Zke1ev3n's Blog">
+<meta property="og:description" content="Dex文件是Android虚拟机下的可执行文件，包含了应用程序所用到所有操作指令和运行时数据。在程序编译过程中，java源文件先被编译成class文件，然后通过dx工具将多个class文件整合为一个dex文件。这样的文件结构使得各个类能够共享数据，充分减少了存储空间，提升了运行效率。
+ Java源文件生成Dex文件的映射关系。
+
+dex文件的结构如下图：">
+<meta property="og:image" content="http://yoursite.com/2.png">
+<meta property="og:image" content="http://yoursite.com/1.png">
+<meta property="og:image" content="http://yoursite.com/3.png">
+<meta property="og:updated_time" content="2015-12-02T04:48:36.814Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Dex文件格式解析 | Zke1ev3n's Blog">
+<meta name="twitter:description" content="Dex文件是Android虚拟机下的可执行文件，包含了应用程序所用到所有操作指令和运行时数据。在程序编译过程中，java源文件先被编译成class文件，然后通过dx工具将多个class文件整合为一个dex文件。这样的文件结构使得各个类能够共享数据，充分减少了存储空间，提升了运行效率。
+ Java源文件生成Dex文件的映射关系。
+
+dex文件的结构如下图：">
+<meta name="twitter:image" content="http://yoursite.com/2.png">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">Zke1ev3n&#39;s Blog</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">Android Dex文件格式解析</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2015-12-02" class="post-meta__date date">2015-12-02</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>Dex文件是Android虚拟机下的可执行文件，包含了应用程序所用到所有操作指令和运行时数据。在程序编译过程中，java源文件先被编译成class文件，然后通过dx工具将多个class文件整合为一个dex文件。这样的文件结构使得各个类能够共享数据，充分减少了存储空间，提升了运行效率。</p>
+<p> Java源文件生成Dex文件的映射关系。</p>
+<p><img src="2.png" alt=""></p>
+<p>dex文件的结构如下图：<br><a id="more"></a><br><img src="1.png" alt=""></p>
+<p>我们可以在android源码中的/dalvik/libdex/DexFile.h找到关于dexfile的定义。<br>Andre</p>
+<blockquote>
+<p>这里定义的DexFile是dex文件被映射到内存中的结构，出了基本的dex文件结构外，还包含了DexOptHead和尾部附加的数据，这些数据是Android系统为了结合当前平台特性对dex文件的结构进行了优化和扩充，是运行效率更高。</p>
+</blockquote>
+<pre><code>/*
+ * Structure representing a DEX file.
+ *
+ * Code should regard DexFile as opaque, using the API calls provided here
+ * to access specific structures.
+ */
+typedef struct DexFile {
+    /* directly-mapped &quot;opt&quot; header */
+    const DexOptHeader* pOptHeader;
+
+    /* pointers to directly-mapped structs and arrays in base DEX */
+    const DexHeader*    pHeader;
+    const DexStringId*  pStringIds;
+    const DexTypeId*    pTypeIds;
+    const DexFieldId*   pFieldIds;
+    const DexMethodId*  pMethodIds;
+    const DexProtoId*   pProtoIds;
+    const DexClassDef*  pClassDefs;
+    const DexLink*      pLinkData;
+
+    /* mapped in &quot;auxillary&quot; section */
+    const DexClassLookup* pClassLookup;
+
+    /* points to start of DEX file data */
+    const u1*           baseAddr;
+
+    /* track memory overhead for auxillary structures */
+    int                 overhead;
+
+    /* additional app-specific data structures associated with the DEX */
+    void*               auxData;
+} DexFile;
+</code></pre><table>
+<thead>
+<tr>
+<th>名称</th>
+<th style="text-align:center">格式</th>
+<th style="text-align:right">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>header</td>
+<td style="text-align:center">header_item</td>
+<td style="text-align:right">文件头。</td>
+</tr>
+<tr>
+<td>string_ids</td>
+<td style="text-align:center">string_id_item[]</td>
+<td style="text-align:right">字符串索引表，记录了各个字符所在的偏移值，使用UTF-16编码。</td>
+</tr>
+<tr>
+<td>type_ids</td>
+<td style="text-align:center">type_id_item[]</td>
+<td style="text-align:right">类型数据索引，记录了各个类型的字符串索引。</td>
+</tr>
+<tr>
+<td>proto_id</td>
+<td style="text-align:center">proto_id_item[]</td>
+<td style="text-align:right">函数原型数据索引，记录了方法声明的字符串，返回类型和参数列表。</td>
+</tr>
+<tr>
+<td>field_ids</td>
+<td style="text-align:center">field_id_item[]</td>
+<td style="text-align:right">字段数据索引，记录了所属类，声明类型和方法名等信息。</td>
+</tr>
+<tr>
+<td>method_ids</td>
+<td style="text-align:center">method_id_item[]</td>
+<td style="text-align:right">类方法索引，记录了方法所属类，声明类型以及方法名等信息。</td>
+</tr>
+<tr>
+<td>class_defs</td>
+<td style="text-align:center">class_def_item[]</td>
+<td style="text-align:right">类定义数据，记录了指定类的各类信息，包括接口，超类，类数据偏移量等。</td>
+</tr>
+<tr>
+<td>data</td>
+<td style="text-align:center">type_id_item[]</td>
+<td style="text-align:right">类型数据索引，记录了各个类型的字符串索引。</td>
+</tr>
+<tr>
+<td>type_ids</td>
+<td style="text-align:center">ubyte[]</td>
+<td style="text-align:right">数据区，保存着各个类的数据。</td>
+</tr>
+<tr>
+<td>link_data</td>
+<td style="text-align:center">ubyte[]</td>
+<td style="text-align:right">静态连接数据。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Header"><a href="#Header" class="headerlink" title="Header"></a>Header</h2><p>header是dex文件的文件头，简单的记录了dex文件的一些基本信息和大致的数据分布。header的大小固定为0x70,其中每一项信息所占用的大小也是固定的。同样在/dalvik/libdex/DexFile.h可以看到header_item的定义：<br>    /*</p>
+<pre><code> * Direct-mapped &quot;header_item&quot; struct.
+ */
+typedef struct DexHeader {
+    u1  magic[8];           /* includes version number */
+    u4  checksum;           /* adler32 checksum */
+    u1  signature[kSHA1DigestLen]; /* SHA-1 hash */
+    u4  fileSize;           /* length of entire file */
+    u4  headerSize;         /* offset to start of next section */
+    u4  endianTag;          /*字节序标号*/
+    u4  linkSize;
+    u4  linkOff;
+    u4  mapOff;
+    u4  stringIdsSize;
+    u4  stringIdsOff;
+    u4  typeIdsSize;
+    u4  typeIdsOff;
+    u4  protoIdsSize;
+    u4  protoIdsOff;
+    u4  fieldIdsSize;
+    u4  fieldIdsOff;
+    u4  methodIdsSize;
+    u4  methodIdsOff;
+    u4  classDefsSize;
+    u4  classDefsOff;
+    u4  dataSize;
+    u4  dataOff;
+} DexHeader;
+</code></pre><p>下表是每一项的基本信息：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th style="text-align:center">格式</th>
+<th style="text-align:right">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>magic</td>
+<td style="text-align:center">ubyte[4]</td>
+<td style="text-align:right">dex\n</td>
+</tr>
+<tr>
+<td>version</td>
+<td style="text-align:center">Ubyte[4]</td>
+<td style="text-align:right">035\0 或 036\0</td>
+</tr>
+<tr>
+<td>checksum</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">使用zlib 的adler32 所计算的32-bitsCheckSum . 计算的范围为DEX 文件的长度（Header-&gt;fileSize) 减去8bytes Magic Code 与4bytes CheckSum 的范围. 用来确保DEX 文件内容没有损毁.</td>
+</tr>
+<tr>
+<td>signature</td>
+<td style="text-align:center">ubyte[20]</td>
+<td style="text-align:right">SHA-1signature (hash) 用来识别原本的DEX 文件( 被优化以前的DEX).SHA-1 计算的范围为DEX 文件的长度（Header-&gt;fileSize) 减去8bytes Magic Code,4 bytes CheckSum 与20bytesSHA-1 的范围. 用来识别最原本的DEX 文件的唯一性.( 所以被优化过后, 这个SHA-1 尽能用来识别原本的DEX 文件, 而无法 通过ODEX 文件计算回最原本的DEX 文件SHA-1 值了).</td>
+</tr>
+<tr>
+<td>file_size</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">文件的总大小。</td>
+</tr>
+<tr>
+<td>header_size</td>
+<td style="text-align:center">uint= 0x70</td>
+<td style="text-align:right">用来记录目前DEXHeader 的大小( 现有版本为0x70bytes), 可用来做为后续Header 如果有改版时, 最基本的头栏位向前, 向后相容的依据.</td>
+</tr>
+<tr>
+<td>endian_tag</td>
+<td style="text-align:center">uint= ENDIAN_CONSTANT</td>
+<td style="text-align:right">预设值为Little-Endian, 在这栏位会显示32bits 值”0x12345678”.( 应该在Big-Endian 处理器上, 会转为“ 0x78563412”)</td>
+</tr>
+<tr>
+<td>link_size</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">LinkSection 的大小, 如果为0 表示该DEX 文件不是静态连结.</td>
+</tr>
+<tr>
+<td>link_off</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">用来表示LinkSection 距离Dex 头的Offset. 如果LinkSize 为0, 此值也会为0. 资料格式可以参考struct DexLink.</td>
+</tr>
+<tr>
+<td>map_off</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">用来表示MapItem 距离Dex 头的Offset. 如果为0, 表示这DEX 文件没有MapItem. 资料格式可以参考struct map_list.</td>
+</tr>
+<tr>
+<td>string_ids_size</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">字符串地址列表中的元素个数。</td>
+</tr>
+<tr>
+<td>string_ids_off</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">字符串地址列表的偏移。</td>
+</tr>
+<tr>
+<td>type_ids_size</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">用来表示TypeIDs List 中的元素个数.</td>
+</tr>
+<tr>
+<td>type_ids_off</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">TypeIDs List 的文件偏移。如果type_ids_size 为0 ，则这个值亦为0。</td>
+</tr>
+<tr>
+<td>proto_ids_size</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">用来表示PrototypeIDs List 中的元素个数。</td>
+</tr>
+<tr>
+<td>proto_ids_off</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">Prototype IDs 的文件偏移。如果proto_ids_size 为0 这个值亦为0.</td>
+</tr>
+<tr>
+<td>field_ids_size</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">Field IDs List的文件偏移。如果field_ids_size 为0 这个值亦为0。</td>
+</tr>
+<tr>
+<td>field_ids_off</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">字符串地址列表的偏移。</td>
+</tr>
+<tr>
+<td>method_ids_size</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">用来表示MethodIDs List 中的元素个数。</td>
+</tr>
+<tr>
+<td>method_ids_off</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">用来表示Method IDs List 距离Dex 头的Offset. 如果method_ids_size 为0 这个值亦为0. 资料格式可以参考struct DexMethodId.</td>
+</tr>
+<tr>
+<td>class_defs_size</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">用来表示ClassDefinitions List 的总数.</td>
+</tr>
+<tr>
+<td>class_defs_off</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">用来表示ClassDefinitionList 距离Dex 头的Offset. 如果class_defs_size 为0 这个值亦为0. 资料格式可以参考struct DexClassDef.</td>
+</tr>
+<tr>
+<td>data_size</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">用来表示DataSection 的大小. 并需为sizeof(uint) 的偶数倍.( 所以就是0,8,16…etc)</td>
+</tr>
+<tr>
+<td>data_off</td>
+<td style="text-align:center">uint</td>
+<td style="text-align:right">用来表示DataSection 距离Dex 头的Offset.</td>
+</tr>
+</tbody>
+</table>
+<p>在header中有一个map_off,这是一个偏移地址，指向dex data区的maplist。</p>
+<pre><code>/*
+ * Direct-mapped &quot;map_item&quot;.
+ */
+typedef struct DexMapItem {
+    u2  type;              /* type code (see kDexType* above) */
+    u2  unused;
+    u4  size;              /* count of items of the indicated type */
+    u4  offset;            /* file offset to the start of data */
+} DexMapItem;
+
+/*
+ * Direct-mapped &quot;map_list&quot;.
+ */
+typedef struct DexMapList {
+    u4  size;               /* #of entries in list */
+    DexMapItem list[1];     /* entries */
+} DexMapList;
+</code></pre><p>map_list 里先用一个 uint 描述后面有 size 个 map_item , 后续就是对应的 size 个 map_item 描述 。map_item 结构有 4 个元素 ： type 表示该 map_item 的类型 ，本节能用到的描述如下 ，详细Dalvik<br>Executable Format 里 Type Code 的定义 ；size 表示再细分此 item ， 该类型的个数 ；offset 是第一个元素的针对文件初始位置的偏移量 ； unuse 是用对齐字节的 ，无实际用处 。在DexMapItem结构中，type是一个枚举常量。</p>
+<pre><code>/* map item type codes */
+ enum {
+     kDexTypeHeaderItem               = 0x0000,
+     kDexTypeStringIdItem             = 0x0001,
+     kDexTypeTypeIdItem               = 0x0002,
+     kDexTypeProtoIdItem              = 0x0003,
+     kDexTypeFieldIdItem              = 0x0004,
+     kDexTypeMethodIdItem             = 0x0005,
+     kDexTypeClassDefItem             = 0x0006,
+     kDexTypeMapList                  = 0x1000,
+     kDexTypeTypeList                 = 0x1001,
+     kDexTypeAnnotationSetRefList     = 0x1002,
+     kDexTypeAnnotationSetItem        = 0x1003,
+     kDexTypeClassDataItem            = 0x2000,
+     kDexTypeCodeItem                 = 0x2001,
+     kDexTypeStringDataItem           = 0x2002,
+     kDexTypeDebugInfoItem            = 0x2003,
+     kDexTypeAnnotationItem           = 0x2004,
+     kDexTypeEncodedArrayItem         = 0x2005,
+     kDexTypeAnnotationsDirectoryItem = 0x2006,
+ };
+</code></pre><h2 id="string-ids"><a href="#string-ids" class="headerlink" title="string_ids"></a>string_ids</h2><p>这一块区域中存储的是dex文件中字符串的资源的索引信息。即目标字符串在dex文件数据区的物理偏移地址。在DexFile.h中可以找到它的定义：</p>
+<pre><code>struct DexStringId {
+    u4 stringDataOff; /* 在dex文件中实际偏移量 */
+};
+</code></pre><p>该数据结构只有一个stringDataOff成员，当虚拟机需要读取该字符串是，只需要将dex文件在内存中的起始地址加上stringDataOff所表示的偏移值，即可得到该字符串在内存中的实际物理地址。</p>
+<blockquote>
+<p>在Dex文件中，每个字符串都对应了一个DexStringId数据结构，该数据结构的大小为4B,是一个确定的量。并且虚拟机可以通过头文件中的String_ids_size知道当前Dex文件的字符串总数，也就是string_ids区域中DexStringId的总数，因此虚拟机通过简单的乘法即可实现对改索引资源进行正确的访问。</p>
+<p>在data区存放的string并不是ascii编码，而是MUTF-8编码。这是一种修改过的UTF-8编码，与传统的UTF-8编码有以下几点区别：</p>
+<ul>
+<li>MUTF-8使用1-3字节编码</li>
+<li>大于16位的Unicode编码U+10000~U+10ffff使用3字节来编码</li>
+<li>U+0000采用2字节来编码</li>
+<li>采用空字符作为字符串的结尾<br>MUTF-8字符串的头部存放的是由uleb128编码的字符串个数(字符串个数不包括结尾的空字符)。</li>
+</ul>
+</blockquote>
+<h2 id="type-ids"><a href="#type-ids" class="headerlink" title="type_ids"></a>type_ids</h2><p>这一块区域中存储的是类型资源的索引信息。定义如下：</p>
+<pre><code>struct DexTypeId {
+    u4 descriptorIdx; /* 指向字符串索引表 */
+};
+</code></pre><p>在dex中，类型是是以字符串的形式保存在数据区的，因此DexTypeId数据结构中的descriptorIdx保存的是目标类型在字符串索引表里的序列号。虚拟机通过这个序列号从字符串索引表中找出对应类型的字符串。</p>
+<h2 id="proto-ids"><a href="#proto-ids" class="headerlink" title="proto_ids"></a>proto_ids</h2><p>这一区域中存储的内容是方法原型资源的索引信息，数据结构DexProtoId负责规格化这些信息。</p>
+<pre><code>struct DexProtoId {
+    u4 shortyIdx; /* 方法声明字符串，指向字符串索引表 */
+    u4 returnTypeIdx; /* 方法返回类型，指向字符串索引表 */
+    u4 parametersOff; /* 指向一个DexTypeList的数据结构，DexTypeList表示参数列表*/
+
+};
+</code></pre><p>这个数据结构的前两个成员同样指向字符串索引表，而parametersOff指向的是一个DexTypeList的数据结构，这个结构体的定义如下：</p>
+<pre><code>/*
+* Direct-mapped &quot;type_list&quot;.
+*/
+typedef struct DexTypeList {
+     u4  size;               /* 表示DexTypeItem数据结构的个数 */
+     DexTypeItem list[1];    /* DexTypeItem列表*/
+} DexTypeList;
+</code></pre><p>DexTypeList表示的是一个方法的参数列表，size是参数个数，list这个数组是一个DexTypeItem的数组，这个DexTypeItem就是表示参数类型的数据结构。</p>
+<pre><code>/*
+ * Direct-mapped &quot;type_item&quot;.
+*/
+typedef struct DexTypeItem {
+    u2  typeIdx;            /* 表示参数类型，指向type_ids索引表 */
+} DexTypeItem;
+</code></pre><p>typeIdx指向类型资源索引表，虚拟机通过该变亮就能获得相应的参数类型。</p>
+<h2 id="field-ids"><a href="#field-ids" class="headerlink" title="field_ids"></a>field_ids</h2><p>这一块区域保存的是代码中的字段的索引信息。用数据结构DexFieldId对索引信息规格化。</p>
+<pre><code>struct DexFieldId {
+    u2 classIdx; /* 表示所属类的类型 */
+    u2 typeIdx; /*  表示字段的类型 */
+    u4 nameIdx; /*  字段的名称 */
+};
+</code></pre><p>在DexFieldId中,classIdx和typeIdx都是指向类型索引表type_ids中的一个DexTypeId表项。而nameIdx是指向字符串索引表string_ids中的一个表项。</p>
+<h2 id="method-ids"><a href="#method-ids" class="headerlink" title="method_ids"></a>method_ids</h2><p>method_ids资源区保存的是Dex文件中类方法数据的索引信息。采用的数据结构为</p>
+<pre><code>struct DexMethodId {
+    u2 classIdx; /* 表示所属类的类型 */
+    u2 protoIdx; /* 表示方法原型的类型 */
+    u4 nameIdx; /* 方法名称 */
+};
+</code></pre><p>classIdx指向类型索引表type_ids中的一个DexTypeId，变量protoIdx记录的该方法的原型，指向proto_ids表。nameIdx指向字符串表string_ids，表示方法名称。</p>
+<h2 id="class-def"><a href="#class-def" class="headerlink" title="class_def"></a>class_def</h2><p>在class_def资源区中，使用数据结构DexClassDef来对资源信息规格化。</p>
+<pre><code>struct DexClassDef {
+    u4 classIdx; /* 表示类的类型，指向类型索引表 */
+    u4 accessFlags; /* 访问标识符 */
+    u4 superclassIdx; /* 表示超类的类型，指向类型索引表 */
+    u4 interfacesOff; /* 接口信息，指向一个DexTypeList数据结构*/
+    u4 sourceFileIdx; /* 表示源文件名，指向字符串索引表 */
+    u4 annotationsOff; /* 注解目录结构 */
+    u4 classDataOff; /* 类数据，指向一个DexClassData数据结构*/
+    u4 staticValuesOff; /* 静态值得偏移量 */
+    };
+</code></pre><blockquote>
+<p>访问标识符，表示了该类的属性，同样也适用于字段和方法，具体如下表：</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>AccessFlag比特位</th>
+<th>类（Class）</th>
+<th style="text-align:center">方法（Method）</th>
+<th style="text-align:left">域（Field）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x00001</td>
+<td>Public</td>
+<td style="text-align:center">Public</td>
+<td style="text-align:left">Public</td>
+</tr>
+<tr>
+<td>0x00002</td>
+<td>Private</td>
+<td style="text-align:center">Private</td>
+<td style="text-align:left">Private</td>
+</tr>
+<tr>
+<td>0x00004</td>
+<td>Protected</td>
+<td style="text-align:center">Protected</td>
+<td style="text-align:left">Protected</td>
+</tr>
+<tr>
+<td>0x00008</td>
+<td>Static</td>
+<td style="text-align:center">Static</td>
+<td style="text-align:left">Static</td>
+</tr>
+<tr>
+<td>0x00010</td>
+<td>Final</td>
+<td style="text-align:center">Final</td>
+<td style="text-align:left">Final</td>
+</tr>
+<tr>
+<td>0x00020</td>
+<td>N/A</td>
+<td style="text-align:center">Synchronized</td>
+<td style="text-align:left">N/A</td>
+</tr>
+<tr>
+<td>0x00040</td>
+<td>N/A</td>
+<td style="text-align:center">Bridge</td>
+<td style="text-align:left">Volatile</td>
+</tr>
+<tr>
+<td>0x00080</td>
+<td>N/A</td>
+<td style="text-align:center">VarArgs</td>
+<td style="text-align:left">Transient</td>
+</tr>
+<tr>
+<td>0x00100</td>
+<td>N/A</td>
+<td style="text-align:center">Native</td>
+<td style="text-align:left">N/A</td>
+</tr>
+<tr>
+<td>0x00200</td>
+<td>Interface</td>
+<td style="text-align:center">N/A</td>
+<td style="text-align:left">N/A</td>
+</tr>
+<tr>
+<td>0x00400</td>
+<td>Abstract</td>
+<td style="text-align:center">Abstract</td>
+<td style="text-align:left">N/A</td>
+</tr>
+<tr>
+<td>0x00800</td>
+<td>N/A</td>
+<td style="text-align:center">Strict</td>
+<td style="text-align:left">N/A</td>
+</tr>
+<tr>
+<td>0x01000</td>
+<td>Synthetic</td>
+<td style="text-align:center">Synthetic</td>
+<td style="text-align:left">Synthetic</td>
+</tr>
+<tr>
+<td>0x02000</td>
+<td>Annotation</td>
+<td style="text-align:center">N/A</td>
+<td style="text-align:left">N/A</td>
+</tr>
+<tr>
+<td>0x04000</td>
+<td>Enum</td>
+<td style="text-align:center">N/A</td>
+<td style="text-align:left">Public</td>
+</tr>
+<tr>
+<td>0x08000</td>
+<td>N/A</td>
+<td style="text-align:center">Miranda</td>
+<td style="text-align:left">N/A</td>
+</tr>
+<tr>
+<td>0x10000</td>
+<td>Verified</td>
+<td style="text-align:center">Constructor</td>
+<td style="text-align:left">N/A</td>
+</tr>
+<tr>
+<td>0x20000</td>
+<td>Optimized</td>
+<td style="text-align:center">Declared_Synchronized</td>
+<td style="text-align:left">N/A</td>
+</tr>
+</tbody>
+</table>
+<p>DexClassDef的成员都和前面的分析类似，不同的是classDataOff是一个dex文件内部的偏移值，指向的是一个DexClassData数据结构实例，DexClassData的定义从/dalvik/libdex/DexClass.h中可以找到。</p>
+<blockquote>
+<p>在DexClass.h中，所有的u4类型，都被转为成uleb128类型。如下所示：</p>
+</blockquote>
+<pre><code>/* Read the header of a class_data_item without verification. This
+ * updates the given data pointer to point past the end of the read
+ * data. */
+DEX_INLINE void dexReadClassDataHeader(const u1** pData,
+        DexClassDataHeader *pHeader) {
+    pHeader-&gt;staticFieldsSize = readUnsignedLeb128(pData);
+    pHeader-&gt;instanceFieldsSize = readUnsignedLeb128(pData);
+    pHeader-&gt;directMethodsSize = readUnsignedLeb128(pData);
+    pHeader-&gt;virtualMethodsSize = readUnsignedLeb128(pData);
+}
+
+/* Read an encoded_field without verification. This updates the
+ * given data pointer to point past the end of the read data.
+ *
+ * The lastIndex value should be set to 0 before the first field in
+ * a list is read. It is updated as fields are read and used in the
+ * decode process.
+ */
+DEX_INLINE void dexReadClassDataField(const u1** pData, DexField* pField,
+        u4* lastIndex) {
+    u4 index = *lastIndex + readUnsignedLeb128(pData);
+
+    pField-&gt;accessFlags = readUnsignedLeb128(pData);
+    pField-&gt;fieldIdx = index;
+    *lastIndex = index;
+}
+
+/* Read an encoded_method without verification. This updates the
+ * given data pointer to point past the end of the read data.
+ *
+ * The lastIndex value should be set to 0 before the first method in
+ * a list is read. It is updated as fields are read and used in the
+ * decode process.
+ */
+DEX_INLINE void dexReadClassDataMethod(const u1** pData, DexMethod* pMethod,
+        u4* lastIndex) {
+    u4 index = *lastIndex + readUnsignedLeb128(pData);
+
+    pMethod-&gt;accessFlags = readUnsignedLeb128(pData);
+    pMethod-&gt;codeOff = readUnsignedLeb128(pData);
+    pMethod-&gt;methodIdx = index;
+    *lastIndex = index;
+}
+</code></pre><blockquote>
+<p>每个uleb128类型是leb128的无符号类型，每个leb128类型的数据包含1-5个字节，表示一个32bit的数值。每个字节只有7位有效，最高一位用来表示是否需要使用到下一个字节，比如如果第一个字节最高位为1，表示还需要使用到第2个字节，如果第二个字节的最高位为1，表示会使用到第3个字节，以此类推，最多5个字节。对于一个2个字节的leb128类型数据，其结构如图所示。</p>
+</blockquote>
+<p><img src="3.png" alt=""></p>
+<pre><code>/* expanded form of class_data_item. Note: If a particular item is
+  * absent (e.g., no static fields), then the corresponding pointer
+  * is set to NULL. */
+ typedef struct DexClassData {
+     DexClassDataHeader header;     /*类数据头*/
+     DexField*          staticFields;   /*指向目标的静态字段*/
+     DexField*          instanceFields; /*指向目标类的实例字段*/
+     DexMethod*         directMethods;  /*指向目标类的直接方法*/
+     DexMethod*         virtualMethods; /*指向目标类的虚方法*/
+ } DexClassData;
+</code></pre><p>首先看这个DexClassData的header成员，这个成员是一个DexClassDataHeader数据结构，记录了目标类中各个部分数据的个数，主要包括静态字段，实例字段，直接方法和虚方法。</p>
+<pre><code>/* expanded form of a class_data_item header */
+ typedef struct DexClassDataHeader {
+     u4 staticFieldsSize;
+     u4 instanceFieldsSize;
+     u4 directMethodsSize;
+     u4 virtualMethodsSize;
+ } DexClassDataHeader;
+</code></pre><p>再看DexField，它的定义如下。</p>
+<pre><code>struct DexField {
+    u4 fieldIdx; /* 指向字段索引表中的一个表项，即一个DexFieldId的数据结构 */
+    u4 accessFlags; /*访问表示符*/
+};
+</code></pre><p>DexMethod描述了类的方法。先看定义。</p>
+<pre><code>struct DexMethod {
+    u4 methodIdx; /* 指向方法索引表中的一个表项，即一个DexMethodId数据结构 */
+    u4 accessFlags; /*访问标识符*/
+    u4 codeOff; /* 指向一个DexCode的数据结构 */
+};
+</code></pre><p>注意codeOff这个成员，它指向的是一个DexCode的数据结构，而DexCode中记录的正是Dex文件中目标类方法的字节码。</p>
+<pre><code>struct DexCode {
+    u2 registersSize;   /*寄存器个数*/
+    u2 insSize;         /*输入参数个数*/
+    u2 outsSize;        /*外部方法使用寄存器数*/
+    u2 triesSize;       /*tries个数*/
+    u4 debugInfoOff;    /* 调试信息地址 */
+    u4 insnsSize;       /*方法指令个数 */
+    u2 insns[1];        /*真实指令数组*/
+    /* followed by optional u2 padding */
+    /* followed by try_item[triesSize] */
+    /* followed by uleb128 handlersSize */
+    /* followed by catch_handler_item[handlersSize] */
+};
+</code></pre><p>Dex文件通过DexCode来管理类方法，成员insns数组保存的就是方法的真实指令的二进制数据，关于对这些数据的解析，可以参考 <a href="https://source.android.com/devices/tech/dalvik/dalvik-bytecode.html" target="_blank" rel="external">https://source.android.com/devices/tech/dalvik/dalvik-bytecode.html</a>。</p>
+
+  </section>
+
+  
+
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'zke1ev3nme'; 
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+  
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">Copyright &copy; 2014-2015 Zke1ev3n. All Rights Reserved</span>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-71084152-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>

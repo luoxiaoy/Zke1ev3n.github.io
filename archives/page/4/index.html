@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      page 4 | Archives | Zke1ev3n&#39;s Blog 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="Zke1ev3n">
+    
+    
+
+    <meta name="description" content="Talk is cheep,show me the code.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="page 4 | Archives | Zke1ev3n's Blog">
+<meta property="og:url" content="http://yoursite.com/archives/page/4/index.html">
+<meta property="og:site_name" content="Zke1ev3n's Blog">
+<meta property="og:description" content="Talk is cheep,show me the code.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="page 4 | Archives | Zke1ev3n's Blog">
+<meta name="twitter:description" content="Talk is cheep,show me the code.">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">Zke1ev3n&#39;s Blog</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+
+   <!-- do nothing -->
+
+
+<div class="main-post-list">
+    <ol class="post-list">
+    
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
+        <a href="/2015/12/02/Android-启动过程解析/" title="link to Android 启动过程解析">Android 启动过程解析</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2015-12-02" class="post-list__meta--date date">2015-12-02</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>当Android设备的电源键被按下时，主要执行了以下步骤：</p>
+<p><img src="1.png" alt=""></p>
+<h3 id="Boot-ROM"><a href="#Boot-ROM" class="headerlink" title="Boot ROM"></a>Boot ROM</h3><p>加电后,设备从固化在CPU ASIC中的Boot ROM代码开始执行。这段代码主要用于初始化软件堆栈，通信端口和可引导存储设备(比如NAND/EMMC)。然后BootROM会从存储器中加载bootloader的一部分到处理器ISRAM中(这时候还没有初始化DRAM)，然后跳转到bootloader的入口处执行。</p>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
+        <a href="/2015/12/02/Android-so注入/" title="link to Android so注入">Android so注入</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2015-12-02" class="post-list__meta--date date">2015-12-02</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>Android下的so注入，目前网上已经有很多种比较成熟的版本了。虽然他们实现的细节有一些不同，但是原理都是一样的。我们知道Android的底层是linux，在linux下有一个特殊的函数：ptrace，利用这个函数，我们不仅可以查看其他进程状态，还能向其他进程注入任意数据，执行任意代码。因为Android下每一个进程都是隔离的，所以要注入另一个进程，我们首先需要取得root权限，当然也可以利用一些签名漏洞。</p>
+<hr>
+<p>在学习linux ptrace时，我们已经成功向其他进程注入了一段shellcode，当时我们的做法是遍历/proc/pid/maps文件，找到空闲的地方，然后存放shellcode，再跳转到这个地址执行。注入so的思路和这个基本相似，但是需要注意的是Android的CPU架构一般是arm，所以我们的实现方案也是基于arm的，当然x86的也一样，只需要调整下寄存器即可。<br>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
+        <a href="/2015/12/02/破解简单的C井软件/" title="link to 破解简单的C#软件">破解简单的C#软件</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2015-12-02" class="post-list__meta--date date">2015-12-02</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>在开发或者调试过程中，经常需要在多个窗口间来回切换查看信息，在操作上不仅麻烦，而且经常打开错误的窗口。所以我们希望能够在有限的屏幕里平铺多个窗口，这就需要能够分割屏幕的软件，而这类软件非常少，并且体验很不好。在尝试多款分屏软件后，我发现了一款叫MaxTo的软件能很好的解决我的问题，不过这款软件只能免费使用30天，而且价格还很贵。</p>
+<hr>
+<p><img src="1.png" alt=""><br><img src="2.png" alt=""></p>
+<p>不过后来我发现这款软件是用C#写的，看来是款好捏的软柿子，所以我试着来破解它。</p>
+<p>打开注册窗口，我们会发现不管怎么输入邮箱和序列号，注册按钮都无法点击，看来软件会检测邮箱和序列号的逻辑关系。<br>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
+        <a href="/2015/12/02/Linux-ptrace注入/" title="link to Linux ptrace注入">Linux ptrace注入</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2015-12-02" class="post-list__meta--date date">2015-12-02</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>ptrace(Process Trace)是linux提供的一种特殊的机制。利用Ptrace，你不仅可以跟踪某一进程的执行过程，还可以修改某个进程的内存或寄存器，任何传递给被跟踪进程的信号(除了直接杀死进程的SIGKILL信号)，都会使得这个进程进入暂停状态，这时系统通过wait()通知跟踪进程，跟踪进程就可以修改被跟踪进程的行为了。</p>
+<blockquote>
+<p>以下内容都依赖于linux i386体系</p>
+</blockquote>
+<h2 id="函数原型"><a href="#函数原型" class="headerlink" title="函数原型"></a>函数原型</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/ptrace.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">int</span> <span class="title">ptrace</span><span class="params">(<span class="keyword">enum</span> __ptrace_request request,<span class="keyword">pit_t</span> pid,<span class="keyword">void</span> *addr,<span class="keyword">void</span> *data)</span></span></span><br></pre></td></tr></table></figure>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
+        <a href="/2015/12/02/Android-Dalvik字节码解析/" title="link to Android Dalvik字节码解析">Android Dalvik字节码解析</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2015-12-02" class="post-list__meta--date date">2015-12-02</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>Dalvik字节码是专门为Dalvik VM设计的一种指令集。和java虚拟机不同的是，java虚拟机是基于堆栈设计的，而Dalvik虚拟机是基于寄存器的，效率要比java虚拟机快很多。在java字节码转换为dalvik字节码的过程中，方法调用栈就已经确定，其中明确的指定了使用寄存器的个数和额外的数据。Dalvik字节码能使用65536个虚拟寄存器，每个寄存器32位，以相邻的两个寄存器表示64位数据，最终所有的寄存器都会被映射到真实的物理寄存器上。</p>
+<p>一段Dalvik字节码由一系列Dalvik指令组成，指令语法由指令的位描述与指令格式标识来决定。位描述约定如下：</p>
+<ul>
+<li><p>每16位的字采用空格分隔开来。</p>
+</li>
+<li><p>每个字母表示4位，每个字母按顺序从高字节开始，排列到低字节。每4位之间可能使有竖线“|”来表示不同的内容。</p>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+  </ol>
+
+  <hr class="post-list__divider " />
+
+<nav class="pagination" role="navigation">
+    
+    	
+          <a class="newer-posts pagination__newer btn btn-small btn-tertiary" href="/archives/page/3/">&larr; Prev </a>
+        
+    
+
+    <span class="pagination__page-number"> 4 / 5</span>
+    
+    
+        <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/archives/page/5/">Next &rarr;</a>
+    
+</nav>
+
+
+</div>
+            <footer class="footer">
+
+    <span class="footer__copyright">Copyright &copy; 2014-2015 Zke1ev3n. All Rights Reserved</span>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-71084152-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>

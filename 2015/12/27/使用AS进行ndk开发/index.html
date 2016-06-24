@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      使用AS进行ndk开发 | Zke1ev3n&#39;s Blog 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="Zke1ev3n">
+    
+    
+
+    <meta name="description" content="写这篇文章主要是为了记录下载Android Studio进行NDK开发的步骤。AS已经用了一段时间了，用AS开发Android确实舒服很多，明显感觉这是一个真正为开发Android而生的IDE，而不是像ADT那样依赖其他IDE。但是以前的Eclipse我也配置了很久，各方面都已经很不错，特别是在ndk开发上很方便，AS明显对ndk的支持还不是很完美。不过JetBrains家的东西总是越用越顺手，相">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用AS进行ndk开发 | Zke1ev3n's Blog">
+<meta property="og:url" content="http://yoursite.com/2015/12/27/使用AS进行ndk开发/index.html">
+<meta property="og:site_name" content="Zke1ev3n's Blog">
+<meta property="og:description" content="写这篇文章主要是为了记录下载Android Studio进行NDK开发的步骤。AS已经用了一段时间了，用AS开发Android确实舒服很多，明显感觉这是一个真正为开发Android而生的IDE，而不是像ADT那样依赖其他IDE。但是以前的Eclipse我也配置了很久，各方面都已经很不错，特别是在ndk开发上很方便，AS明显对ndk的支持还不是很完美。不过JetBrains家的东西总是越用越顺手，相">
+<meta property="og:image" content="http://yoursite.com/1.PNG">
+<meta property="og:image" content="http://yoursite.com/2.PNG">
+<meta property="og:image" content="http://yoursite.com/3.PNG">
+<meta property="og:image" content="http://yoursite.com/4.PNG">
+<meta property="og:image" content="http://yoursite.com/5.PNG">
+<meta property="og:image" content="http://yoursite.com/6.PNG">
+<meta property="og:image" content="http://yoursite.com/7.PNG">
+<meta property="og:image" content="http://yoursite.com/8.PNG">
+<meta property="og:image" content="http://yoursite.com/9.PNG">
+<meta property="og:image" content="http://yoursite.com/10.PNG">
+<meta property="og:image" content="http://yoursite.com/11.PNG">
+<meta property="og:updated_time" content="2015-12-29T11:27:33.170Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用AS进行ndk开发 | Zke1ev3n's Blog">
+<meta name="twitter:description" content="写这篇文章主要是为了记录下载Android Studio进行NDK开发的步骤。AS已经用了一段时间了，用AS开发Android确实舒服很多，明显感觉这是一个真正为开发Android而生的IDE，而不是像ADT那样依赖其他IDE。但是以前的Eclipse我也配置了很久，各方面都已经很不错，特别是在ndk开发上很方便，AS明显对ndk的支持还不是很完美。不过JetBrains家的东西总是越用越顺手，相">
+<meta name="twitter:image" content="http://yoursite.com/1.PNG">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">Zke1ev3n&#39;s Blog</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">使用AS进行ndk开发</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2015-12-27" class="post-meta__date date">2015-12-27</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>写这篇文章主要是为了记录下载Android Studio进行NDK开发的步骤。AS已经用了一段时间了，用AS开发Android确实舒服很多，明显感觉这是一个真正为开发Android而生的IDE，而不是像ADT那样依赖其他IDE。但是以前的Eclipse我也配置了很久，各方面都已经很不错，特别是在ndk开发上很方便，AS明显对ndk的支持还不是很完美。不过JetBrains家的东西总是越用越顺手，相信不久后Google会改进的。也感谢Google把原本收费很贵的IntelliJ免费提供给开发者。</p>
+<a id="more"></a>
+<p>这篇文章的步骤主要来源于youtube上一个韩国开发者做的视频，个人对比了很多其他方案，感觉这种做法最简单，所以选择使用这个方案。首先是下载ndk，不用去单独下载然后配置环境，最好的做法是使用AS自动下载配置。当然首先你得能番羽土啬，我是自己买的vps搭建的ss，在AS中设置代理即可(只要是用AS，就要记得开启代理，否则会很痛苦)。<br><img src="1.PNG" alt=""></p>
+<p>然后在setting中搜索Android SDK，选中Android NDK，apply即可。<br><img src="2.PNG" alt=""></p>
+<p>现在就可以开始ndk开发了。首先使用AS新建一个项目，我这里在xml中声明了一个TextView，这个TextView是用来显示从native层传来的字符串。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">TextView</span></span><br><span class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/tv_main_native"</span></span><br><span class="line">    <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span><br><span class="line">    <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span><br><span class="line">    /&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>然后在Activity中使用下面的代码声明我们需要加载的so和native方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">static</span><br><span class="line">&#123;</span><br><span class="line">    System.loadLibrary(&quot;demo&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private TextView tvMainNative;</span><br><span class="line"></span><br><span class="line">public native String getStringFromNative();</span><br></pre></td></tr></table></figure></p>
+<p>通常我们的做法是使用命令行敲一堆命令，然后生成jni头文件。这里有更简单的方法。打开File-Settings-Tools-ExternalTools。然后点击绿色的”+”号，新建一个tool，命名为javah，Group填写NDK，然后像下面这样填写。<br><img src="3.PNG" alt=""><br>使用同样的方法创建ndk-build和ndk-build clean。<br><img src="4.PNG" alt=""><br>注意这里Program项填写的是ndk-build的主目录。每个人安装AS的地方可能都不一样，我是安装的默认位置，默认在”C:\User\你的用户名\AppData\Local\Android\sdk\ndk-bundle\”下。<br><img src="5.PNG" alt=""><br>然后右键app-src-main目录，新建一个jni文件夹。<br><img src="6.PNG" alt=""><br>接着配置app的build.gradle，像下面这样填写。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">  ...</span><br><span class="line">  defaultConfig &#123;</span><br><span class="line">    ...</span><br><span class="line">    ndk &#123;</span><br><span class="line">      moduleName &quot;这里填写so的名字，和java代码中的名字一样&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sourceSets.main &#123;</span><br><span class="line">      jni.srcDirs = []</span><br><span class="line">      jniLibs.srcDir &quot;src/main/libs&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>配置好后，sync gradle，可能会出现下面这样的错误。<br><img src="7.PNG" alt=""><br>按照提示在grale.properties文件中加入”android.useDeprecatedNdk=true”即可。<br><img src="8.PNG" alt=""><br>然后Build-Make。<br>右键声明了native方法的类，选择NDK-javah，生成头文件。<br><img src="9.PNG" alt=""><br>会生成类似下面这样的头文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">/* DO NOT EDIT THIS FILE - it is machine generated */</span><br><span class="line">#include &lt;jni.h&gt;</span><br><span class="line">/* Header for class com_example_zke1e_ensection_MainActivity */</span><br><span class="line"></span><br><span class="line">#ifndef _Included_com_example_zke1e_ensection_MainActivity</span><br><span class="line">#define _Included_com_example_zke1e_ensection_MainActivity</span><br><span class="line">#ifdef __cplusplus</span><br><span class="line">extern &quot;C&quot; &#123;</span><br><span class="line">#endif</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_BIND_ABOVE_CLIENT</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_BIND_ABOVE_CLIENT 8L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_BIND_ADJUST_WITH_ACTIVITY</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_BIND_ADJUST_WITH_ACTIVITY 128L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_BIND_ALLOW_OOM_MANAGEMENT</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_BIND_ALLOW_OOM_MANAGEMENT 16L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_BIND_AUTO_CREATE</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_BIND_AUTO_CREATE 1L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_BIND_DEBUG_UNBIND</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_BIND_DEBUG_UNBIND 2L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_BIND_IMPORTANT</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_BIND_IMPORTANT 64L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_BIND_NOT_FOREGROUND</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_BIND_NOT_FOREGROUND 4L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_BIND_WAIVE_PRIORITY</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_BIND_WAIVE_PRIORITY 32L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_CONTEXT_IGNORE_SECURITY</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_CONTEXT_IGNORE_SECURITY 2L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_CONTEXT_INCLUDE_CODE</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_CONTEXT_INCLUDE_CODE 1L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_CONTEXT_RESTRICTED</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_CONTEXT_RESTRICTED 4L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_MODE_APPEND</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_MODE_APPEND 32768L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_MODE_ENABLE_WRITE_AHEAD_LOGGING</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_MODE_ENABLE_WRITE_AHEAD_LOGGING 8L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_MODE_MULTI_PROCESS</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_MODE_MULTI_PROCESS 4L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_MODE_PRIVATE</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_MODE_PRIVATE 0L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_MODE_WORLD_READABLE</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_MODE_WORLD_READABLE 1L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_MODE_WORLD_WRITEABLE</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_MODE_WORLD_WRITEABLE 2L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_DEFAULT_KEYS_DIALER</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_DEFAULT_KEYS_DIALER 1L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_DEFAULT_KEYS_DISABLE</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_DEFAULT_KEYS_DISABLE 0L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_DEFAULT_KEYS_SEARCH_GLOBAL</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_DEFAULT_KEYS_SEARCH_GLOBAL 4L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_DEFAULT_KEYS_SEARCH_LOCAL</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_DEFAULT_KEYS_SEARCH_LOCAL 3L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_DEFAULT_KEYS_SHORTCUT</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_DEFAULT_KEYS_SHORTCUT 2L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_RESULT_CANCELED</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_RESULT_CANCELED 0L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_RESULT_FIRST_USER</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_RESULT_FIRST_USER 1L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_RESULT_OK</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_RESULT_OK -1L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_HONEYCOMB</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_HONEYCOMB 11L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_MSG_REALLY_STOPPED</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_MSG_REALLY_STOPPED 1L</span><br><span class="line">#undef com_example_zke1e_ensection_MainActivity_MSG_RESUME_PENDING</span><br><span class="line">#define com_example_zke1e_ensection_MainActivity_MSG_RESUME_PENDING 2L</span><br><span class="line">/*</span><br><span class="line"> * Class:     com_example_zke1e_ensection_MainActivity</span><br><span class="line"> * Method:    getStringFromNative</span><br><span class="line"> * Signature: ()Ljava/lang/String;</span><br><span class="line"> */</span><br><span class="line">JNIEXPORT jstring JNICALL Java_com_example_zke1e_ensection_MainActivity_getStringFromNative</span><br><span class="line">  (JNIEnv *, jobject);</span><br><span class="line"></span><br><span class="line">#ifdef __cplusplus</span><br><span class="line">&#125;</span><br><span class="line">#endif</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure></p>
+<p>然后右键jni目录，新建一个C/C++文件，将头文件中的函数声明拷贝过来，并编写如下代码。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;com_example_zke1e_ensection_MainActivity.h&quot;</span><br><span class="line"></span><br><span class="line">JNIEXPORT jstring JNICALL Java_com_example_zke1e_ensection_MainActivity_getStringFromNative</span><br><span class="line">        (JNIEnv *env, jobject)&#123;</span><br><span class="line">        return (*env).NewStringUTF(&quot;hello JNI&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>再右键jni目录，新建一个file，命名为Android.mk，如下填写：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_PATH := $(call my-dir)</span><br><span class="line"></span><br><span class="line">include $(CLEAR_VARS)</span><br><span class="line"></span><br><span class="line">LOCAL_MODULE := demo</span><br><span class="line">LOCAL_SRC_FILES := demo.cpp</span><br><span class="line">include $(BUILD_SHARED_LIBRARY)</span><br></pre></td></tr></table></figure></p>
+<p>接着同样新建一个Application.mk(不是必须的)，像这样填写。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">APP_MODULES := demo</span><br><span class="line"></span><br><span class="line">APP_ABI := all</span><br></pre></td></tr></table></figure></p>
+<p>最后就可以编译so了。右键jni目录，选择NDK-ndk-build，就会在libs目录下生成不同平台的共享库(这是因为在Application.mk中设置了”APP_ABI := all”，默认只生成arm架构的共享库)。<br><img src="10.PNG" alt=""></p>
+<p>最后运行，可以看到效果。<br><img src="11.PNG" alt=""></p>
+
+  </section>
+
+  
+
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'zke1ev3nme'; 
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+  
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">Copyright &copy; 2014-2015 Zke1ev3n. All Rights Reserved</span>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-71084152-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>
