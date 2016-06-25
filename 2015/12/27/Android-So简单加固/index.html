@@ -39,8 +39,7 @@
 <meta property="og:image" content="http://yoursite.com/15.PNG">
 <meta property="og:image" content="http://yoursite.com/16.PNG">
 <meta property="og:image" content="http://yoursite.com/17.PNG">
-<meta property="og:image" content="http://yoursite.com/18.PNG">
-<meta property="og:updated_time" content="2016-01-22T18:38:20.474Z">
+<meta property="og:updated_time" content="2016-06-25T00:02:41.136Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android So简单加固 | Zke1ev3n's Blog">
 <meta name="twitter:description" content="Android下的dex加固技术从最初爱加密实现的dex整体内存加载，到目前各大厂商都在研究的代码虚拟化技术，整体技术已经很成熟了。但是因为Android系统开源的特性，这种加固方法的安全性并不高，只要修改源码中dex加载的部分，就可以dump出隐藏的dex，根据这一原理目前也已经有多个Android通用脱壳机。既然dex保不住，那么就可以将安全要求较高的代码写到native层，现在加固厂商已基本">
@@ -273,7 +272,6 @@ classes that you can use:
 <p>如果没有出错，就会在src目录生成一个upx.out文件。将这个文件拷贝出来，然后对我们的so加固。但是需要注意的是，upx对压缩的文件的大小有限制，好像小于10kb就不能压缩，会提示”NotCompressibleException”，另外还需要加壳的文件中有INIT段，否则会提示”UnknownExecutableFormatException”。添加init段的代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">void _init(void)&#123;&#125; \\c++</span><br><span class="line">extern &quot;C&quot; &#123;void _init(void)&#123;&#125;&#125;    \\c</span><br></pre></td></tr></table></figure></p>
 <p>准备就绪后就可以使用upx.out压缩了，命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./upx.out -o libdemo_upx.so libdemo.so</span><br></pre></td></tr></table></figure></p>
 <p><img src="16.PNG" alt=""><br>我们使用IDA打开加壳后的so，可以发现已经隐藏了原来的代码了。<br><img src="17.PNG" alt=""></p>
-<p>将加壳后的so放到libs目录替换原so，然后生成apk就可以了。不过这里我加壳后的so无法运行会报这样的错：<br><img src="18.PNG" alt=""><br>但是给可执行文件加壳是可以运行的，如果有知道的朋友还请告知原因。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>针对段和函数的加密，虽说能有效的防止静态分析，但是如果动态分析就基本没有用了，上面说了这几种方法，一条dd命令就可以还原出解密后的so了。当然更有效的做法是对调用关键函数前解密，调用后再次加密。但是也可以将断点设置在调用函数的过程中dump内存来获取解密的so，所以又要涉及到anti-debug的手段了。当然了，没有绝对安全的系统，再大强度的加固也只是为了提高破解的成本，而加固和破解技术也在不断的攻于防中进化。</p>
 
   </section>
