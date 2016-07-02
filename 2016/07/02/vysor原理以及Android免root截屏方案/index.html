@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      vysor原理以及Android免root截屏方案 | Zke1ev3n&#39;s Blog 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="Zke1ev3n">
+    
+    
+
+    <meta name="description" content="vysor是一个免root实现电脑控制手机的chrome插件，目前也有几款类似的通过电脑控制手机的软件，不过都需要root权限，并且流畅度并不高。vysor没有多余的功能，流畅度也很高，刚接触到这款插件时我惊讶于它的流畅度以及免root，就一直对它的实现原理很感兴趣。这款插件我用了大半年，最近在升级后我发现它居然开始收费了，终生版需要39.99美元，不过经过简单的分析后我很轻松的破解了它的pro版">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vysor原理以及Android免root截屏方案 | Zke1ev3n's Blog">
+<meta property="og:url" content="http://yoursite.com/2016/07/02/vysor原理以及Android免root截屏方案/index.html">
+<meta property="og:site_name" content="Zke1ev3n's Blog">
+<meta property="og:description" content="vysor是一个免root实现电脑控制手机的chrome插件，目前也有几款类似的通过电脑控制手机的软件，不过都需要root权限，并且流畅度并不高。vysor没有多余的功能，流畅度也很高，刚接触到这款插件时我惊讶于它的流畅度以及免root，就一直对它的实现原理很感兴趣。这款插件我用了大半年，最近在升级后我发现它居然开始收费了，终生版需要39.99美元，不过经过简单的分析后我很轻松的破解了它的pro版">
+<meta property="og:image" content="http://yoursite.com/Screenshot from 2016-07-02 18-13-45.png">
+<meta property="og:image" content="http://yoursite.com/Screenshot from 2016-07-02 19-44-41.png">
+<meta property="og:image" content="http://yoursite.com/Screenshot from 2016-07-02 20-25-08.png">
+<meta property="og:image" content="http://yoursite.com/Screenshot from 2016-07-02 20-29-48.png">
+<meta property="og:image" content="http://yoursite.com/Screenshot from 2016-07-02 20-44-54.png">
+<meta property="og:updated_time" content="2016-07-02T12:50:33.871Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vysor原理以及Android免root截屏方案 | Zke1ev3n's Blog">
+<meta name="twitter:description" content="vysor是一个免root实现电脑控制手机的chrome插件，目前也有几款类似的通过电脑控制手机的软件，不过都需要root权限，并且流畅度并不高。vysor没有多余的功能，流畅度也很高，刚接触到这款插件时我惊讶于它的流畅度以及免root，就一直对它的实现原理很感兴趣。这款插件我用了大半年，最近在升级后我发现它居然开始收费了，终生版需要39.99美元，不过经过简单的分析后我很轻松的破解了它的pro版">
+<meta name="twitter:image" content="http://yoursite.com/Screenshot from 2016-07-02 18-13-45.png">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">Zke1ev3n&#39;s Blog</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">vysor原理以及Android免root截屏方案</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2016-07-02" class="post-meta__date date">2016-07-02</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>vysor是一个免root实现电脑控制手机的chrome插件，目前也有几款类似的通过电脑控制手机的软件，不过都需要root权限，并且流畅度并不高。vysor没有多余的功能，流畅度也很高，刚接触到这款插件时我惊讶于它的流畅度以及免root，就一直对它的实现原理很感兴趣。这款插件我用了大半年，最近在升级后我发现它居然开始收费了，终生版需要39.99美元，不过经过简单的分析后我很轻松的破解了它的pro版，在分析的过程中发现它的原理并不复杂，所以就打算自己也实现一个类似的软件。</p>
+<a id="more"></a>
+<h3 id="截屏常见的方案"><a href="#截屏常见的方案" class="headerlink" title="截屏常见的方案"></a>截屏常见的方案</h3><p>在介绍vysor的原理前我先简单介绍一下目前公开的截屏方案。</p>
+<ul>
+<li>View.getDrawingCache()</li>
+</ul>
+<p>这是最常见的应用内截屏方法，这个函数的原理就是通过view的Cache来获取一个bitmap对象，然后保存成图片文件，这种截屏方式非常的简单，但是局限行也很明显，首先它只能截取应用内部的界面，甚至连状态栏都不能截取到。其次是对某些view的兼容性也不好，比如webview内的内容也无法截取。</p>
+<ul>
+<li>读取/dev/graphics/fb0 </li>
+</ul>
+<p>因为Android是基于linux内核，所以我们也能在android中找到framebuffer这个设备，我们可以通过读取/dev/graphics/fb0这个帧缓存文件中的数据来获取屏幕上的内容，但是这个文件是system权限的，所以只有通过root才能读取到其中的内容，并且直接通过framebuffer读取出来的画面还需要转换成rgb才能正常显示。下面是通过adb读取这个文件内容的效果。</p>
+<p><img src="Screenshot from 2016-07-02 18-13-45.png" alt=""></p>
+<ul>
+<li>反射调用SurfaceControl.screenshot()/Surface.screenshot()</li>
+</ul>
+<p>SurfaceControl.screenshot()(低版本是Surface.screenshot())是系统内部提供的截屏函数，但是这个函数是@hide的，所以无法直接调用，需要反射调用。我尝试反射调用这个函数，但是函数返回的是null，后面发现SurfaceControl这个类也是隐藏的，所以从用户代码中无法获取这个类。也有一些方法能够调用到这个函数，比如重新编译一套sdk，或者在源码环境下编译apk，但是这种方案兼容性太差，只能在特定ROM下成功运行。</p>
+<ul>
+<li>screencap -p xxx.png/screenshot xxx.png</li>
+</ul>
+<p>这两个是在shell下调用的命令，通过adb shell可以直接截图，但是在代码里调用则需要系统权限，所以无法调用。可以看到要实现类似vysor的同步操作，可以使用这两个命令来截取屏幕然后传到电脑显示，但是我自己实现后发现这种方式非常的卡，因为这两个命令不能压缩图片，所以导致获取和生成图片的时间非常长。</p>
+<ul>
+<li>MediaProjection,VirtualDisplay (&gt;=5.0)</li>
+</ul>
+<p>在5.0以后，google开放了截屏的接口，可以通过”虚拟屏幕”来录制和截取屏幕，不过因为这种方式会弹出确认对话框，并且只在5.0上有效，所以我没有对这种方案做深入的研究。</p>
+<p>可以看到，上述方案中并没有解决方案能够做到兼容性和效率都非常完美，但是我在接触到vysor后发现它不但画面清晰，流畅，而且不需要root。那么它是用了什么黑科技呢？下面我们反编译它的代码来研究一下它的实现机制。</p>
+<h3 id="vysor原理"><a href="#vysor原理" class="headerlink" title="vysor原理"></a>vysor原理</h3><p>反编译vysor的apk后可以发现它的代码并不多，通过分析后我发现它的核心代码在Main这个类中。</p>
+<p><img src="Screenshot from 2016-07-02 19-44-41.png" alt=""></p>
+<p>首先来看Main函数的main方法，这个方法比较长，这里直接贴出源码。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (args.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            commandLinePassword = args[<span class="number">0</span>];</span><br><span class="line">            Log.i(LOGTAG, <span class="string">"Received command line password: "</span> + commandLinePassword);</span><br><span class="line">        &#125;</span><br><span class="line">        Looper.prepare();</span><br><span class="line">        looper = Looper.myLooper();</span><br><span class="line">        AsyncServer server = <span class="keyword">new</span> AsyncServer();</span><br><span class="line">        AsyncHttpServer httpServer = <span class="keyword">new</span> AsyncHttpServer() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">onRequest</span><span class="params">(AsyncHttpServerRequest request, AsyncHttpServerResponse response)</span> </span>&#123;</span><br><span class="line">                Log.i(Main.LOGTAG, request.getHeaders().toString());</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">super</span>.onRequest(request, response);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        String str = <span class="string">"getInstance"</span>;</span><br><span class="line">        Object[] objArr = <span class="keyword">new</span> Object[<span class="number">0</span>];</span><br><span class="line">        InputManager im = (InputManager) InputManager.class.getDeclaredMethod(r20, <span class="keyword">new</span> Class[<span class="number">0</span>]).invoke(<span class="keyword">null</span>, objArr);</span><br><span class="line">        str = <span class="string">"obtain"</span>;</span><br><span class="line">        MotionEvent.class.getDeclaredMethod(r20, <span class="keyword">new</span> Class[<span class="number">0</span>]).setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        str = <span class="string">"injectInputEvent"</span>;</span><br><span class="line">        Method injectInputEventMethod = InputManager.class.getMethod(r20, <span class="keyword">new</span> Class[]&#123;InputEvent.class, Integer.TYPE&#125;);</span><br><span class="line">        KeyCharacterMap kcm = KeyCharacterMap.load(-<span class="number">1</span>);</span><br><span class="line">        Class cls = Class.forName(<span class="string">"android.os.ServiceManager"</span>);</span><br><span class="line">        Method getServiceMethod = cls.getDeclaredMethod(<span class="string">"getService"</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;);</span><br><span class="line">        IClipboard clipboard = IClipboard.Stub.asInterface((IBinder) getServiceMethod.invoke(<span class="keyword">null</span>, <span class="keyword">new</span> Object[]&#123;<span class="string">"clipboard"</span>&#125;));</span><br><span class="line">        clipboard.addPrimaryClipChangedListener(<span class="keyword">new</span> AnonymousClass3(clipboard), <span class="keyword">null</span>);</span><br><span class="line">        IPowerManager pm = IPowerManager.Stub.asInterface((IBinder) getServiceMethod.invoke(<span class="keyword">null</span>, <span class="keyword">new</span> Object[]&#123;<span class="string">"power"</span>&#125;));</span><br><span class="line">        IWindowManager wm = IWindowManager.Stub.asInterface((IBinder) getServiceMethod.invoke(<span class="keyword">null</span>, <span class="keyword">new</span> Object[]&#123;<span class="string">"window"</span>&#125;));</span><br><span class="line">        IRotationWatcher watcher = <span class="keyword">new</span> Stub() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onRotationChanged</span><span class="params">(<span class="keyword">int</span> rotation)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (Main.webSocket != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    Point displaySize = SurfaceControlVirtualDisplayFactory.getCurrentDisplaySize();</span><br><span class="line">                    JSONObject json = <span class="keyword">new</span> JSONObject();</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        json.put(<span class="string">"type"</span>, <span class="string">"displaySize"</span>);</span><br><span class="line">                        json.put(<span class="string">"screenWidth"</span>, displaySize.x);</span><br><span class="line">                        json.put(<span class="string">"screenHeight"</span>, displaySize.y);</span><br><span class="line">                        json.put(<span class="string">"nav"</span>, Main.hasNavBar());</span><br><span class="line">                        Main.webSocket.send(json.toString());</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (JSONException e) &#123;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        wm.watchRotation(watcher);</span><br><span class="line">        httpServer.get(<span class="string">"/screenshot.jpg"</span>, <span class="keyword">new</span> AnonymousClass5(wm));</span><br><span class="line">        httpServer.websocket(<span class="string">"/input"</span>, <span class="string">"mirror-protocol"</span>, <span class="keyword">new</span> AnonymousClass6(watcher, im, injectInputEventMethod, pm, wm, kcm));</span><br><span class="line">        httpServer.get(<span class="string">"/h264"</span>, <span class="keyword">new</span> AnonymousClass7(im, injectInputEventMethod, pm, wm));</span><br><span class="line">        Log.i(LOGTAG, <span class="string">"Server starting"</span>);</span><br><span class="line">        AsyncServerSocket rawSocket = server.listen(<span class="keyword">null</span>, <span class="number">53517</span>, <span class="keyword">new</span> AnonymousClass8(wm));</span><br><span class="line">        <span class="keyword">if</span> (httpServer.listen(server, <span class="number">53516</span>) == <span class="keyword">null</span> || rawSocket == <span class="keyword">null</span>) &#123;</span><br><span class="line">            System.out.println(<span class="string">"No server socket?"</span>);</span><br><span class="line">            Log.e(LOGTAG, <span class="string">"No server socket?"</span>);</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> AssertionError(<span class="string">"No server socket?"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"Started"</span>);</span><br><span class="line">        Log.i(LOGTAG, <span class="string">"Waiting for exit"</span>);</span><br><span class="line">        Looper.loop();</span><br><span class="line">        Log.i(LOGTAG, <span class="string">"Looper done"</span>);</span><br><span class="line">        server.stop();</span><br><span class="line">        <span class="keyword">if</span> (current != <span class="keyword">null</span>) &#123;</span><br><span class="line">            current.stop();</span><br><span class="line">            current = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        Log.i(LOGTAG, <span class="string">"Done!"</span>);</span><br><span class="line">        System.exit(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个软件koushikdutta是由开发的，这个团队以前发布过一个非常流行的开源网络库:async。在这个项目中也用到了这个开源库。main函数主要是新建了一个httpserver然后开放了几个接口，通过screenshot.jpg获取截图，通过socket input接口来发送点击信息，通过h264这个接口来获取实时的屏幕视频流。每一个接口都有对应的响应函数，这里我们主要研究截图，所以就看screenshot这个接口。h264这个接口传输的是实时的视频流，所以就流畅性来说应该会更好，它也是通过virtualdisplay来实现的有兴趣的读者可以自行研究。</p>
+<p>接下来我们来看screenshot对应的响应函数AnonymousClass5的实现代码。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">* renamed from: com.koushikdutta.vysor.Main.5 */</span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">AnonymousClass5</span> <span class="keyword">implements</span> <span class="title">HttpServerRequestCallback</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="comment">/* synthetic */</span> IWindowManager val$wm;</span><br><span class="line"></span><br><span class="line">        AnonymousClass5(IWindowManager iWindowManager) &#123;</span><br><span class="line">            <span class="keyword">this</span>.val$wm = iWindowManager;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onRequest</span><span class="params">(AsyncHttpServerRequest request, AsyncHttpServerResponse response)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (Main.checkPassword(request.getQuery().getString(<span class="string">"password"</span>))) &#123;</span><br><span class="line">                Log.i(Main.LOGTAG, <span class="string">"screenshot authentication success"</span>);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Bitmap bitmap = EncoderFeeder.screenshot(<span class="keyword">this</span>.val$wm);</span><br><span class="line">                    ByteArrayOutputStream bout = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">                    bitmap.compress(CompressFormat.JPEG, <span class="number">100</span>, bout);</span><br><span class="line">                    bout.flush();</span><br><span class="line">                    response.send(<span class="string">"image/jpeg"</span>, bout.toByteArray());</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    response.code(<span class="number">500</span>);</span><br><span class="line">                    response.send(e.toString());</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            Log.i(Main.LOGTAG, <span class="string">"screenshot authentication failed"</span>);</span><br><span class="line">            response.code(<span class="number">401</span>);</span><br><span class="line">            response.send(<span class="string">"Not Authorized."</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个类传入了一个wm类，这个类是用来监听屏幕旋转的，这里不用管它。另外在vysor开始运行时，会随机生成一个验证码，只有验证通过才能进行连接，所以这里有一个验证的过程，这里也不过管。可以看到这个类定义的响应函数的代码非常简单，就是通过EncoderFeeder.screenshot()函数来过去截图的bitmap，然后返回给请求端。那么EncoderFeeder.screenshot这个函数是怎样实现截图的呢？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Bitmap <span class="title">screenshot</span><span class="params">(IWindowManager wm)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        String surfaceClassName;</span><br><span class="line">        Point size = SurfaceControlVirtualDisplayFactory.getCurrentDisplaySize(<span class="keyword">false</span>);</span><br><span class="line">        <span class="keyword">if</span> (VERSION.SDK_INT &lt;= <span class="number">17</span>) &#123;</span><br><span class="line">            surfaceClassName = <span class="string">"android.view.Surface"</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            surfaceClassName = <span class="string">"android.view.SurfaceControl"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        Bitmap b = (Bitmap) Class.forName(surfaceClassName).getDeclaredMethod(<span class="string">"screenshot"</span>, <span class="keyword">new</span> Class[]&#123;Integer.TYPE, Integer.TYPE&#125;).invoke(<span class="keyword">null</span>, <span class="keyword">new</span> Object[]&#123;Integer.valueOf(size.x), Integer.valueOf(size.y)&#125;);</span><br><span class="line">        <span class="keyword">int</span> rotation = wm.getRotation();</span><br><span class="line">        <span class="keyword">if</span> (rotation == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> b;</span><br><span class="line">        &#125;</span><br><span class="line">        Matrix m = <span class="keyword">new</span> Matrix();</span><br><span class="line">        <span class="keyword">if</span> (rotation == <span class="number">1</span>) &#123;</span><br><span class="line">            m.postRotate(-<span class="number">90.0f</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (rotation == <span class="number">2</span>) &#123;</span><br><span class="line">            m.postRotate(-<span class="number">180.0f</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (rotation == <span class="number">3</span>) &#123;</span><br><span class="line">            m.postRotate(-<span class="number">270.0f</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Bitmap.createBitmap(b, <span class="number">0</span>, <span class="number">0</span>, size.x, size.y, m, <span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这里的截图的核心代码也是反射调用Surface/SurfaceControl的screenshot方法。但是我们前面已经了解到，这个类只有在系统权限下才能获取到，那么vysor又是怎么调用到这个函数的呢？我们可以确认的是vysor不是通过重编译sdk和使用系统签名来完成的，因为那样只能对特定的rom适用。</p>
+<p>当时看到这里的代码后我也非常困惑，vysor是怎么调用到这个类的。我注意到了vysor的核心代码不是在某个Activity或者Service中而是在一个Main类中，按照一般的逻辑来说，这种实时传屏应该是放在Service中不断截屏然后发给服务端，所以我决定再看下它的服务端的代码。</p>
+<p>vysor的服务端是一个chrome插件，用javascript写成的，所以找到源码比java更加简单。虽然js经过混淆，但是很容易的可以通过一些工具来解密。然后就是分析它的代码了，终于被我找到了关键的代码。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">y</span>(<span class="params">e, t, n</span>) </span>&#123;</span><br><span class="line">        m(e, <span class="string">"Connecting..."</span>);</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">o</span>(<span class="params">o</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> i = <span class="built_in">Math</span>.round(<span class="built_in">Math</span>.random() * (<span class="number">1</span> &lt;&lt; <span class="number">30</span>)).toString(<span class="number">16</span>);</span><br><span class="line">            <span class="keyword">var</span> r = <span class="string">"echo -n "</span> + i + <span class="string">" &gt; /data/local/tmp/vysor.pwd ; chmod 600 /data/local/tmp/vysor.pwd"</span>;</span><br><span class="line">            Adb.shell(&#123;</span><br><span class="line">                command: <span class="string">"ls -l /system/bin/app_process*"</span>,</span><br><span class="line">                serialno: e</span><br><span class="line">            &#125;, <span class="function"><span class="keyword">function</span>(<span class="params">s</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">var</span> c = <span class="string">"/system/bin/app_process"</span>;</span><br><span class="line">                <span class="keyword">if</span> (s &amp;&amp; s.indexOf(<span class="string">"app_process32"</span>) != <span class="number">-1</span>) &#123;</span><br><span class="line">                    c += <span class="string">"32"</span></span><br><span class="line">                &#125;</span><br><span class="line">                Adb.sendClientCommand(&#123;</span><br><span class="line">                    command: <span class="string">'shell:sh -c "CLASSPATH='</span> + o + <span class="string">" "</span> + c + <span class="string">" /system/bin com.koushikdutta.vysor.Main "</span> + i + <span class="string">'"'</span>,</span><br><span class="line">                    serialno: e</span><br><span class="line">                &#125;, <span class="function"><span class="keyword">function</span>(<span class="params">o</span>) </span>&#123;</span><br><span class="line">                    Adb.shell(&#123;</span><br><span class="line">                        serialno: e,</span><br><span class="line">                        command: <span class="string">'sh -c "'</span> + r + <span class="string">'"'</span></span><br><span class="line">                    &#125;, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">                        Socket.eat(o);</span><br><span class="line">                        n(t, i)</span><br><span class="line">                    &#125;)</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到上面的代码是调用了adb shell命令来启动com.koushikdutta.vysor.Main类，并且上面获取了app_process这个程序。相信对android熟悉读者已经明白它的原理了。我简单解释一下。我们已经知道Surface/SurfaceControl这两个类是需要具有相应权限的程序才能调用到，用户进程无法获取到。adb shell可以调用screencap或者screenshot来截取屏幕，那就说明adb shell具有截屏的权限。Surface/SurfaceControl和screenshot/screencap它们内部的实现机制应该是相同的，所以也就是说adb shell是具有截屏权限的也就是能够调用到Surface/SurfaceControl。那么我们怎么通过adb shell来调用到这两个类呢，答案就是app_process。app_process可以直接运行一个普通的java类，详细的资料大家可以在网上找到。也就是说我们通过adb shell运行app_process，然后通过app_process来运行一个java类，在java类中就可以访问到Surface/SurfaceControl这两个类，是不是很巧妙？</p>
+<p>理论有了，下面我们来通过代码验证。这里我们可以直接使用vysor的代码。因为是测试用所以我没有添加其他功能。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> Looper looper;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        AsyncHttpServer httpServer = <span class="keyword">new</span> AsyncHttpServer() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">onRequest</span><span class="params">(AsyncHttpServerRequest request, AsyncHttpServerResponse response)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">super</span>.onRequest(request, response);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        Looper.prepare();</span><br><span class="line">        looper = Looper.myLooper();</span><br><span class="line">        System.out.println(<span class="string">"Andcast Main Entry!"</span>);</span><br><span class="line">        AsyncServer server = <span class="keyword">new</span> AsyncServer();</span><br><span class="line">        httpServer.get(<span class="string">"/screenshot.jpg"</span>, <span class="keyword">new</span> AnonymousClass5());</span><br><span class="line">        httpServer.listen(server, <span class="number">53516</span>);</span><br><span class="line"></span><br><span class="line">        Looper.loop();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* renamed from: com.koushikdutta.vysor.Main.5 */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">AnonymousClass5</span> <span class="keyword">implements</span> <span class="title">HttpServerRequestCallback</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onRequest</span><span class="params">(AsyncHttpServerRequest request, AsyncHttpServerResponse response)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Bitmap bitmap = ScreenShotFb.screenshot();</span><br><span class="line">                    ByteArrayOutputStream bout = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">                    bitmap.compress(Bitmap.CompressFormat.JPEG, <span class="number">100</span>, bout);</span><br><span class="line">                    bout.flush();</span><br><span class="line">                    response.send(<span class="string">"image/jpeg"</span>, bout.toByteArray());</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    response.code(<span class="number">500</span>);</span><br><span class="line">                    response.send(e.toString());</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>编译成apk然后安装后，我们使用adb shell来运行这个类，主要方法如下，首先导出classpath，否则会提示找不到类。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> CLASSPATH=/data/app/com.zke1e.andcast-1/base.apk</span><br></pre></td></tr></table></figure></p>
+<p>然后调用app_process来启动这个类。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">exec</span> app_process /system/bin com.zke1e.andcast.Main <span class="string">'$@'</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到类已经成功运行了，正在监听请求。</p>
+<p><img src="Screenshot from 2016-07-02 20-25-08.png" alt=""></p>
+<p>然后使用adb forward转发端口。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb forward tcp:53516 tcp:53516</span><br></pre></td></tr></table></figure>
+<p>最后在浏览器里访问，就可以获取截图了。</p>
+<p><img src="Screenshot from 2016-07-02 20-29-48.png" alt=""></p>
+<p>当然只有简单的截图功能是不够，我们需要能够流畅实时的传输android的屏幕，并且能够在电脑上控制，经过两天的编写，我使用java实现了类似vysor的功能。从流畅度和清晰度上都和vysor差不多，后续还会考虑加入文件传输和声音传输等功能。最近计划编写一个java版的android反编译集成环境，类似android killer。因为android killer只能在windows上使用，而linux下没有类似的方面的软件。到时这个同步软件可以作为插件和反编译套件集成。最后放一张截图。</p>
+<p><img src="Screenshot from 2016-07-02 20-44-54.png" alt=""></p>
+
+  </section>
+
+  
+
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'zke1ev3nme'; 
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+  
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">Copyright &copy; 2014-2015 Zke1ev3n. All Rights Reserved</span>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-71084152-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>
