@@ -60,6 +60,11 @@
         <hr class="panel-cover__divider" />
 
         
+        <p class="panel-cover__description">
+          The quieter you became,the more you are able to hear.
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
 
         <div class="navigation-wrapper">
 
@@ -155,7 +160,49 @@ classes that you can use:
     <li>
 
       <h2 class="post-list__post-title post-title">
-        <a href="/2016/07/02/vysor原理以及Android免root截屏方案/" title="link to vysor原理以及Android免root截屏方案">vysor原理以及Android免root截屏方案</a>
+        <a href="/2016/08/02/CVE-2014-7911-Android本地提权漏洞分析与利用/" title="link to CVE-2014-7911 Android本地提权漏洞分析与利用">CVE-2014-7911 Android本地提权漏洞分析与利用</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2016-08-02" class="post-list__meta--date date">2016-08-02</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>前面我们了解了Android Binder机制的基本原理，当然仅仅了解是不够的，我们要做到：Know it and hack it。这篇文章我们就来分析一个和Binder相关的漏洞：CVE-2014-7911。这是由Jann Horn发现的一个Android本地提权漏洞，能够使普通应用的权限提升到System权限，影响Android5.0以下版本。这个漏洞是非常值得Android安全研究人员学习的一个漏洞，因为这个漏洞涉及到Android Binder，Java序列化，Dalvik GC机制，Heap spary，ROP，Stack pivot等知识，很有学习价值。</p>
+<blockquote>
+<p>文章的内容主要来源于公开的资料，我在其基础上添加了一些细节。<br>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
+        <a href="/2016/07/19/Android-IPC-Binder机制/" title="link to Android IPC Binder机制">Android IPC Binder机制</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2016-07-19" class="post-list__meta--date date">2016-07-19</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Binder是Android的一种进程间通信机制，是Android最重要的组件之一。正如Binder直译的意思”粘合剂”一样，Binder将Android Framework层的各个组件连接起来，所以学习Android必定要学习Binder。<br>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
+        <a href="/2016/07/02/vysor原理以及Android同屏方案/" title="link to vysor原理以及Android同屏方案">vysor原理以及Android同屏方案</a>
       </h2>
 
       <div class="post-list__meta">
@@ -207,46 +254,6 @@ classes that you can use:
         
           <p>这次SCTF我负责出逆向的题目，原计划打算一道300一道400的，不过300那道逆向用了大量的混淆，连我自己都没有好的办法分析出原始指令，为了不坑大家，所以就只放了一道400。</p>
 <p>另外最坑的是400这道题我在发题目的时候发错了，忘记把函数的指令抽取出来，导致解这道题的直接越了一大步。。刚写WriteUp的时候才发现，，，<br>下面是具体的解题步骤。首先拿到Apk后运行可以看到输入错误会提示wrong。<br>
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2016/04/13/Dalvik类加载机制分析/" title="link to Dalvik类加载机制分析">Dalvik类加载机制分析</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2016-04-13" class="post-list__meta--date date">2016-04-13</time> 
-      </div>
-
-      <div class="excerpt">
-        
-          <p>上一篇文章中我们已经了解到Dalvik是怎样将dex文件加载进内存并解析的，通过上面的工作，Dalvik已经能很容易的获取Dex文件的各个数据，那么接下来的工作就是从Dex文件中查找并加载指定的类。这个过程首先确定要加载的类所属的Dex文件，然后会在全局变量中gDvm中查看虚拟机是否已经完成了对该Dex文件的解析，如果已经完成解析，则返回该Dex文件所对应的DexFile数据结构，然后根据欲加载的类的描述符在DexClassLookup哈希表中查找获取目标类的各个部分的数据地址，当得到Dex文件中相关类数据的存储地址后，将通过调用相关的加载函数对指定的类的信息进行解析并装载，最终类以ClassObject类型的数据结构存储在运行环境中，并为解释器的执行提供相应类的字节码。下面是CalssObject类的和DexFile以及DvmDex结构的关联。<br>
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2016/04/12/Dalvik加载dex过程分析/" title="link to Dalvik加载dex过程分析">Dalvik加载dex过程分析</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2016-04-12" class="post-list__meta--date date">2016-04-12</time> 
-      </div>
-
-      <div class="excerpt">
-        
-          <p>在前面<a href="http://zke1ev3n.me/2015/12/02/Android-%E5%BA%94%E7%94%A8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E8%A7%A3%E6%9E%90/">Android应用启动过程解析</a>我们已经分析了一个Android应用的启动过程，接下来我们需要分析Android应用在启动的时候是怎样把dex文件加载到内存的。我们从Android应用启动的最后一个函数也就是performLaunchActivity开始看。<br>
         
       </div>
 

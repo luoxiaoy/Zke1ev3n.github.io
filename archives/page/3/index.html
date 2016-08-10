@@ -58,6 +58,11 @@
         <hr class="panel-cover__divider" />
 
         
+        <p class="panel-cover__description">
+          The quieter you became,the more you are able to hear.
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
 
         <div class="navigation-wrapper">
 
@@ -153,6 +158,51 @@ classes that you can use:
     <li>
 
       <h2 class="post-list__post-title post-title">
+        <a href="/2016/01/18/基于LLVM的代码混淆/" title="link to 基于LLVM的代码混淆">基于LLVM的代码混淆</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2016-01-18" class="post-list__meta--date date">2016-01-18</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <h3 id="LLVM"><a href="#LLVM" class="headerlink" title="LLVM"></a>LLVM</h3><p>LLVM(low level virtual machine)是一个先进的编译器框架，它提供了一种代码编写良好的中间表示(IR)，可以作为多种语言的后端，还可以提供与变成语言无关的优化和针对多种cpu的代码生成功能。<br>LLVM的主要架构如下：</p>
+<ul>
+<li>前端：前端用来获取源代码然后将它转变为某种中间表示，我们可以选择不同的编译器来作为LLVM的前端，如gcc，clang。</li>
+<li>Pass(通常翻译为“流程”)：Pass用来将程序的中间表示之间相互变换。一般情况下，Pass可以用来优化代码，这部分通常是我们关注的部分。</li>
+<li>后端：后端用来生成实际的机器码，一般情况下不会关注这一部分。</li>
+</ul>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
+        <a href="/2015/12/27/Android-So简单加固/" title="link to Android So简单加固">Android So简单加固</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2015-12-27" class="post-list__meta--date date">2015-12-27</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>Android下的dex加固技术从最初爱加密实现的dex整体内存加载，到目前各大厂商都在研究的代码虚拟化技术，整体技术已经很成熟了。但是因为Android系统开源的特性，这种加固方法的安全性并不高，只要修改源码中dex加载的部分，就可以dump出隐藏的dex，根据这一原理目前也已经有多个Android通用脱壳机。既然dex保不住，那么就可以将安全要求较高的代码写到native层，现在加固厂商已基本都提供了对so的加固。针对so的加固有很多种方案，通常也都是混合使用。比较高级的做法是针对Android下的so加载器linker做的加固，从编译器层做混淆，甚至VMP等。本文主要一些简单的加固方法，比如针对段和函数的加密等。使用的方法来源于<a href="http://bbs.pediy.com/showthread.php?t=191649">http://bbs.pediy.com/showthread.php?t=191649</a>。</p>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
         <a href="/2015/12/27/使用AS进行ndk开发/" title="link to 使用AS进行ndk开发">使用AS进行ndk开发</a>
       </h2>
 
@@ -215,48 +265,6 @@ classes that you can use:
 <li>首先将明文分组(常见的以16字节为一组)，位数不足的使用特殊字符填充。</li>
 <li>生成一个随机的初始化向量(IV)和一个密钥。</li>
 <li>将IV和第一组明文异或。
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2015/12/09/Gradle笔记/" title="link to Gradle笔记">Gradle笔记</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2015-12-09" class="post-list__meta--date date">2015-12-09</time> 
-      </div>
-
-      <div class="excerpt">
-        
-          <p>Android Studio已经发布到1.5的版本了，整体已经趋于成熟。之前一直在Eclipse和Android Studio之间交替使用，一方面对Android Studio新的特性好奇，一方面又对自己配置已久的eclipse念念不舍。最近打算把以前的项目都迁移到Android Studio来，所以整理了一下笔记。</p>
-<p>事实上，在Android Studio下开发Android程序和eclipse下并没有太大的区别，最大的不同可能就是AS采用了新的构建工具Gradle。但是在eclipse下我们通常不会去在意构建工具，ide已经帮我们完成了项目的构建，这也是大多数人转到AS下后最不适应的地方。造成这一问题的原因就是很多人在学习Android开发时并没有学习一个项目是怎么构建的，离开了ide就无法开发一个完整的项目，没有深入了解ide背后所做的工作，所以换了一个平台后就很难上手。所以这里我们简单了解下java常用的构建工具。</p>
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2015/12/02/Android-应用启动过程解析/" title="link to Android 应用启动过程解析">Android 应用启动过程解析</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2015-12-02" class="post-list__meta--date date">2015-12-02</time> 
-      </div>
-
-      <div class="excerpt">
-        
-          <p>Android系统由Linux内核，函数库，Android运行时，应用程序框架以及应用程序组成。Dalvik虚拟机属行Android运行时环境，它与一些核心库共同承担Android应用程序的运行工作。</p>
-<p>Android系统启动加载完内核后，第一个执行的是init进程，init进程首先要做的是设备的初始化工作，然后读取inic.rc文件并启动系统中的重要外部程序 Zygote。Zygote进程是Android所有进程的孵化器进程，它启动后会首先初始化Dalvik虚拟机，然后启动system_server并进入Zygote模式，通过socket等候命令。当执行一个Android应用程序时，system_server进程通过Binder IPC方式发送命令给Zygote，Zygote收到命令后通过fork自身创建一个Dalvik虚拟机的实例来执行应用程序的入口函数，这样一个程序就启动完成了。</p>
         
       </div>
 

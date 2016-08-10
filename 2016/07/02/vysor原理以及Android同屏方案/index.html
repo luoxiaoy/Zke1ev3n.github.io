@@ -7,7 +7,7 @@
     
 
     <title>
-      vysor原理以及Android免root截屏方案 | Zke1ev3n&#39;s Blog 
+      vysor原理以及Android同屏方案 | Zke1ev3n&#39;s Blog 
     </title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -18,8 +18,8 @@
 
     <meta name="description" content="vysor是一个免root实现电脑控制手机的chrome插件，目前也有几款类似的通过电脑控制手机的软件，不过都需要root权限，并且流畅度并不高。vysor没有多余的功能，流畅度也很高，刚接触到这款插件时我惊讶于它的流畅度以及免root，就一直对它的实现原理很感兴趣。这款插件我用了大半年，最近在升级后我发现它居然开始收费了，终生版需要39.99美元，不过经过简单的分析后我很轻松的破解了它的pro版">
 <meta property="og:type" content="article">
-<meta property="og:title" content="vysor原理以及Android免root截屏方案 | Zke1ev3n's Blog">
-<meta property="og:url" content="http://yoursite.com/2016/07/02/vysor原理以及Android免root截屏方案/index.html">
+<meta property="og:title" content="vysor原理以及Android同屏方案 | Zke1ev3n's Blog">
+<meta property="og:url" content="http://yoursite.com/2016/07/02/vysor原理以及Android同屏方案/index.html">
 <meta property="og:site_name" content="Zke1ev3n's Blog">
 <meta property="og:description" content="vysor是一个免root实现电脑控制手机的chrome插件，目前也有几款类似的通过电脑控制手机的软件，不过都需要root权限，并且流畅度并不高。vysor没有多余的功能，流畅度也很高，刚接触到这款插件时我惊讶于它的流畅度以及免root，就一直对它的实现原理很感兴趣。这款插件我用了大半年，最近在升级后我发现它居然开始收费了，终生版需要39.99美元，不过经过简单的分析后我很轻松的破解了它的pro版">
 <meta property="og:image" content="http://yoursite.com/Screenshot from 2016-07-02 18-13-45.png">
@@ -27,9 +27,10 @@
 <meta property="og:image" content="http://yoursite.com/Screenshot from 2016-07-02 20-25-08.png">
 <meta property="og:image" content="http://yoursite.com/Screenshot from 2016-07-02 20-29-48.png">
 <meta property="og:image" content="http://yoursite.com/screenshot.gif">
-<meta property="og:updated_time" content="2016-07-02T13:24:08.987Z">
+<meta property="og:image" content="http://yoursite.com/andcast.gif">
+<meta property="og:updated_time" content="2016-08-10T07:32:21.698Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="vysor原理以及Android免root截屏方案 | Zke1ev3n's Blog">
+<meta name="twitter:title" content="vysor原理以及Android同屏方案 | Zke1ev3n's Blog">
 <meta name="twitter:description" content="vysor是一个免root实现电脑控制手机的chrome插件，目前也有几款类似的通过电脑控制手机的软件，不过都需要root权限，并且流畅度并不高。vysor没有多余的功能，流畅度也很高，刚接触到这款插件时我惊讶于它的流畅度以及免root，就一直对它的实现原理很感兴趣。这款插件我用了大半年，最近在升级后我发现它居然开始收费了，终生版需要39.99美元，不过经过简单的分析后我很轻松的破解了它的pro版">
 <meta name="twitter:image" content="http://yoursite.com/Screenshot from 2016-07-02 18-13-45.png">
     
@@ -64,6 +65,11 @@
         <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">Zke1ev3n&#39;s Blog</a></h1>
         <hr class="panel-cover__divider" />
 
+        
+        <p class="panel-cover__description">
+          The quieter you became,the more you are able to hear.
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
         
 
         <div class="navigation-wrapper">
@@ -153,7 +159,7 @@ classes that you can use:
 
   <header class="post-header">
     
-    <h1 class="post-title">vysor原理以及Android免root截屏方案</h1>
+    <h1 class="post-title">vysor原理以及Android同屏方案</h1>
 
     
 
@@ -222,6 +228,8 @@ classes that you can use:
 <p><img src="Screenshot from 2016-07-02 20-29-48.png" alt=""></p>
 <p>当然只有简单的截图功能是不够，我们需要能够流畅实时的传输android的屏幕，并且能够在电脑上控制，经过两天的编写，我使用java实现了类似vysor的功能。从流畅度和清晰度上都和vysor差不多，后续还会考虑加入文件传输和声音传输等功能。最近计划编写一个java版的android反编译集成环境，类似android killer。因为android killer只能在windows上使用，而linux下没有类似的方面的软件。到时这个同步软件可以作为插件和反编译套件集成。最后放一张截图。</p>
 <p><img src="screenshot.gif" alt=""></p>
+<h3 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h3><p>经过一段时间的研究，最后实现了将传输的截图改成了h264码流，提高的流畅度和稳定性，然后将接受端放在了浏览器中，实现了可以在浏览器中对android手机进行控制，下面是截图。</p>
+<p><img src="andcast.gif" alt=""></p>
 
   </section>
 

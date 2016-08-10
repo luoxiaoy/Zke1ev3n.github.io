@@ -60,6 +60,11 @@
         <hr class="panel-cover__divider" />
 
         
+        <p class="panel-cover__description">
+          The quieter you became,the more you are able to hear.
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
 
         <div class="navigation-wrapper">
 
@@ -151,6 +156,55 @@ classes that you can use:
 <div class="main-post-list">
     <ol class="post-list">
     
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
+        <a href="/2015/12/02/Linux-ptrace注入/" title="link to Linux ptrace注入">Linux ptrace注入</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2015-12-02" class="post-list__meta--date date">2015-12-02</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>ptrace(Process Trace)是linux提供的一种特殊的机制。利用Ptrace，你不仅可以跟踪某一进程的执行过程，还可以修改某个进程的内存或寄存器，任何传递给被跟踪进程的信号(除了直接杀死进程的SIGKILL信号)，都会使得这个进程进入暂停状态，这时系统通过wait()通知跟踪进程，跟踪进程就可以修改被跟踪进程的行为了。</p>
+<blockquote>
+<p>以下内容都依赖于linux i386体系</p>
+</blockquote>
+<h2 id="函数原型"><a href="#函数原型" class="headerlink" title="函数原型"></a>函数原型</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/ptrace.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">int</span> <span class="title">ptrace</span><span class="params">(<span class="keyword">enum</span> __ptrace_request request,<span class="keyword">pit_t</span> pid,<span class="keyword">void</span> *addr,<span class="keyword">void</span> *data)</span></span></span><br></pre></td></tr></table></figure>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
+        <a href="/2015/12/02/Android-Dalvik字节码解析/" title="link to Android Dalvik字节码解析">Android Dalvik字节码解析</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2015-12-02" class="post-list__meta--date date">2015-12-02</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>Dalvik字节码是专门为Dalvik VM设计的一种指令集。和java虚拟机不同的是，java虚拟机是基于堆栈设计的，而Dalvik虚拟机是基于寄存器的，效率要比java虚拟机快很多。在java字节码转换为dalvik字节码的过程中，方法调用栈就已经确定，其中明确的指定了使用寄存器的个数和额外的数据。Dalvik字节码能使用65536个虚拟寄存器，每个寄存器32位，以相邻的两个寄存器表示64位数据，最终所有的寄存器都会被映射到真实的物理寄存器上。</p>
+<p>一段Dalvik字节码由一系列Dalvik指令组成，指令语法由指令的位描述与指令格式标识来决定。位描述约定如下：</p>
+<ul>
+<li><p>每16位的字采用空格分隔开来。</p>
+</li>
+<li><p>每个字母表示4位，每个字母按顺序从高字节开始，排列到低字节。每4位之间可能使有竖线“|”来表示不同的内容。</p>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
     
     <li>
 

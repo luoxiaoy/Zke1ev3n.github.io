@@ -58,6 +58,11 @@
         <hr class="panel-cover__divider" />
 
         
+        <p class="panel-cover__description">
+          The quieter you became,the more you are able to hear.
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
 
         <div class="navigation-wrapper">
 
@@ -154,6 +159,46 @@ classes that you can use:
     <li>
 
       <h2 class="post-list__post-title post-title">
+        <a href="/2016/04/13/Dalvik类加载机制分析/" title="link to Dalvik类加载机制分析">Dalvik类加载机制分析</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2016-04-13" class="post-list__meta--date date">2016-04-13</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>上一篇文章中我们已经了解到Dalvik是怎样将dex文件加载进内存并解析的，通过上面的工作，Dalvik已经能很容易的获取Dex文件的各个数据，那么接下来的工作就是从Dex文件中查找并加载指定的类。这个过程首先确定要加载的类所属的Dex文件，然后会在全局变量中gDvm中查看虚拟机是否已经完成了对该Dex文件的解析，如果已经完成解析，则返回该Dex文件所对应的DexFile数据结构，然后根据欲加载的类的描述符在DexClassLookup哈希表中查找获取目标类的各个部分的数据地址，当得到Dex文件中相关类数据的存储地址后，将通过调用相关的加载函数对指定的类的信息进行解析并装载，最终类以ClassObject类型的数据结构存储在运行环境中，并为解释器的执行提供相应类的字节码。下面是CalssObject类的和DexFile以及DvmDex结构的关联。<br>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
+        <a href="/2016/04/12/Dalvik加载dex过程分析/" title="link to Dalvik加载dex过程分析">Dalvik加载dex过程分析</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2016-04-12" class="post-list__meta--date date">2016-04-12</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>在前面<a href="http://zke1ev3n.me/2015/12/02/Android-%E5%BA%94%E7%94%A8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E8%A7%A3%E6%9E%90/">Android应用启动过程解析</a>我们已经分析了一个Android应用的启动过程，接下来我们需要分析Android应用在启动的时候是怎样把dex文件加载到内存的。我们从Android应用启动的最后一个函数也就是performLaunchActivity开始看。<br>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
         <a href="/2016/04/06/WiFi万能钥匙接口协议破解/" title="link to WiFi万能钥匙接口协议破解">WiFi万能钥匙接口协议破解</a>
       </h2>
 
@@ -213,31 +258,6 @@ classes that you can use:
       <hr class="post-list__divider" />
     </li>
     
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2016/01/18/基于LLVM的代码混淆/" title="link to 基于LLVM的代码混淆">基于LLVM的代码混淆</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2016-01-18" class="post-list__meta--date date">2016-01-18</time> 
-      </div>
-
-      <div class="excerpt">
-        
-          <h3 id="LLVM"><a href="#LLVM" class="headerlink" title="LLVM"></a>LLVM</h3><p>LLVM(low level virtual machine)是一个先进的编译器框架，它提供了一种代码编写良好的中间表示(IR)，可以作为多种语言的后端，还可以提供与变成语言无关的优化和针对多种cpu的代码生成功能。<br>LLVM的主要架构如下：</p>
-<ul>
-<li>前端：前端用来获取源代码然后将它转变为某种中间表示，我们可以选择不同的编译器来作为LLVM的前端，如gcc，clang。</li>
-<li>Pass(通常翻译为“流程”)：Pass用来将程序的中间表示之间相互变换。一般情况下，Pass可以用来优化代码，这部分通常是我们关注的部分。</li>
-<li>后端：后端用来生成实际的机器码，一般情况下不会关注这一部分。</li>
-</ul>
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
   </ol>
 
   <hr class="post-list__divider " />
@@ -249,8 +269,10 @@ classes that you can use:
         
     
 
-    <span class="pagination__page-number"> 2 / 2</span>
+    <span class="pagination__page-number"> 2 / 3</span>
     
+    
+        <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/archives/2016/page/3/">下一页 &rarr;</a>
     
 </nav>
 

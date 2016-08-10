@@ -58,6 +58,11 @@
         <hr class="panel-cover__divider" />
 
         
+        <p class="panel-cover__description">
+          The quieter you became,the more you are able to hear.
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
 
         <div class="navigation-wrapper">
 
@@ -153,6 +158,48 @@ classes that you can use:
     <li>
 
       <h2 class="post-list__post-title post-title">
+        <a href="/2015/12/09/Gradle笔记/" title="link to Gradle笔记">Gradle笔记</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2015-12-09" class="post-list__meta--date date">2015-12-09</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>Android Studio已经发布到1.5的版本了，整体已经趋于成熟。之前一直在Eclipse和Android Studio之间交替使用，一方面对Android Studio新的特性好奇，一方面又对自己配置已久的eclipse念念不舍。最近打算把以前的项目都迁移到Android Studio来，所以整理了一下笔记。</p>
+<p>事实上，在Android Studio下开发Android程序和eclipse下并没有太大的区别，最大的不同可能就是AS采用了新的构建工具Gradle。但是在eclipse下我们通常不会去在意构建工具，ide已经帮我们完成了项目的构建，这也是大多数人转到AS下后最不适应的地方。造成这一问题的原因就是很多人在学习Android开发时并没有学习一个项目是怎么构建的，离开了ide就无法开发一个完整的项目，没有深入了解ide背后所做的工作，所以换了一个平台后就很难上手。所以这里我们简单了解下java常用的构建工具。</p>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
+        <a href="/2015/12/02/Android-应用启动过程解析/" title="link to Android 应用启动过程解析">Android 应用启动过程解析</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2015-12-02" class="post-list__meta--date date">2015-12-02</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>Android系统由Linux内核，函数库，Android运行时，应用程序框架以及应用程序组成。Dalvik虚拟机属行Android运行时环境，它与一些核心库共同承担Android应用程序的运行工作。</p>
+<p>Android系统启动加载完内核后，第一个执行的是init进程，init进程首先要做的是设备的初始化工作，然后读取inic.rc文件并启动系统中的重要外部程序 Zygote。Zygote进程是Android所有进程的孵化器进程，它启动后会首先初始化Dalvik虚拟机，然后启动system_server并进入Zygote模式，通过socket等候命令。当执行一个Android应用程序时，system_server进程通过Binder IPC方式发送命令给Zygote，Zygote收到命令后通过fork自身创建一个Dalvik虚拟机的实例来执行应用程序的入口函数，这样一个程序就启动完成了。</p>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
         <a href="/2015/12/02/Android-启动过程解析/" title="link to Android 启动过程解析">Android 启动过程解析</a>
       </h2>
 
@@ -212,55 +259,6 @@ classes that you can use:
 <p><img src="1.png" alt=""><br><img src="2.png" alt=""></p>
 <p>不过后来我发现这款软件是用C#写的，看来是款好捏的软柿子，所以我试着来破解它。</p>
 <p>打开注册窗口，我们会发现不管怎么输入邮箱和序列号，注册按钮都无法点击，看来软件会检测邮箱和序列号的逻辑关系。<br>
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2015/12/02/Linux-ptrace注入/" title="link to Linux ptrace注入">Linux ptrace注入</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2015-12-02" class="post-list__meta--date date">2015-12-02</time> 
-      </div>
-
-      <div class="excerpt">
-        
-          <p>ptrace(Process Trace)是linux提供的一种特殊的机制。利用Ptrace，你不仅可以跟踪某一进程的执行过程，还可以修改某个进程的内存或寄存器，任何传递给被跟踪进程的信号(除了直接杀死进程的SIGKILL信号)，都会使得这个进程进入暂停状态，这时系统通过wait()通知跟踪进程，跟踪进程就可以修改被跟踪进程的行为了。</p>
-<blockquote>
-<p>以下内容都依赖于linux i386体系</p>
-</blockquote>
-<h2 id="函数原型"><a href="#函数原型" class="headerlink" title="函数原型"></a>函数原型</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/ptrace.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">int</span> <span class="title">ptrace</span><span class="params">(<span class="keyword">enum</span> __ptrace_request request,<span class="keyword">pit_t</span> pid,<span class="keyword">void</span> *addr,<span class="keyword">void</span> *data)</span></span></span><br></pre></td></tr></table></figure>
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2015/12/02/Android-Dalvik字节码解析/" title="link to Android Dalvik字节码解析">Android Dalvik字节码解析</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2015-12-02" class="post-list__meta--date date">2015-12-02</time> 
-      </div>
-
-      <div class="excerpt">
-        
-          <p>Dalvik字节码是专门为Dalvik VM设计的一种指令集。和java虚拟机不同的是，java虚拟机是基于堆栈设计的，而Dalvik虚拟机是基于寄存器的，效率要比java虚拟机快很多。在java字节码转换为dalvik字节码的过程中，方法调用栈就已经确定，其中明确的指定了使用寄存器的个数和额外的数据。Dalvik字节码能使用65536个虚拟寄存器，每个寄存器32位，以相邻的两个寄存器表示64位数据，最终所有的寄存器都会被映射到真实的物理寄存器上。</p>
-<p>一段Dalvik字节码由一系列Dalvik指令组成，指令语法由指令的位描述与指令格式标识来决定。位描述约定如下：</p>
-<ul>
-<li><p>每16位的字采用空格分隔开来。</p>
-</li>
-<li><p>每个字母表示4位，每个字母按顺序从高字节开始，排列到低字节。每4位之间可能使有竖线“|”来表示不同的内容。</p>
         
       </div>
 
