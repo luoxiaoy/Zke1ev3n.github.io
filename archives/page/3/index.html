@@ -7,7 +7,7 @@
     
 
     <title>
-      page 3 | 归档 | Zke1ev3n&#39;s Blog 
+      page 3 | Archives | Zke1ev3n&#39;s Blog 
     </title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -18,12 +18,12 @@
 
     <meta name="description" content="Talk is cheep,show me the code.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="page 3 | 归档 | Zke1ev3n's Blog">
+<meta property="og:title" content="page 3 | Archives | Zke1ev3n's Blog">
 <meta property="og:url" content="http://yoursite.com/archives/page/3/index.html">
 <meta property="og:site_name" content="Zke1ev3n's Blog">
 <meta property="og:description" content="Talk is cheep,show me the code.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="page 3 | 归档 | Zke1ev3n's Blog">
+<meta name="twitter:title" content="page 3 | Archives | Zke1ev3n's Blog">
 <meta name="twitter:description" content="Talk is cheep,show me the code.">
     
     
@@ -158,6 +158,27 @@ classes that you can use:
     <li>
 
       <h2 class="post-list__post-title post-title">
+        <a href="/2016/03/12/从头编写NES模拟器/" title="link to 从头编写NES模拟器">从头编写NES模拟器</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2016-03-12" class="post-list__meta--date date">2016-03-12</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>最近没什么事，在微博上看到国外某大牛开发出了一款3D版的NES模拟器，试玩了一下很有意思，正好FC的结构比较简单，所以也想自己动手实现一个简单的nes模拟器。关于NES模拟器相关的文章比较少，但是NES相关的核心原理都已经公布出来了，你可以从这里<a href="http://nesdev.com/">http://nesdev.com/</a>找到。</p>
+<h2 id="系统架构"><a href="#系统架构" class="headerlink" title="系统架构"></a>系统架构</h2><p>要完全模拟一个机器，我们需要对目标的架构非常熟悉，NES作为上世纪个人电脑诞生之初的产物，结构是非常简单的，并且NES在机能不足的情况下使用了很多独特的技术是其能展现出对当时来说领先的画面，实现这些技术也非常的有趣。<br>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
         <a href="/2016/01/18/基于LLVM的代码混淆/" title="link to 基于LLVM的代码混淆">基于LLVM的代码混淆</a>
       </h2>
 
@@ -244,33 +265,6 @@ classes that you can use:
       <hr class="post-list__divider" />
     </li>
     
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2015/12/15/CBC字节反转攻击/" title="link to CBC字节反转攻击">CBC字节反转攻击</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2015-12-15" class="post-list__meta--date date">2015-12-15</time> 
-      </div>
-
-      <div class="excerpt">
-        
-          <p>最近在XDCTF遇到一道Bit-flipping Attack的Crypto，刚好在drops上看到了相关的文章，于是纪录一下笔记。</p>
-<p>首先我们需要了解CBC是如何工作的。</p>
-<p><img src="1.png" alt=""></p>
-<p>大致的流程如下：</p>
-<ol>
-<li>首先将明文分组(常见的以16字节为一组)，位数不足的使用特殊字符填充。</li>
-<li>生成一个随机的初始化向量(IV)和一个密钥。</li>
-<li>将IV和第一组明文异或。
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
   </ol>
 
   <hr class="post-list__divider " />
@@ -278,14 +272,14 @@ classes that you can use:
 <nav class="pagination" role="navigation">
     
     	
-          <a class="newer-posts pagination__newer btn btn-small btn-tertiary" href="/archives/page/2/">&larr; 上一页 </a>
+          <a class="newer-posts pagination__newer btn btn-small btn-tertiary" href="/archives/page/2/">&larr; Prev </a>
         
     
 
     <span class="pagination__page-number"> 3 / 5</span>
     
     
-        <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/archives/page/4/">下一页 &rarr;</a>
+        <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/archives/page/4/">Next &rarr;</a>
     
 </nav>
 

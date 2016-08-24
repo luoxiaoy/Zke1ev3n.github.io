@@ -160,6 +160,26 @@ classes that you can use:
     <li>
 
       <h2 class="post-list__post-title post-title">
+        <a href="/2016/08/10/CVE-2014-4322-qseecom内存破坏漏洞分析与利用/" title="link to CVE-2014-4322 qseecom内存破坏漏洞分析与利用">CVE-2014-4322 qseecom内存破坏漏洞分析与利用</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2016-08-10" class="post-list__meta--date date">2016-08-10</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>这个漏洞存在于高通QSEECOM驱动中，这个驱动对用户层提供了一个ioctl系统调用接口，但是没有验证ioctl传入的参数中的一些基址和偏移，攻击者可以构造特殊的参数造成信息泄露和权限提升。</p>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
         <a href="/2016/08/02/CVE-2014-7911-Android本地提权漏洞分析与利用/" title="link to CVE-2014-7911 Android本地提权漏洞分析与利用">CVE-2014-7911 Android本地提权漏洞分析与利用</a>
       </h2>
 
@@ -239,27 +259,6 @@ classes that you can use:
       <hr class="post-list__divider" />
     </li>
     
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2016/05/10/SCTF-Re400-WriteUp/" title="link to SCTF Re400 WriteUp">SCTF Re400 WriteUp</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2016-05-10" class="post-list__meta--date date">2016-05-10</time> 
-      </div>
-
-      <div class="excerpt">
-        
-          <p>这次SCTF我负责出逆向的题目，原计划打算一道300一道400的，不过300那道逆向用了大量的混淆，连我自己都没有好的办法分析出原始指令，为了不坑大家，所以就只放了一道400。</p>
-<p>另外最坑的是400这道题我在发题目的时候发错了，忘记把函数的指令抽取出来，导致解这道题的直接越了一大步。。刚写WriteUp的时候才发现，，，<br>下面是具体的解题步骤。首先拿到Apk后运行可以看到输入错误会提示wrong。<br>
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
   </ol>
 
   <hr class="post-list__divider " />
@@ -270,7 +269,7 @@ classes that you can use:
     <span class="pagination__page-number"> 1 / 5</span>
     
     
-        <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/page/2/">下一页 &rarr;</a>
+        <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/page/2/">Next &rarr;</a>
     
 </nav>
 

@@ -7,7 +7,7 @@
     
 
     <title>
-      page 4 | 归档 | Zke1ev3n&#39;s Blog 
+      page 4 | Archives | Zke1ev3n&#39;s Blog 
     </title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -18,12 +18,12 @@
 
     <meta name="description" content="Talk is cheep,show me the code.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="page 4 | 归档 | Zke1ev3n's Blog">
+<meta property="og:title" content="page 4 | Archives | Zke1ev3n's Blog">
 <meta property="og:url" content="http://yoursite.com/archives/page/4/index.html">
 <meta property="og:site_name" content="Zke1ev3n's Blog">
 <meta property="og:description" content="Talk is cheep,show me the code.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="page 4 | 归档 | Zke1ev3n's Blog">
+<meta name="twitter:title" content="page 4 | Archives | Zke1ev3n's Blog">
 <meta name="twitter:description" content="Talk is cheep,show me the code.">
     
     
@@ -158,6 +158,33 @@ classes that you can use:
     <li>
 
       <h2 class="post-list__post-title post-title">
+        <a href="/2015/12/15/CBC字节反转攻击/" title="link to CBC字节反转攻击">CBC字节反转攻击</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2015-12-15" class="post-list__meta--date date">2015-12-15</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>最近在XDCTF遇到一道Bit-flipping Attack的Crypto，刚好在drops上看到了相关的文章，于是纪录一下笔记。</p>
+<p>首先我们需要了解CBC是如何工作的。</p>
+<p><img src="1.png" alt=""></p>
+<p>大致的流程如下：</p>
+<ol>
+<li>首先将明文分组(常见的以16字节为一组)，位数不足的使用特殊字符填充。</li>
+<li>生成一个随机的初始化向量(IV)和一个密钥。</li>
+<li>将IV和第一组明文异或。
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
         <a href="/2015/12/09/Gradle笔记/" title="link to Gradle笔记">Gradle笔记</a>
       </h2>
 
@@ -241,30 +268,6 @@ classes that you can use:
       <hr class="post-list__divider" />
     </li>
     
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2015/12/02/破解简单的C井软件/" title="link to 破解简单的C#软件">破解简单的C#软件</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2015-12-02" class="post-list__meta--date date">2015-12-02</time> 
-      </div>
-
-      <div class="excerpt">
-        
-          <p>在开发或者调试过程中，经常需要在多个窗口间来回切换查看信息，在操作上不仅麻烦，而且经常打开错误的窗口。所以我们希望能够在有限的屏幕里平铺多个窗口，这就需要能够分割屏幕的软件，而这类软件非常少，并且体验很不好。在尝试多款分屏软件后，我发现了一款叫MaxTo的软件能很好的解决我的问题，不过这款软件只能免费使用30天，而且价格还很贵。</p>
-<hr>
-<p><img src="1.png" alt=""><br><img src="2.png" alt=""></p>
-<p>不过后来我发现这款软件是用C#写的，看来是款好捏的软柿子，所以我试着来破解它。</p>
-<p>打开注册窗口，我们会发现不管怎么输入邮箱和序列号，注册按钮都无法点击，看来软件会检测邮箱和序列号的逻辑关系。<br>
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
   </ol>
 
   <hr class="post-list__divider " />
@@ -272,14 +275,14 @@ classes that you can use:
 <nav class="pagination" role="navigation">
     
     	
-          <a class="newer-posts pagination__newer btn btn-small btn-tertiary" href="/archives/page/3/">&larr; 上一页 </a>
+          <a class="newer-posts pagination__newer btn btn-small btn-tertiary" href="/archives/page/3/">&larr; Prev </a>
         
     
 
     <span class="pagination__page-number"> 4 / 5</span>
     
     
-        <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/archives/page/5/">下一页 &rarr;</a>
+        <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/archives/page/5/">Next &rarr;</a>
     
 </nav>
 
