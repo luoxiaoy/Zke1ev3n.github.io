@@ -160,6 +160,26 @@ classes that you can use:
     <li>
 
       <h2 class="post-list__post-title post-title">
+        <a href="/2016/06/18/Pwnable-kr-Writeup/" title="link to [Pwnable.kr] Writeup">[Pwnable.kr] Writeup</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2016-06-18" class="post-list__meta--date date">2016-06-18</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <h2 id="BrainFuck"><a href="#BrainFuck" class="headerlink" title="BrainFuck"></a>BrainFuck</h2><p>题目给了一个二进制文件和libc。</p>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
         <a href="/2016/05/10/SCTF-Re400-WriteUp/" title="link to SCTF Re400 WriteUp">SCTF Re400 WriteUp</a>
       </h2>
 
@@ -233,26 +253,6 @@ classes that you can use:
         
           <p>在上篇文章中我已经使用CodeInspect对WiFi万能钥匙进行了演示分析，在大概分析了下它的代码后，我发现这款APP并没有做什么加固措施，导致接口很容易就可以被分析出来。事实上在去年网上就有针对WiFi万能钥匙接口协议的分析，在经过多次版本迭代后，新版的Wifi万能钥匙在安全性上似乎并没有太大的提升，虽然接口有一些变化，但是核心的加密算法却没有改变并且很容易被逆向。凭借CodeInspect，我很快的就分析出了它的代码逻辑，并且写了一个查询脚本，在文章后面会提到。</p>
 <h3 id="功能分析"><a href="#功能分析" class="headerlink" title="功能分析"></a>功能分析</h3><p>我们首先来看一下Wifi万能钥匙的主界面，可以看到主界面有一个一键查询万能钥匙的按钮，这个按钮的功能是扫描附近的Wifi，根据Wifi信息找出服务器上存在密码的Wifi。如果服务器上有这个Wifi的密码在这个Wifi一栏的后面显示一个蓝色的小钥匙，如下图中的”360免费WiFi-10”，这个Wifi是我故意上传密码来测试接口的。<br>
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2016/03/30/使用CodeInspect逆向分析APK/" title="link to 使用CodeInspect逆向分析APK">使用CodeInspect逆向分析APK</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2016-03-30" class="post-list__meta--date date">2016-03-30</time> 
-      </div>
-
-      <div class="excerpt">
-        
-          <p>CodeInspect是由德国Paderborn University和TU Darmstadt的软件安全团队研发的一款基于<a href="https://en.wikipedia.org/wiki/Soot">Jimple</a>的Android应用分析工具。CodeInspect的软件是Eclipse框架开发的，所以我们可以像使用IDE一样对Android应用进行分析和调试，也可以直接插入或者修改Java代码。<br>我最先接触到这款软件是在15年10月份左右，当时CodeInspect处于内测阶段，通过和CodeInspect的开发团队邮件沟通并且签署了一个协议后我获得了CodeInspect的内测版本，并提供了一个有效期3个月的key，最近我发现key过期了，于是再联系他们时得知现在CodeInspect现在已经是公测阶段，任何用户只要签署一份使用协议就可以获得使用资格，你可以在这里<a href="https://codeinspect.sit.fraunhofer.de/">https://codeinspect.sit.fraunhofer.de/</a>申请测试使用。</p>
         
       </div>
 

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      Ubuntu16.04编译android6.0源代码 | Zke1ev3n&#39;s Blog 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="Zke1ev3n">
+    
+    
+
+    <meta name="description" content="因为最近经常编译android，每次都要去网上搜索教程，这里把自己编译的步骤记录下来，方便以后查询。
+源码下载安装git安装好了后配置下用户名和邮箱地址。123$ sudo apt-get install git$ git config --global user.name &quot;Your Name&quot;$ git config --global user.email &quot;you@example.com&quot;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu16.04编译android6.0源代码 | Zke1ev3n's Blog">
+<meta property="og:url" content="http://yoursite.com/2016/08/25/Ubuntu16-04编译android6-0源代码/index.html">
+<meta property="og:site_name" content="Zke1ev3n's Blog">
+<meta property="og:description" content="因为最近经常编译android，每次都要去网上搜索教程，这里把自己编译的步骤记录下来，方便以后查询。
+源码下载安装git安装好了后配置下用户名和邮箱地址。123$ sudo apt-get install git$ git config --global user.name &quot;Your Name&quot;$ git config --global user.email &quot;you@example.com&quot;">
+<meta property="og:image" content="http://yoursite.com/Screenshot from 2016-08-25 15-05-34.png">
+<meta property="og:updated_time" content="2016-08-25T07:28:23.216Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu16.04编译android6.0源代码 | Zke1ev3n's Blog">
+<meta name="twitter:description" content="因为最近经常编译android，每次都要去网上搜索教程，这里把自己编译的步骤记录下来，方便以后查询。
+源码下载安装git安装好了后配置下用户名和邮箱地址。123$ sudo apt-get install git$ git config --global user.name &quot;Your Name&quot;$ git config --global user.email &quot;you@example.com&quot;">
+<meta name="twitter:image" content="http://yoursite.com/Screenshot from 2016-08-25 15-05-34.png">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">Zke1ev3n&#39;s Blog</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+        <p class="panel-cover__description">
+          The quieter you became,the more you are able to hear.
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">Ubuntu16.04编译android6.0源代码</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2016-08-25" class="post-meta__date date">2016-08-25</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>因为最近经常编译android，每次都要去网上搜索教程，这里把自己编译的步骤记录下来，方便以后查询。</p>
+<h3 id="源码下载"><a href="#源码下载" class="headerlink" title="源码下载"></a>源码下载</h3><h4 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h4><p>安装好了后配置下用户名和邮箱地址。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install git</span><br><span class="line">$ git config --global user.name <span class="string">"Your Name"</span></span><br><span class="line">$ git config --global user.email <span class="string">"you@example.com"</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="安装curl"><a href="#安装curl" class="headerlink" title="安装curl"></a>安装curl</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install curl</span><br></pre></td></tr></table></figure>
+<h3 id="下载repo"><a href="#下载repo" class="headerlink" title="下载repo"></a>下载repo</h3><p>repo是google为方便管理android源码编写的一系列python脚本。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir ~/bin</span><br><span class="line">$ PATH=~/bin:$PATH</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ curl https://storage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo</span><br><span class="line">$ chmod a+x ~/bin/repo</span><br></pre></td></tr></table></figure>
+<h3 id="同步代码"><a href="#同步代码" class="headerlink" title="同步代码"></a>同步代码</h3><p>创建源码目录：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir android-6.0.1_r46</span><br><span class="line"><span class="built_in">cd</span> android-6.0.1_r46</span><br></pre></td></tr></table></figure></p>
+<p>使用repo init指定要同步的代码版本。你可以在这里找到目前所有android源码的版本：<br><a href="https://source.android.com/source/build-numbers.html" target="_blank" rel="external">https://source.android.com/source/build-numbers.html</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ repo init -u https://android.googlesource.com/platform/manifest -b android-6.0.1_r1</span><br></pre></td></tr></table></figure>
+<p>这里使用google的镜像服务器上同步代码，如果你没有翻墙工具或者下载很慢的话可以使用国内的源，比如清华的，像下面这样修改～/bin/repo中的REPO_URL。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">REPO_URL = &apos;https://gerrit-google.tuna.tsinghua.edu.cn/git-repo&apos;</span><br></pre></td></tr></table></figure></p>
+<p>然后同样使用repo init来执行同步的版本。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ repo init -u https://aosp.tuna.tsinghua.edu.cn/platform/manifest -b android-6.0.1_r46</span><br></pre></td></tr></table></figure>
+<p>然后使用下面的命令下载源码。因为源码比较大，所以下载时间会很长，android6.0.1的代码大概有46G左右。repo支持断线重连，所以直接挂在哪里就可以了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ repo sync</span><br></pre></td></tr></table></figure></p>
+<h3 id="编译源码"><a href="#编译源码" class="headerlink" title="编译源码"></a>编译源码</h3><p>android源码编译有一些环境要求，具体可以查看下面的网址:<br><a href="https://source.android.com/source/requirements.html" target="_blank" rel="external">https://source.android.com/source/requirements.html</a></p>
+<h4 id="安装openjdk"><a href="#安装openjdk" class="headerlink" title="安装openjdk"></a>安装openjdk</h4><p>我们这里编译的是android6.0.1，需要先安装openjdk。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo add-apt-repository ppa:openjdk-r/ppa  </span><br><span class="line">$ sudo apt-get update   </span><br><span class="line">$ sudo apt-get install openjdk-7-jdk</span><br></pre></td></tr></table></figure></p>
+<p>但是在日常使用中，我们更经常使用oracle-jdk，所以如果电脑上安装了其他版本的jdk的话，可以使用下面的命令来切换当前使用的jdk版本。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo update-alternatives --config java</span><br><span class="line">$ sudo update-alternatives --config javac</span><br></pre></td></tr></table></figure></p>
+<h4 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h4><p>不同的系统版本需要的依赖可以在这里找到：<br><a href="https://source.android.com/source/initializing.html" target="_blank" rel="external">https://source.android.com/source/initializing.html</a></p>
+<p>但是这个网址上只有14.04需要的依赖，经过实验发现在16.04上不成功。下面是我在网上找到的16.04所需的依赖：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install -y git flex bison gperf build-essential libncurses5-dev:i386</span><br><span class="line">$ sudo apt-get install libx11-dev:i386 libreadline6-dev:i386 libgl1-mesa-dev g++-multilib</span><br><span class="line">$ sudo apt-get install tofrodos python-markdown libxml2-utils xsltproc zlib1g-dev:i386</span><br><span class="line">$ sudo apt-get install dpkg-dev libsdl1.2-dev libesd0-dev</span><br><span class="line">$ sudo apt-get install git-core gnupg flex bison gperf build-essential  </span><br><span class="line">$ sudo apt-get install zip curl zlib1g-dev gcc-multilib g++-multilib</span><br><span class="line">$ sudo apt-get install libc6-dev-i386</span><br><span class="line">$ sudo apt-get install lib32ncurses5-dev x11proto-core-dev libx11-dev</span><br><span class="line">$ sudo apt-get install lib32z-dev ccache</span><br><span class="line">$ sudo apt-get install libgl1-mesa-dev libxml2-utils xsltproc unzip m4</span><br></pre></td></tr></table></figure></p>
+<h4 id="修改源码"><a href="#修改源码" class="headerlink" title="修改源码"></a>修改源码</h4><p>我在编译源码的过程中，编译到libartd.so时出现了如下错误：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clang: error: linker <span class="built_in">command</span> failed with <span class="built_in">exit</span> code</span><br></pre></td></tr></table></figure></p>
+<p>后来经过搜索，发现修改art/build/Android.common_build.mk文件中的：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifneq ($(WITHOUT_HOST_CLANG),<span class="literal">true</span>)</span><br></pre></td></tr></table></figure></p>
+<p>为<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifeq ($(WITHOUT_HOST_CLANG),<span class="literal">false</span>)</span><br></pre></td></tr></table></figure></p>
+<p>然后重新编译即可。</p>
+<h4 id="开始编译"><a href="#开始编译" class="headerlink" title="开始编译"></a>开始编译</h4><p>为了提高编译效率，设置编译器高速缓存。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="built_in">export</span> USE_CCACHE=1 &gt;&gt; ~/.bashrc</span><br><span class="line">$ prebuilts/misc/linux-x86/ccache/ccache -M 50G</span><br></pre></td></tr></table></figure></p>
+<p>导入编译Android源码需要的环境变量和其他参数：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">source</span> build/envsetup.sh</span><br></pre></td></tr></table></figure></p>
+<p>使用lunch命令选择需要编译的目标：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ lunch</span><br></pre></td></tr></table></figure></p>
+<p>我这里选择的是1。然后使用make命令开始编译。可以使用make -j 来设置参与编译的线程数量，一般来说设置为cpu核心数的两倍。可以使用如下命令查看当前电脑的cpu核心数量：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat  /proc/cpuinfo</span><br></pre></td></tr></table></figure></p>
+<p>大概几个小时后，就可以编译成功了。使用emulator命令就可以启动编译好的模拟器。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ emulator</span><br></pre></td></tr></table></figure></p>
+<p>如图：<br><img src="Screenshot from 2016-08-25 15-05-34.png" alt="Screenshot from 2016-08-25 15-05-34.png"></p>
+<h3 id="启动模拟器"><a href="#启动模拟器" class="headerlink" title="启动模拟器"></a>启动模拟器</h3><p>因为我们导入的环境变量在关闭shell后就失效了，所以我们不能直接用emulator命令来启动模拟器。每次启动模拟器前要先导入环境变量。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">source</span> build/envsetup</span><br><span class="line">$ lunch <span class="comment">#这里选择编译时选择的版本</span></span><br><span class="line">$ emulator</span><br></pre></td></tr></table></figure></p>
+<h3 id="模块编译"><a href="#模块编译" class="headerlink" title="模块编译"></a>模块编译</h3><p>除了通过make命令编译可以整个android源码外,Google也为我们提供了相应的命令来支持单独模块的编译.</p>
+<p>编译环境初始化(即执行source build/envsetup.sh)之后,我们可以得到一些有用的指令,除了上边用到的lunch,还有以下:</p>
+<ul>
+<li>croot: Changes directory to the top of the tree.</li>
+<li>m: Makes from the top of the tree.</li>
+<li>mm: Builds all of the modules in the current directory.</li>
+<li>mmm: Builds all of the modules in the supplied directories.</li>
+<li>cgrep: Greps on all local C/C++ files.</li>
+<li>jgrep: Greps on all local Java files.</li>
+<li>resgrep: Greps on all local res/*.xml files.</li>
+<li>godir: Go to the directory containing a file.</li>
+</ul>
+<p>其中mmm指令就是用来编译指定目录.通常来说,每个目录只包含一个模块.比如这里我们要编译Launcher2模块,执行指令:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mmm packages/apps/Launcher2/</span><br></pre></td></tr></table></figure>
+<p>稍等一会之后,如果提示:</p>
+<h3 id="make-completed-success-fully"><a href="#make-completed-success-fully" class="headerlink" title="make completed success fully"></a>make completed success fully</h3><p>即表示编译完成,此时在out/target/product/gereric/system/app就可以看到编译的Launcher2.apk文件了.</p>
+<h4 id="重新打包系统镜像"><a href="#重新打包系统镜像" class="headerlink" title="重新打包系统镜像"></a>重新打包系统镜像</h4><p>编译好指定模块后,如果我们想要将该模块对应的apk集成到系统镜像中,需要借助make snod指令重新打包系统镜像,这样我们新生成的system.img中就包含了刚才编译的Launcher2模块了.重启模拟器之后生效.</p>
+<p>一些模块位置：</p>
+<ul>
+<li>Android系统自带的apk文件都在out/target/product/generic/system/apk目录下;</li>
+<li>一些可执行文件(比如C编译的执行),放在out/target/product/generic/system/bin目录下;</li>
+<li>动态链接库放在out/target/product/generic/system/lib目录下;</li>
+<li>硬件抽象层文件都放在out/targer/product/generic/system/lib/hw目录下.</li>
+</ul>
+<h3 id="编译SDK"><a href="#编译SDK" class="headerlink" title="编译SDK"></a>编译SDK</h3><p>有时候我们需要自己编译一个sdk，比如有时候需要使用系统隐藏的api，可以将源代码目录中隐藏api的@hide注解去掉，然后使用下面的命令编译。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make sdk</span><br></pre></td></tr></table></figure></p>
+
+  </section>
+
+  
+
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'zke1ev3nme'; 
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+  
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">Copyright &copy; 2014-2015 Zke1ev3n. All Rights Reserved</span>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-71084152-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>

@@ -158,6 +158,30 @@ classes that you can use:
     <li>
 
       <h2 class="post-list__post-title post-title">
+        <a href="/2015/12/15/ELF文件格式解析/" title="link to ELF文件格式解析">ELF文件格式解析</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2015-12-15" class="post-list__meta--date date">2015-12-15</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>—本文基本的内容都是来源于《程序员的自我修养》，之所以摘录下来是为了方便查阅，还有一部分表格是来源于滕启明写的《ELF文件格式分析》。顺便安利一下这本书，是本程序员必读的好书，看了好几遍，每次看都有新收获。</p>
+<p>可执行和可链接格式(Executable and Linkable Format，缩写为ELF)，常被称为ELF格式，在计算机科学中，是一种用于执行档、目的档、共享库和核心转储的标准文件格式。<br>ELF由UNIX实验室作为应用程序二进制接口(Application Binary Interface，ABI)而开发和发布的，1999年，被86open项目选为x86架构上的类Unix操作系统的二进制文件标准格式，用来取代COFF。<br>ELF文件主要有四种类型：</p>
+<ul>
+<li>可重定位文件（Relocatable File） 包含适合于与其他目标文件链接来创建可执行文件或者共享目标文件的代码和数据。</li>
+<li>可执行文件（Executable File） 包含适合于执行的一个程序，此文件规定了 exec() 如何创建一个程序的进程映像。
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
         <a href="/2015/12/15/CBC字节反转攻击/" title="link to CBC字节反转攻击">CBC字节反转攻击</a>
       </h2>
 
@@ -240,28 +264,6 @@ classes that you can use:
           <p>当Android设备的电源键被按下时，主要执行了以下步骤：</p>
 <p><img src="1.png" alt=""></p>
 <h3 id="Boot-ROM"><a href="#Boot-ROM" class="headerlink" title="Boot ROM"></a>Boot ROM</h3><p>加电后,设备从固化在CPU ASIC中的Boot ROM代码开始执行。这段代码主要用于初始化软件堆栈，通信端口和可引导存储设备(比如NAND/EMMC)。然后BootROM会从存储器中加载bootloader的一部分到处理器ISRAM中(这时候还没有初始化DRAM)，然后跳转到bootloader的入口处执行。</p>
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2015/12/02/Android-so注入/" title="link to Android so注入">Android so注入</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2015-12-02" class="post-list__meta--date date">2015-12-02</time> 
-      </div>
-
-      <div class="excerpt">
-        
-          <p>Android下的so注入，目前网上已经有很多种比较成熟的版本了。虽然他们实现的细节有一些不同，但是原理都是一样的。我们知道Android的底层是linux，在linux下有一个特殊的函数：ptrace，利用这个函数，我们不仅可以查看其他进程状态，还能向其他进程注入任意数据，执行任意代码。因为Android下每一个进程都是隔离的，所以要注入另一个进程，我们首先需要取得root权限，当然也可以利用一些签名漏洞。</p>
-<hr>
-<p>在学习linux ptrace时，我们已经成功向其他进程注入了一段shellcode，当时我们的做法是遍历/proc/pid/maps文件，找到空闲的地方，然后存放shellcode，再跳转到这个地址执行。注入so的思路和这个基本相似，但是需要注意的是Android的CPU架构一般是arm，所以我们的实现方案也是基于arm的，当然x86的也一样，只需要调整下寄存器即可。<br>
         
       </div>
 

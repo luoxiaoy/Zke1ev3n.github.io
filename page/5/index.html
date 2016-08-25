@@ -160,6 +160,28 @@ classes that you can use:
     <li>
 
       <h2 class="post-list__post-title post-title">
+        <a href="/2015/12/02/Android-so注入/" title="link to Android so注入">Android so注入</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2015-12-02" class="post-list__meta--date date">2015-12-02</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>Android下的so注入，目前网上已经有很多种比较成熟的版本了。虽然他们实现的细节有一些不同，但是原理都是一样的。我们知道Android的底层是linux，在linux下有一个特殊的函数：ptrace，利用这个函数，我们不仅可以查看其他进程状态，还能向其他进程注入任意数据，执行任意代码。因为Android下每一个进程都是隔离的，所以要注入另一个进程，我们首先需要取得root权限，当然也可以利用一些签名漏洞。</p>
+<hr>
+<p>在学习linux ptrace时，我们已经成功向其他进程注入了一段shellcode，当时我们的做法是遍历/proc/pid/maps文件，找到空闲的地方，然后存放shellcode，再跳转到这个地址执行。注入so的思路和这个基本相似，但是需要注意的是Android的CPU架构一般是arm，所以我们的实现方案也是基于arm的，当然x86的也一样，只需要调整下寄存器即可。<br>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
         <a href="/2015/12/02/破解简单的C井软件/" title="link to 破解简单的C#软件">破解简单的C#软件</a>
       </h2>
 
