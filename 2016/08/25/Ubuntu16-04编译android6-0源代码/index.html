@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="Zke1ev3n's Blog">
 <meta property="og:description" content="因为最近经常编译android，每次都要去网上搜索教程，这里把自己编译的步骤记录下来，方便以后查询。">
 <meta property="og:image" content="http://yoursite.com/Screenshot from 2016-08-25 15-05-34.png">
-<meta property="og:updated_time" content="2016-08-25T07:29:50.296Z">
+<meta property="og:updated_time" content="2016-08-25T07:31:41.549Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu16.04编译android6.0源代码 | Zke1ev3n's Blog">
 <meta name="twitter:description" content="因为最近经常编译android，每次都要去网上搜索教程，这里把自己编译的步骤记录下来，方便以后查询。">
@@ -218,8 +218,8 @@ classes that you can use:
 </ul>
 <p>其中mmm指令就是用来编译指定目录.通常来说,每个目录只包含一个模块.比如这里我们要编译Launcher2模块,执行指令:</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mmm packages/apps/Launcher2/</span><br></pre></td></tr></table></figure>
-<p>稍等一会之后,如果提示:</p>
-<h3 id="make-completed-success-fully"><a href="#make-completed-success-fully" class="headerlink" title="make completed success fully"></a>make completed success fully</h3><p>即表示编译完成,此时在out/target/product/gereric/system/app就可以看到编译的Launcher2.apk文件了.</p>
+<p>稍等一会之后,如果提示:<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">### make completed success fully ###</span></span><br></pre></td></tr></table></figure></p>
+<p>即表示编译完成,此时在out/target/product/gereric/system/app就可以看到编译的Launcher2.apk文件了.</p>
 <h4 id="重新打包系统镜像"><a href="#重新打包系统镜像" class="headerlink" title="重新打包系统镜像"></a>重新打包系统镜像</h4><p>编译好指定模块后,如果我们想要将该模块对应的apk集成到系统镜像中,需要借助make snod指令重新打包系统镜像,这样我们新生成的system.img中就包含了刚才编译的Launcher2模块了.重启模拟器之后生效.</p>
 <p>一些模块位置：</p>
 <ul>
