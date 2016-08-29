@@ -23,7 +23,8 @@
 <meta property="og:site_name" content="Zke1ev3n's Blog">
 <meta property="og:description" content="因为最近经常编译android，每次都要去网上搜索教程，这里把自己编译的步骤记录下来，方便以后查询。">
 <meta property="og:image" content="http://yoursite.com/Screenshot from 2016-08-25 15-05-34.png">
-<meta property="og:updated_time" content="2016-08-25T07:31:41.549Z">
+<meta property="og:image" content="http://yoursite.com/Screenshot from 2016-08-28 16-38-10.png">
+<meta property="og:updated_time" content="2016-08-28T08:59:29.276Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu16.04编译android6.0源代码 | Zke1ev3n's Blog">
 <meta name="twitter:description" content="因为最近经常编译android，每次都要去网上搜索教程，这里把自己编译的步骤记录下来，方便以后查询。">
@@ -204,6 +205,16 @@ classes that you can use:
 <p>大概几个小时后，就可以编译成功了。使用emulator命令就可以启动编译好的模拟器。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ emulator</span><br></pre></td></tr></table></figure></p>
 <p>如图：<br><img src="Screenshot from 2016-08-25 15-05-34.png" alt="Screenshot from 2016-08-25 15-05-34.png"></p>
 <h3 id="启动模拟器"><a href="#启动模拟器" class="headerlink" title="启动模拟器"></a>启动模拟器</h3><p>因为我们导入的环境变量在关闭shell后就失效了，所以我们不能直接用emulator命令来启动模拟器。每次启动模拟器前要先导入环境变量。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">source</span> build/envsetup</span><br><span class="line">$ lunch <span class="comment">#这里选择编译时选择的版本</span></span><br><span class="line">$ emulator</span><br></pre></td></tr></table></figure></p>
+<p>运行android模拟器时，</p>
+<p>emulator -avd test -no-skin -no-audio -no-window</p>
+<ul>
+<li><p>‘-no-skin’表示移除模拟按钮</p>
+</li>
+<li><p>‘-no-audio’ 表示禁用音频</p>
+</li>
+<li><p>‘-no-window’ 表示禁用图形窗口</p>
+</li>
+</ul>
 <h3 id="模块编译"><a href="#模块编译" class="headerlink" title="模块编译"></a>模块编译</h3><p>除了通过make命令编译可以整个android源码外,Google也为我们提供了相应的命令来支持单独模块的编译.</p>
 <p>编译环境初始化(即执行source build/envsetup.sh)之后,我们可以得到一些有用的指令,除了上边用到的lunch,还有以下:</p>
 <ul>
@@ -229,6 +240,19 @@ classes that you can use:
 <li>硬件抽象层文件都放在out/targer/product/generic/system/lib/hw目录下.</li>
 </ul>
 <h3 id="编译SDK"><a href="#编译SDK" class="headerlink" title="编译SDK"></a>编译SDK</h3><p>有时候我们需要自己编译一个sdk，比如有时候需要使用系统隐藏的api，可以将源代码目录中隐藏api的@hide注解去掉，然后使用下面的命令编译。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make sdk</span><br></pre></td></tr></table></figure></p>
+<h3 id="编译Nexus设备的镜像"><a href="#编译Nexus设备的镜像" class="headerlink" title="编译Nexus设备的镜像"></a>编译Nexus设备的镜像</h3><p>更多的时候我们需要的不是使用模拟器，而是使用真机调试。这个时候我们可以在lunch命令中选择适用于Nexus设备的镜像。比如我这里选择的是使用于nexus5的aosp-hammerhead-userdebug, 这样直接编译出来的镜像刷入手机是无法成功使用的，因为没有驱动。所以我们需要到官网上下载对应的驱动。你可以在这里选择对应源码镜像版本的驱动：<br><a href="https://developers.google.com/android/nexus/drivers" target="_blank" rel="external">https://developers.google.com/android/nexus/drivers</a></p>
+<p>下载3个压缩包拷贝到源码目录，然后分别解压获得3个sh脚本，分别运行这3个脚本文件，在源码目录会出现一个vendor的文件夹，里面就包含了nexus5的驱动文件。<br>重新编译源码，如果你之前已经编译过一次，那么这次会很快完成。编译完成后，我们就可以刷入设备了。首先手机进入fastboot模式，可以使用音量上下键+电源键或者在连接到adb时使用”adb reboot bootloader”进入。然后电脑端进入到/out/host/linux-x86/bin目录，运行<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./fastboot -w flashall</span><br></pre></td></tr></table></figure></p>
+<p>就可以刷入了。刷入完成后手机会自动重启。这里的命令表示清空用户数据然后全部刷入，当然也可以只刷入一部分。</p>
+<h3 id="编译内核"><a href="#编译内核" class="headerlink" title="编译内核"></a>编译内核</h3><p>android的源码目录下没有内核代码，需要自己手动下载。下载很简单，使用git clone即可。<br>在这里可以找到对应机型的内核版本：<br><a href="https://source.android.com/source/building-kernels.html" target="_blank" rel="external">https://source.android.com/source/building-kernels.html</a><br>这里可以找到更详细的信息：<br><a href="https://android.googlesource.com/kernel/" target="_blank" rel="external">https://android.googlesource.com/kernel/</a></p>
+<p>比如我要编译的是nexus5的内核镜像。通过第一个网址我们可以知道它对应的内核版本为’kernel/msm’。在源码目录新建kernel目录，然后git clone。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir kernel</span><br><span class="line">$ git <span class="built_in">clone</span> https://android.googlesource.com/kernel/msm.git <span class="comment">#这一步需要代理</span></span><br></pre></td></tr></table></figure></p>
+<p>内核源代码大小大概有1个多G。clone完后进入msm目录，可以发现里面什么都没有，因为我们还没有选择分支。使用<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch <span class="_">-a</span></span><br></pre></td></tr></table></figure></p>
+<p>来查看所有分支。如下图：<br><img src="Screenshot from 2016-08-28 16-38-10.png" alt="Screenshot from 2016-08-28 16-38-10.png"></p>
+<p>这里因为我们编译nexus5 6.0.1的内核，所以使用如下命令：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b android-msm-hammerhead-3.4-marshmallow-mr2 remotes/origin/android-msm-hammerhead-3.4-marshmallow-mr2</span><br></pre></td></tr></table></figure></p>
+<p>然后配置一些环境变量：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> ARCH=arm</span><br><span class="line">$ <span class="built_in">export</span> SUBARCH=arm</span><br><span class="line">$ <span class="built_in">export</span> CROSS_COMPILE=arm-eabi-</span><br><span class="line">$ make hammerhead_defconfig</span><br></pre></td></tr></table></figure></p>
+<p>然后使用<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ make</span><br></pre></td></tr></table></figure></p>
+<p>编译。编译成功后会在arch/arm/boot目录下生成一个zImage文件。将这个文件替换掉device/lge/hammerhead-kernel中的zImage。或者导出环境变量<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> TARGET_PREBUILT_KERNEL＝<span class="string">"zImage文件路径"</span></span><br></pre></td></tr></table></figure></p>
+<p>然后使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$make bootimage</span><br></pre></td></tr></table></figure></p>
+<p>重新编译boot.img。再刷入手机就可以了。</p>
 
   </section>
 
