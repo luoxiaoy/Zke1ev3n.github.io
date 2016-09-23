@@ -160,6 +160,28 @@ classes that you can use:
     <li>
 
       <h2 class="post-list__post-title post-title">
+        <a href="/2015/12/02/Android-启动过程解析/" title="link to Android 启动过程解析">Android 启动过程解析</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2015-12-02" class="post-list__meta--date date">2015-12-02</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>当Android设备的电源键被按下时，主要执行了以下步骤：</p>
+<p><img src="1.png" alt=""></p>
+<h3 id="Boot-ROM"><a href="#Boot-ROM" class="headerlink" title="Boot ROM"></a>Boot ROM</h3><p>加电后,设备从固化在CPU ASIC中的Boot ROM代码开始执行。这段代码主要用于初始化软件堆栈，通信端口和可引导存储设备(比如NAND/EMMC)。然后BootROM会从存储器中加载bootloader的一部分到处理器ISRAM中(这时候还没有初始化DRAM)，然后跳转到bootloader的入口处执行。</p>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
         <a href="/2015/12/02/Android-so注入/" title="link to Android so注入">Android so注入</a>
       </h2>
 
@@ -252,29 +274,6 @@ classes that you can use:
       <hr class="post-list__divider" />
     </li>
     
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2015/12/02/Android-Dex文件格式解析/" title="link to Android Dex文件格式解析">Android Dex文件格式解析</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2015-12-02" class="post-list__meta--date date">2015-12-02</time> 
-      </div>
-
-      <div class="excerpt">
-        
-          <p>Dex文件是Android虚拟机下的可执行文件，包含了应用程序所用到所有操作指令和运行时数据。在程序编译过程中，java源文件先被编译成class文件，然后通过dx工具将多个class文件整合为一个dex文件。这样的文件结构使得各个类能够共享数据，充分减少了存储空间，提升了运行效率。</p>
-<p> Java源文件生成Dex文件的映射关系。</p>
-<p><img src="2.png" alt=""></p>
-<p>dex文件的结构如下图：<br>
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
   </ol>
 
   <hr class="post-list__divider " />
@@ -282,12 +281,14 @@ classes that you can use:
 <nav class="pagination" role="navigation">
     
     	
-          <a class="newer-posts pagination__newer btn btn-small btn-tertiary" href="/page/4/">&larr; 上一页 </a>
+          <a class="newer-posts pagination__newer btn btn-small btn-tertiary" href="/page/4/">&larr; Prev </a>
         
     
 
-    <span class="pagination__page-number"> 5 / 5</span>
+    <span class="pagination__page-number"> 5 / 6</span>
     
+    
+        <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/page/6/">Next &rarr;</a>
     
 </nav>
 

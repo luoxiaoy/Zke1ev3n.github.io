@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      Algorithm:Dynamic Programming | Zke1ev3n&#39;s Blog 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="Zke1ev3n">
+    
+    
+
+    <meta name="description" content="After a long time without updating my blog, I have made a decision that all of my articles will be written in english in the future, for i met more and more english in my study and work.And i’m worry">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Algorithm:Dynamic Programming | Zke1ev3n's Blog">
+<meta property="og:url" content="http://yoursite.com/2016/09/13/Algorithm-Dynamic-Programming/index.html">
+<meta property="og:site_name" content="Zke1ev3n's Blog">
+<meta property="og:description" content="After a long time without updating my blog, I have made a decision that all of my articles will be written in english in the future, for i met more and more english in my study and work.And i’m worry">
+<meta property="og:updated_time" content="2016-09-23T16:26:29.374Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Algorithm:Dynamic Programming | Zke1ev3n's Blog">
+<meta name="twitter:description" content="After a long time without updating my blog, I have made a decision that all of my articles will be written in english in the future, for i met more and more english in my study and work.And i’m worry">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">Zke1ev3n&#39;s Blog</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+        <p class="panel-cover__description">
+          The quieter you became,the more you are able to hear.
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">Algorithm:Dynamic Programming</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2016-09-13" class="post-meta__date date">2016-09-13</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>After a long time without updating my blog, I have made a decision that all of my articles will be written in english in the future, for i met more and more english in my study and work.And i’m worry about my poor english, it may hinder my progress.Though it might be a little difficult to update my articles as before, i will try my best.However, people who are not good at english don’t be worry about this, i will just use some plain english(that’s also what i can), even there will be many grammatical errors, and i will be apprectiate if you point them out.</p>
+<a id="more"></a>
+<p>In addtion, i will also write more articles about algorithm.Since i began to focus on mobile security, i paid more attention on some tricky things, but fogot to imporve my programming skills, Thus while i learned a lot of knowledge about mobile security, but did not write any awesome security tools or get any influential results.</p>
+<p>Well, let’s turn our attention to the theme of this article.The following is the description of the wiki on dynamic programming.</p>
+<p>Dynamic programming (also known as dynamic optimization) is a method for solving a complex problem by breaking it down into a collection of simpler subproblems, solving each of those subproblems just once, and storing their solutions - ideally, using a memory-based data structure. The next time the same subproblem occurs, instead of recomputing its solution, one simply looks up the previously computed solution, thereby saving computation time at the expense of a (hopefully) modest expenditure in storage space. (Each of the subproblem solutions is indexed in some way, typically based on the values of its input parameters, so as to facilitate its lookup.) The technique of storing solutions to subproblems instead of recomputing them is called “memoization”.</p>
+<p>Dynamic Programming is typically used to find the optimal solution.It is more like a thought instead of a specific algorithm, unlike other search or numerical algorithm, dynamic programming does’t have a standard mathmatical expression or a clear problem-solving method.Different problems have various models and specific analysizing.</p>
+<p>Let’s get start with a simple and classic example:</p>
+<p>Given coins with values 1, 3, and 5.And the sum S is set to be 11. Find the minimum number of coins the sum of which is S.</p>
+<p>Review the description of wiki above, the main idea is decomposing the problem into subproblems.So before we discuss the sum 11, we first discuss the sum i.If we set the i to 0, it’s clear that the minimum number of coins is 0, and in order to express more clearly, we use d(i) = j to indicate that the sum i needs at least j numbers of conins.And we already got d(0) = 0.We then go to sum 1, and we see that only coin 1 is less than or equal to the current sum, so we firstly pick up the coin 1, the remianing sum is 0, it means we should find what’s the minimum number of coins of the sum 0.However, we have found it just now, so we’ll have a solution with 1 coin for sum 1.It’s the only solution yet found for this sum. We mark it as d(1) = d(1-1) + 1 = d(0) + 1 = 0 + 1 = 1.Then we proceed to the next step, the sum 2. We again see that the only coin which is less or equal to this sum is the first coin, having a value of 1. We pick up the coin 1, the remaining sum is 1, we also had the answer of sum 1. So d(2) = d(2 - 1) + 1 = d(1) + 1 = 1 + 1 = 2.Now we proceed to sum 3.We now have 2 coins which are to be analyzed – first and second one, having values of 1 and 3. If we pick up the coin 1, remaining sum is 3 -1 = 2, so the solution is d(3) = d(3 - 1) + 1 = d(2) + 1 = 3，it means we can pick up 3 coins with value 1. Now let’s take the second coin with value equal to 3. The sum for which this coin needs to be added to make 3 , is 0. We know that sum 0 is made up of 0 coins. Thus we can make a sum of 3 with only one coin – 3. This solution is d(3) = d(3 - 3) + 1 = d(0) + 1 = 1.We see that it’s better than the previous found solution for sum 3 , which was composed of 3 coins. We can use an expression to express this: d(3)=min{d(3-1)+1, d(3-3)+1}.Then we update the solution and mark it as having only 1 coin.The same we do for sum 4, and get a solution of 2 coins – 1+3. And so on.</p>
+<p>Now we should learn the two most important concepts of dynamic programming: State(状态) and Bellman Equation(状态转移方程).The above d(i) means the minimum number of of coins of sum i, and it’s the state of this problem.It’s a way to describe a situation, a sub-solution for the problem.So how could we find the state? It’s simple, for each coin j, Vj&lt;=i, look at the minimum number of coins found for the i-Vj sum (we have already found it previously). Let this number be m. If m+1 is less than the minimum number of coins already found for current sum i, then we write the new result for it.And the Bellman Equation for the problem is d(i) = min{d(i - Vj) + 1}, for example, d(3) = min{d(3 - 1) + 1, d(3 - 3) + 1}.</p>
+<p>We already have the State and the Bellman Equation, then we can write the code to sovle this problem.Dynamic Programming code is always very short, usually just several lines, but not easy to understand.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Set Min[i] equal to Infinity <span class="keyword">for</span> all of i</span><br><span class="line">Min[<span class="number">0</span>]=<span class="number">0</span></span><br><span class="line"></span><br><span class="line">For i = <span class="number">1</span> to S</span><br><span class="line">For j = <span class="number">0</span> to N - <span class="number">1</span></span><br><span class="line">   If (Vj&lt;=i AND Min[i-Vj]+<span class="number">1</span>&lt;Min[i])</span><br><span class="line">Then Min[i]=Min[i-Vj]+<span class="number">1</span></span><br><span class="line"></span><br><span class="line">Output Min[S]</span><br></pre></td></tr></table></figure>
+<p>Here are the solutions found for all sums:</p>
+<table>
+<thead>
+<tr>
+<th>sum</th>
+<th style="text-align:center">min</th>
+<th style="text-align:center">Coin value added to a smaller sum to obtain this sum (it is displayed in brackets)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1(0)</td>
+</tr>
+<tr>
+<td>2</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1(1)</td>
+</tr>
+<tr>
+<td>3</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">3(0)</td>
+</tr>
+<tr>
+<td>4</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1(3)</td>
+</tr>
+<tr>
+<td>5</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">5(0)</td>
+</tr>
+<tr>
+<td>6</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3(3)</td>
+</tr>
+<tr>
+<td>7</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">1(6)</td>
+</tr>
+<tr>
+<td>8</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3(5)</td>
+</tr>
+<tr>
+<td>9</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">1(8)</td>
+</tr>
+<tr>
+<td>10</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">5(5)</td>
+</tr>
+<tr>
+<td>11</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">1(10)</td>
+</tr>
+</tbody>
+</table>
+<p>As a result we have found a solution of 3 coins which sum up to 11.</p>
+<p>Now let us look at another problem. It’s the 32st algorithm problem on the leetcode website.Here is the description:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Given a string containing just the characters &apos;(&apos; and &apos;)&apos;, find the length of the longest valid (well-formed) parentheses substring.</span><br><span class="line"></span><br><span class="line">For &quot;(()&quot;, the longest valid parentheses substring is &quot;()&quot;, which has length = 2.</span><br><span class="line"></span><br><span class="line">Another example is &quot;)()())&quot;, where the longest valid parentheses substring is &quot;()()&quot;, which has length = 4.</span><br></pre></td></tr></table></figure>
+<p>However we can use stack to solve this problem, but the best solution is DP.We use d[i + 1] to define the longest paired parentheses ended at index i.And “left” define the remaining left parentheses that haven’t been paired.And the Bellman Equation is:</p>
+<p>‘’’<br>DP[i + 1] = DP[i] + 2 + DP[i + 1 - DP[i + 1]]<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int longestValidParentheses(string s) &#123;</span><br><span class="line">        int size = (int)s.size();</span><br><span class="line">        vector&lt;int&gt; DP(size + 1, 0);</span><br><span class="line">        int left = 0, longest = 0;</span><br><span class="line">        for(int i = 0; i &lt; size; ++i)&#123;</span><br><span class="line">            if(s[i] == &apos;(&apos;)&#123;</span><br><span class="line">                left++;</span><br><span class="line">            &#125;else if(s[i] == &apos;)&apos; &amp;&amp; left &gt; 0)&#123;</span><br><span class="line">                DP[i + 1] = DP[i] + 2;</span><br><span class="line">                DP[i + 1] += DP[i + 1 - DP[i + 1]];</span><br><span class="line">                left--;</span><br><span class="line">            &#125;</span><br><span class="line">            longest = max(longest, DP[i + 1]);</span><br><span class="line">        &#125;</span><br><span class="line">        return longest;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+
+  </section>
+
+  
+
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'zke1ev3nme'; 
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+  
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">Copyright &copy; 2014-2015 Zke1ev3n. All Rights Reserved</span>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-71084152-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>

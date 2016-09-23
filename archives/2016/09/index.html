@@ -7,7 +7,7 @@
     
 
     <title>
-      Zke1ev3n&#39;s Blog 
+      Archives: 2016/9 
     </title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -15,17 +15,15 @@
       <meta name="author" content="Zke1ev3n">
     
     
-      <meta name="description" content="Talk is cheep,show me the code.">
-    
 
     <meta name="description" content="Talk is cheep,show me the code.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Zke1ev3n's Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:title" content="Archives: 2016/9">
+<meta property="og:url" content="http://yoursite.com/archives/2016/09/index.html">
 <meta property="og:site_name" content="Zke1ev3n's Blog">
 <meta property="og:description" content="Talk is cheep,show me the code.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Zke1ev3n's Blog">
+<meta name="twitter:title" content="Archives: 2016/9">
 <meta name="twitter:description" content="Talk is cheep,show me the code.">
     
     
@@ -45,8 +43,8 @@
     </span>
 
     
- 
-<header class="panel-cover">
+
+<header class="panel-cover panel-cover--collapsed">
 
 
   <div class="panel-main">
@@ -150,7 +148,8 @@ classes that you can use:
             
 
 
-   <!-- do nothing -->
+  <h1 class="archive-title">Archives: 2016/9</h1>
+  <hr class="post-list__divider" />
 
 
 <div class="main-post-list">
@@ -177,88 +176,6 @@ classes that you can use:
       <hr class="post-list__divider" />
     </li>
     
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2016/08/25/Ubuntu16-04编译android6-0源代码/" title="link to Ubuntu16.04编译android6.0源代码">Ubuntu16.04编译android6.0源代码</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2016-08-25" class="post-list__meta--date date">2016-08-25</time> 
-      </div>
-
-      <div class="excerpt">
-        
-          <p>因为最近经常编译android，每次都要去网上搜索教程，这里把自己编译的步骤记录下来，方便以后查询。</p>
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2016/08/10/CVE-2014-4322-qseecom内存破坏漏洞分析与利用/" title="link to CVE-2014-4322 qseecom内存破坏漏洞分析与利用">CVE-2014-4322 qseecom内存破坏漏洞分析与利用</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2016-08-10" class="post-list__meta--date date">2016-08-10</time> 
-      </div>
-
-      <div class="excerpt">
-        
-          <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>这个漏洞存在于高通QSEECOM驱动中，这个驱动对用户层提供了一个ioctl系统调用接口，但是没有验证ioctl传入的参数中的一些基址和偏移，攻击者可以构造特殊的参数造成信息泄露和权限提升。</p>
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2016/08/02/CVE-2014-7911-Android本地提权漏洞分析与利用/" title="link to CVE-2014-7911 Android本地提权漏洞分析与利用">CVE-2014-7911 Android本地提权漏洞分析与利用</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2016-08-02" class="post-list__meta--date date">2016-08-02</time> 
-      </div>
-
-      <div class="excerpt">
-        
-          <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>前面我们了解了Android Binder机制的基本原理，当然仅仅了解是不够的，我们要做到：Know it and hack it。这篇文章我们就来分析一个和Binder相关的漏洞：CVE-2014-7911。这是由Jann Horn发现的一个Android本地提权漏洞，能够使普通应用的权限提升到System权限，影响Android5.0以下版本。这个漏洞是非常值得Android安全研究人员学习的一个漏洞，因为这个漏洞涉及到Android Binder，Java序列化，Dalvik GC机制，Heap spary，ROP，Stack pivot等知识，很有学习价值。</p>
-<blockquote>
-<p>文章的内容主要来源于公开的资料，我在其基础上添加了一些细节。<br>
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2016/07/19/Android-IPC-Binder机制/" title="link to Android IPC Binder机制">Android IPC Binder机制</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2016-07-19" class="post-list__meta--date date">2016-07-19</time> 
-      </div>
-
-      <div class="excerpt">
-        
-          <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Binder是Android的一种进程间通信机制，是Android最重要的组件之一。正如Binder直译的意思”粘合剂”一样，Binder将Android Framework层的各个组件连接起来，所以学习Android必定要学习Binder。<br>
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
   </ol>
 
   <hr class="post-list__divider " />
@@ -266,10 +183,8 @@ classes that you can use:
 <nav class="pagination" role="navigation">
     
 
-    <span class="pagination__page-number"> 1 / 6</span>
+    <span class="pagination__page-number"> 1 / 1</span>
     
-    
-        <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/page/2/">Next &rarr;</a>
     
 </nav>
 
