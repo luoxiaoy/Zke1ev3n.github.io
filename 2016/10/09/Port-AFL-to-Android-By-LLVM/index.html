@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      Port AFL to Android By LLVM | Zke1ev3n&#39;s Blog 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="Zke1ev3n">
+    
+    
+
+    <meta name="description" content="The AFL(american fuzzy lop) is a awsome fuzzing tool writed by lcamtuf@google. It has many outstanding features and almost been the most popular fuzzer. There are many vulnerabilities found by afl-fuz">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Port AFL to Android By LLVM | Zke1ev3n's Blog">
+<meta property="og:url" content="http://yoursite.com/2016/10/09/Port-AFL-to-Android-By-LLVM/index.html">
+<meta property="og:site_name" content="Zke1ev3n's Blog">
+<meta property="og:description" content="The AFL(american fuzzy lop) is a awsome fuzzing tool writed by lcamtuf@google. It has many outstanding features and almost been the most popular fuzzer. There are many vulnerabilities found by afl-fuz">
+<meta property="og:image" content="http://yoursite.com/1.jpg">
+<meta property="og:updated_time" content="2016-10-10T02:08:40.223Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Port AFL to Android By LLVM | Zke1ev3n's Blog">
+<meta name="twitter:description" content="The AFL(american fuzzy lop) is a awsome fuzzing tool writed by lcamtuf@google. It has many outstanding features and almost been the most popular fuzzer. There are many vulnerabilities found by afl-fuz">
+<meta name="twitter:image" content="http://yoursite.com/1.jpg">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">Zke1ev3n&#39;s Blog</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+        <p class="panel-cover__description">
+          The quieter you became,the more you are able to hear.
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">Port AFL to Android By LLVM</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2016-10-09" class="post-meta__date date">2016-10-09</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>The AFL(american fuzzy lop) is a awsome fuzzing tool writed by lcamtuf@google. It has many outstanding features and almost been the most popular fuzzer. There are many vulnerabilities found by afl-fuzz, you can get more information about it form it’s website:<a href="http://lcamtuf.coredump.cx/afl/" target="_blank" rel="external">http://lcamtuf.coredump.cx/afl/</a>. The original afl-fuzz only supports linux. However, as i know some teams has already ported it to android last year, but didn’t publish it. I have studied the afl-fuzz for a period of time, and finally ported it to android by the llvm mode. Several weeks ago i found the ele7enxxh has published the android-enabled version of AFL, howerver he used a different way by writing the assembly code for arm. And here i will share my way by using the llvm-mode.</p>
+<a id="more"></a>
+<h3 id="Modify-source-code"><a href="#Modify-source-code" class="headerlink" title="Modify source code"></a>Modify source code</h3><p>The version of afl-fuzz i used is the 2.33b, you can download it from the website. Other version are also available. These are several files need to be modify. Firstly we should modify the afl-fuzz.c, and replace the shm to ashm.The best way is use the ‘definition’ to modify the code.Like this:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> AFL_FOR_ANDROID</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> AFL_FOR_ANDROID</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/shm.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/ashmem.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure></p>
+<p>for android use ashmem to replace shm. And these is another header file to mofify.<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> AFL_FOR_ANDROID</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/termios.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;termios.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/syscall.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure></p>
+<p>Because we replace shm to ashm, the shmget function should be replaceed by ashm too. We can add the function named ashmem_create_region.<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* We need to implement ashmem_create_region by ourselfs as NDK does not ship</span><br><span class="line"> * proper implementaton due to possible API changes. */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ashmem_create_region</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">size_t</span> size)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> fd, ret;</span><br><span class="line"></span><br><span class="line">    fd = open(<span class="string">"/dev/ashmem"</span>, O_RDWR);</span><br><span class="line">    <span class="keyword">if</span> (fd &lt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> fd;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (name) &#123;</span><br><span class="line">        <span class="keyword">char</span> buf[ASHMEM_NAME_LEN] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">        strlcpy(buf, name, <span class="keyword">sizeof</span>(buf));</span><br><span class="line">        ret = ioctl(fd, ASHMEM_SET_NAME, buf);</span><br><span class="line">        <span class="keyword">if</span> (ret &lt; <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">goto</span> error;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ret = ioctl(fd, ASHMEM_SET_SIZE, size);</span><br><span class="line">    <span class="keyword">if</span> (ret &lt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">goto</span> error;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> fd;</span><br><span class="line"></span><br><span class="line">error:</span><br><span class="line">    close(fd);</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* AFL_FOR_ANDROID */</span></span></span><br></pre></td></tr></table></figure></p>
+<p>And then modify the code in ‘setup_shm’:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> AFL_FOR_ANDROID</span></span><br><span class="line">  shm_id = shmget(IPC_PRIVATE, MAP_SIZE, IPC_CREAT | IPC_EXCL | <span class="number">0600</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (shm_id &lt; <span class="number">0</span>) PFATAL(<span class="string">"shmget() failed"</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">  shm_id = ashmem_create_region(<span class="string">"afl_ashmem"</span>, MAP_SIZE);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (shm_id &lt; <span class="number">0</span>) PFATAL(<span class="string">"ashmem_create_region() failed"</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> AFL_FOR_ANDROID</span></span><br><span class="line">  trace_bits = shmat(shm_id, <span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (!trace_bits) PFATAL(<span class="string">"shmat() failed"</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">  trace_bits = mmap(<span class="literal">NULL</span>, MAP_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, shm_id, <span class="number">0</span>);</span><br><span class="line">  <span class="keyword">if</span> (!trace_bits) PFATAL(<span class="string">"mmap() failed"</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<p>The ‘bind_to_free_cpu’ function did’t work on android, so we can use “defintion” to delete it.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Build a list of processes bound to specific cores. Returns -1 if nothing</span><br><span class="line">   can be found. Assumes an upper bound of 4k CPUs. */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">bind_to_free_cpu</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> AFL_FOR_ANDROID</span></span><br><span class="line"></span><br><span class="line">  DIR* d;</span><br><span class="line">  <span class="keyword">struct</span> dirent* de;</span><br><span class="line">  <span class="keyword">cpu_set_t</span> c;</span><br><span class="line"></span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Replace the ‘remove_shm’ function:<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Get rid of shared memory (atexit handler). */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">remove_shm</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> AFL_FOR_ANDROID</span></span><br><span class="line">    shmctl(shm_id, IPC_RMID, <span class="literal">NULL</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Another one thing need to do is to comment the termminal size check in ‘show_stats’, or the UI won’t appear as normal.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> AFL_FOR_ANDROID</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (term_too_small) &#123;</span><br><span class="line"></span><br><span class="line">    SAYF(cBRI <span class="string">"Your terminal is too small to display the UI.\n"</span></span><br><span class="line">         <span class="string">"Please resize terminal window to at least 80x25.\n"</span> cRST);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p>And that’s all the code should be modified in afl-fuzz.c. Then we should change the name of folder ‘2.33b’ to ‘jni’.<br>Then add the ‘Android.mk’ and ‘Application.mk’.<br>Android.mk:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_PATH := $(call my-dir)</span><br><span class="line"></span><br><span class="line">include $(CLEAR_VARS)</span><br><span class="line"></span><br><span class="line">LOCAL_MODULE := afl-fuzz</span><br><span class="line">LOCAL_SRC_FILES := afl-fuzz.c</span><br><span class="line">LOCAL_CFLAGS := -funroll-loops -Wall -D_FORTIFY_SOURCE=2 -g -Wno-pointer-sign -DAFL_PATH=\&quot;/usr/local/lib/afl\&quot; -DDOC_PATH=\&quot;/usr/local/share/doc/afl\&quot; -DBIN_PATH=\&quot;/usr/local/bin\&quot; -DVERSION=\&quot;2.33b\&quot;</span><br><span class="line">LOCAL_CFLAGS += -pie -fPIE</span><br><span class="line">LOCAL_LDFLAGS += -pie -fPIE</span><br><span class="line"></span><br><span class="line">include $(BUILD_EXECUTABLE)</span><br></pre></td></tr></table></figure></p>
+<p>Application.mk:<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">APP_PLATFORM := android-23</span><br><span class="line">APP_ABI := armeabi armeabi-v7a x86</span><br></pre></td></tr></table></figure></p>
+<p>The content of ‘LOCAL_CFLAGS’ can be get by the command ‘make -v’.After doing these works, we could compile the afl-fuzz executable file by using<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ndk-build</span><br></pre></td></tr></table></figure></p>
+<p>And you can find the executable file in the folder ‘libs’ if all goes right.</p>
+<p>Then go to the ‘llvm_mode’ folder. The following is all that needs to be changed.<br>Like the changes in afl-fuzz.c, we should replace shm to ashm firstly.<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> AFL_FOR_ANDROID</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/ashmem.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/shm.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure></p>
+<p>And replace the shmat to mmap:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> AFL_FOR_ANDROID</span></span><br><span class="line"></span><br><span class="line">    __afl_area_ptr = mmap(<span class="literal">NULL</span>, MAP_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, shm_id, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"></span><br><span class="line">    __afl_area_ptr = shmat(shm_id, <span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure></p>
+<p>Delete the task ‘afl-llvm-rt’ and ‘testbuild’ in the makefile.And add one line：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CC 	= the clang path where you build before</span><br></pre></td></tr></table></figure>
+<p>Delete this line in afl-llvm-fast.c:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;if (!strcmp(cur, &quot;-shared&quot;)) maybe_linking = 0;</span><br></pre></td></tr></table></figure>
+<p>or it will show the error “undefined reference \”afl-area_prev\”” when you build the android module.After doing these works, run the command<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure></p>
+<p>to complie the ‘afl-llvm-fast’ and ‘afl-llvm-fast++’.You will find the two file in the main folder.And the run the command:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/zke1e/BuildingTools/LLVMToolChains/build/bin/clang -target arm-linux-android -I /home/zke1e/Workspace/android-6.0.1_r46/prebuilts/ndk/9/platforms/android-21/arch-arm/usr/include -O3 -funroll-loops -Wall -D_FORTIFY_SOURCE=2 -g -Wno-pointer-sign -DAFL_PATH=\&quot;/usr/local/lib/afl\&quot; -DBIN_PATH=\&quot;/usr/local/bin\&quot; -DVERSION=\&quot;2.33b\&quot;  -fPIC -c afl-llvm-rt.o.c -o ../afl-llvm-rt.o</span><br></pre></td></tr></table></figure></p>
+<p>to build the ‘afl-llvm-rt.o’ for android.You should replace the paths ‘/home/zke1e/…’ to your paths.</p>
+<p>Then copy the ‘afl-llvm-fast’ and ‘afl-llvm-fast++’ to the ‘prebuilts/clang/linux-x86/host/3.6/bin’ under your android source code directory.Backup the original ‘clang’ and ‘clang++’, then rename the ‘afl-llvm-fast’ and create a link file.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mv afl-llvm-fast clang</span><br><span class="line">$ ln -sf clang clang++</span><br></pre></td></tr></table></figure>
+<h3 id="Build-module"><a href="#Build-module" class="headerlink" title="Build module"></a>Build module</h3><p>Go to the android source code directory.Run these commands:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ build/envsetup.sh</span><br><span class="line">$ lunch</span><br></pre></td></tr></table></figure></p>
+<p>Then goto the module’s folder where you want to fuzz.Backup the original makefile, then add one line:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_CLANG=true</span><br></pre></td></tr></table></figure></p>
+<p>Export following environment variables:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ export AFL_CC=&quot;the clang path where you build&quot;</span><br><span class="line">$ export AFL_CXX=&quot;the clang++ path where you build&quot;</span><br><span class="line">$ export AFL_PATH=&quot;the afl-fuzz path&quot;</span><br></pre></td></tr></table></figure></p>
+<p>Then run:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mm</span><br></pre></td></tr></table></figure></p>
+<p>to build the new module.Then push the new module to your phone and replace the original file.Also push the afl-fuzz executable file and the testcase to your phone.Then run the afl by this command:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./afl-fuzz -i input -o output ./modulename @@</span><br></pre></td></tr></table></figure></p>
+<p>Finally it may show the fuzzing status on the screen just like this.</p>
+<p><img src="1.jpg" alt=""></p>
+
+  </section>
+
+  
+
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'zke1ev3nme'; 
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+  
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">Copyright &copy; 2014-2015 Zke1ev3n. All Rights Reserved</span>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-71084152-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>

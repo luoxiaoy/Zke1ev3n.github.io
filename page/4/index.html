@@ -160,6 +160,26 @@ classes that you can use:
     <li>
 
       <h2 class="post-list__post-title post-title">
+        <a href="/2015/12/27/Android-So简单加固/" title="link to Android So简单加固">Android So简单加固</a>
+      </h2>
+
+      <div class="post-list__meta">
+
+        <time datetime="2015-12-27" class="post-list__meta--date date">2015-12-27</time> 
+      </div>
+
+      <div class="excerpt">
+        
+          <p>Android下的dex加固技术从最初爱加密实现的dex整体内存加载，到目前各大厂商都在研究的代码虚拟化技术，整体技术已经很成熟了。但是因为Android系统开源的特性，这种加固方法的安全性并不高，只要修改源码中dex加载的部分，就可以dump出隐藏的dex，根据这一原理目前也已经有多个Android通用脱壳机。既然dex保不住，那么就可以将安全要求较高的代码写到native层，现在加固厂商已基本都提供了对so的加固。针对so的加固有很多种方案，通常也都是混合使用。比较高级的做法是针对Android下的so加载器linker做的加固，从编译器层做混淆，甚至VMP等。本文主要一些简单的加固方法，比如针对段和函数的加密等。使用的方法来源于<a href="http://bbs.pediy.com/showthread.php?t=191649">http://bbs.pediy.com/showthread.php?t=191649</a>。</p>
+        
+      </div>
+
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+
+      <h2 class="post-list__post-title post-title">
         <a href="/2015/12/27/使用AS进行ndk开发/" title="link to 使用AS进行ndk开发">使用AS进行ndk开发</a>
       </h2>
 
@@ -249,27 +269,6 @@ classes that you can use:
       <hr class="post-list__divider" />
     </li>
     
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2015/12/02/Android-应用启动过程解析/" title="link to Android 应用启动过程解析">Android 应用启动过程解析</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2015-12-02" class="post-list__meta--date date">2015-12-02</time> 
-      </div>
-
-      <div class="excerpt">
-        
-          <p>Android系统由Linux内核，函数库，Android运行时，应用程序框架以及应用程序组成。Dalvik虚拟机属行Android运行时环境，它与一些核心库共同承担Android应用程序的运行工作。</p>
-<p>Android系统启动加载完内核后，第一个执行的是init进程，init进程首先要做的是设备的初始化工作，然后读取inic.rc文件并启动系统中的重要外部程序 Zygote。Zygote进程是Android所有进程的孵化器进程，它启动后会首先初始化Dalvik虚拟机，然后启动system_server并进入Zygote模式，通过socket等候命令。当执行一个Android应用程序时，system_server进程通过Binder IPC方式发送命令给Zygote，Zygote收到命令后通过fork自身创建一个Dalvik虚拟机的实例来执行应用程序的入口函数，这样一个程序就启动完成了。</p>
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
   </ol>
 
   <hr class="post-list__divider " />
@@ -277,14 +276,14 @@ classes that you can use:
 <nav class="pagination" role="navigation">
     
     	
-          <a class="newer-posts pagination__newer btn btn-small btn-tertiary" href="/page/3/">&larr; 上一页 </a>
+          <a class="newer-posts pagination__newer btn btn-small btn-tertiary" href="/page/3/">&larr; Prev </a>
         
     
 
     <span class="pagination__page-number"> 4 / 6</span>
     
     
-        <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/page/5/">下一页 &rarr;</a>
+        <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/page/5/">Next &rarr;</a>
     
 </nav>
 
